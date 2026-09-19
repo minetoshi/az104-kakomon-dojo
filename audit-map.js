@@ -72,7 +72,7 @@
   window.AZ104_AUDIT={
     date:"2026-09-19",
     get(q){
-      return SPECIAL[q.uid]||{status:"verified",label:"Microsoft Learn監査済",note:"現行 Microsoft Learn の該当論点と照合済みです。"};
+      return SPECIAL[q.uid]||{status:"verified",label:"Microsoft Learn監査済",note:""};
     }
   };
 })();

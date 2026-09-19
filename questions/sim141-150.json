@@ -1,0 +1,202 @@
+[
+  {
+    "id": 141,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 41,
+    "cat": "ストレージ",
+    "multi": false,
+    "q": "監査要件により、Blob コンテナー内のデータを 365 日間は上書きも削除もできないようにする必要があります。どの機能を使用しますか？",
+    "o": [
+      "時間ベースの不変ポリシー",
+      "ライフサイクル管理",
+      "Soft delete",
+      "Change feed"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Immutable storage の時間ベース保持ポリシーを使用すると、指定期間中のデータ変更・上書き・削除を防止できます。",
+    "learn": "https://learn.microsoft.com/azure/storage/blobs/immutable-storage-overview"
+  },
+  {
+    "id": 142,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 42,
+    "cat": "ストレージ",
+    "multi": false,
+    "q": "データは 45 日に 1 回程度しか参照しませんが、参照時にはすぐ取得できる必要があります。保存コストを抑えたい場合、最も適切なアクセス層はどれですか？",
+    "o": [
+      "Cool",
+      "Hot",
+      "Archive",
+      "Premium"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Cool はアクセス頻度が低いオンライン データ向けで、即時アクセスを維持しつつ Hot より保存コストを下げられます。Archive は再水和が必要です。",
+    "learn": "https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview"
+  },
+  {
+    "id": 143,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 43,
+    "cat": "ストレージ",
+    "multi": false,
+    "q": "7 年保管する監査バックアップがあり、通常は読み出しません。取り出しに数時間かかっても問題なく、保存コストを最小化したいと考えています。どの層を選びますか？",
+    "o": [
+      "Archive",
+      "Cool",
+      "Cold",
+      "Hot"
+    ],
+    "a": [
+      0
+    ],
+    "e": "長期保管かつほぼアクセスしないデータには Archive が最も低コストです。取り出しには再水和が必要です。",
+    "learn": "https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview"
+  },
+  {
+    "id": 144,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 44,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "Azure VM の NIC を通過する実際のパケットを取得して、プロトコル レベルで通信障害を分析したいと考えています。Network Watcher のどの機能を使いますか？",
+    "o": [
+      "Packet capture",
+      "IP flow verify",
+      "Topology",
+      "NSG flow logs"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Packet capture は VM/NIC のネットワーク トラフィックを取得し、詳細なパケット解析に使用できます。",
+    "learn": "https://learn.microsoft.com/azure/network-watcher/network-watcher-packet-capture-overview"
+  },
+  {
+    "id": 145,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 45,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "特定の送信元 IP から VM の TCP 22 への通信が、どの NSG ルールによって許可または拒否されるかを確認したいと考えています。使用する機能はどれですか？",
+    "o": [
+      "IP flow verify",
+      "Packet capture",
+      "Connection monitor",
+      "Traffic Analytics"
+    ],
+    "a": [
+      0
+    ],
+    "e": "IP flow verify は指定フローに対する Allow/Deny と該当 NSG ルールを確認できます。",
+    "learn": "https://learn.microsoft.com/azure/network-watcher/ip-flow-verify-overview"
+  },
+  {
+    "id": 146,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 46,
+    "cat": "監視",
+    "multi": false,
+    "q": "Azure Monitor のメトリックや Log Analytics の結果を、運用チームが Azure portal のホーム画面からすぐ確認できるようにしたいと考えています。最も適切な表示先はどれですか？",
+    "o": [
+      "Azure ダッシュボード",
+      "NSG",
+      "Management Group",
+      "Resource lock"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Azure dashboard にはメトリック チャートやログ クエリ結果などをピン留めし、共有できます。",
+    "learn": "https://learn.microsoft.com/azure/azure-monitor/visualize/tutorial-logs-dashboards"
+  },
+  {
+    "id": 147,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 47,
+    "cat": "監視",
+    "multi": false,
+    "q": "Log Analytics で各コンピューターごとのイベント件数を集計したいと考えています。KQL で集計に使用する代表的な演算子はどれですか？",
+    "o": [
+      "summarize",
+      "project-away",
+      "extend",
+      "parse"
+    ],
+    "a": [
+      0
+    ],
+    "e": "summarize は count、avg、sum などの集計をグループ単位で計算するための KQL 演算子です。",
+    "learn": "https://learn.microsoft.com/kusto/query/summarize-operator"
+  },
+  {
+    "id": 148,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 48,
+    "cat": "監視",
+    "multi": false,
+    "q": "Azure Monitor のアラートが発火した後、現在の状態や履歴、解決済みかどうかを一覧で確認したいと考えています。どの機能を確認しますか？",
+    "o": [
+      "Alert instances",
+      "Activity log のみ",
+      "Resource Graph のみ",
+      "Advisor"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Alert instances では発生したアラート インスタンスの状態、重大度、履歴などを確認できます。",
+    "learn": "https://learn.microsoft.com/azure/azure-monitor/alerts/alerts-manage-alert-instances"
+  },
+  {
+    "id": 149,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 49,
+    "cat": "バックアップ",
+    "multi": false,
+    "q": "Azure VM 全体を定期的にバックアップし、OS ディスクとデータ ディスクを復元できるようにしたいと考えています。標準的に使用するサービスはどれですか？",
+    "o": [
+      "Azure Backup",
+      "Azure Site Recovery のみ",
+      "Azure Files Sync",
+      "Azure Policy"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Azure Backup は Recovery Services vault などを使って Azure VM のバックアップと復元を提供します。",
+    "learn": "https://learn.microsoft.com/azure/backup/backup-azure-vms-introduction"
+  },
+  {
+    "id": 150,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 50,
+    "cat": "バックアップ",
+    "multi": false,
+    "q": "Azure VM のバックアップから、直近の復元ポイントを短時間で利用できるようにする Instant Restore の保持日数を調整したいと考えています。関連する設定はどれですか？",
+    "o": [
+      "インスタント回復スナップショットの保持期間",
+      "VM の NSG",
+      "Storage account の CORS",
+      "DNS TTL"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Instant Restore は VM バックアップ時に保持するスナップショット期間をポリシーで設定します。",
+    "learn": "https://learn.microsoft.com/azure/backup/backup-instant-restore-capability"
+  }
+]

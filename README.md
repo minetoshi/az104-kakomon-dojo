@@ -62,3 +62,27 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 5. **Microsoft Learn**: 公式ドキュメントで追加確認
 
 解説表示は `explanation-helper.js` で共通化しており、過去問100問と類似問題100問の両方に適用されます。
+
+
+## 2026-09-19 最終監査
+過去問100問と類似問題100問の合計200問について、正答・解説・誤選択肢・Microsoft Learn の関連論点を再監査しました。
+
+- 全200問の正答インデックスを再検証
+- **全817選択肢**に、回答後の個別解説を表示
+- 汎用の「不正解です」だけになる選択肢: **0**
+- Microsoft Practice Assessment の想定と現行 Azure に差がある問題には監査メモを表示
+- 類似問題の Recovery Services vault 削除問題は Secure by Default の現行仕様に合わせて改訂
+- 問題画面に「Microsoft Learn監査済」または注意ステータスを表示
+- 監査記録:
+  - `audit/2026-09-19-original-100.md`
+  - `audit/2026-09-19-similar-100.md`
+
+### 特に注意する問題
+- `s1-q19`: App Service 移動時の証明書の扱いに現行仕様注記
+- `s1-q46`: Practice 想定は 14 日だが、現行 Learn では旧「最大14日」を明確な現行制限として確認できない
+- `s2-q13`: Azure Backup Secure by Default による soft delete の仕様変化
+- `s2-q18`: P1 は hybrid SSPR/password writeback 前提
+- `s2-q19`: B2B guest のパスワード権威は home tenant 側
+- `s2-q26`: Tag Contributor と scope を明示して理解する
+- `s2-q27`: Practice 想定と現行 Resource Lock の挙動にずれ
+- `s2-q48`: Practice の2選択肢は現行の「Client IP and protocol」1モードを分割表現

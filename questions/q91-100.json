@@ -1,0 +1,195 @@
+[
+  {
+    "id": 91,
+    "set": 2,
+    "sourceNo": 41,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "VNet1 という Azure 仮想ネットワークがあります。ネットワーク検査アプライアンスとして使用する VM1 という仮想マシンをデプロイする予定です。すべてのネットワーク トラフィックが VM1 を通過するようにする必要があります。どうしますか？",
+    "o": [
+      "ユーザー定義ルートを構成する",
+      "仮想ネットワーク ゲートウェイを作成する",
+      "既定のルートを変更する",
+      "システム ルートを変更する"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Network Virtual Appliance を経由させるには Route table に User-defined route (UDR) を作成し、next hop を Virtual appliance に設定します。",
+    "learn": "https://learn.microsoft.com/azure/virtual-network/virtual-networks-udr-overview"
+  },
+  {
+    "id": 92,
+    "set": 2,
+    "sourceNo": 42,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "Sub1 と Sub2 という 2 つの Azure サブスクリプションがあります。Sub1 には VNet1 と VPN ゲートウェイ、Sub2 には VNet2 があります。Windows を実行し、ポイント対サイト (P2S) VPN クライアントがインストールされたオンプレミス デバイス Device1 があります。VNet1 と VNet2 の間でネットワーク ピアリングを構成します。VPN 接続が確立されたときに Device1 が VNet2 にアクセスできるようにする必要があります。どうしますか？",
+    "o": [
+      "Sub2 にプライベート エンドポイントを作成する",
+      "Azure Front Door を Sub2 にデプロイする",
+      "P2S VPN クライアントを Device1 に再ダウンロードして再インストールする",
+      "Device1 で New-SelfSignedCertificate コマンドレットを実行する"
+    ],
+    "a": [
+      2
+    ],
+    "e": "VNet peering などで P2S クライアントが到達すべきアドレス範囲が変わった場合は、更新されたルートを含む VPN client configuration を再ダウンロードして適用します。",
+    "learn": "https://learn.microsoft.com/azure/vpn-gateway/vpn-gateway-about-point-to-site-routing"
+  },
+  {
+    "id": 93,
+    "set": 2,
+    "sourceNo": 43,
+    "cat": "ネットワーク",
+    "multi": true,
+    "q": "ネットワーク セキュリティ グループ (NSG) を含む Azure サブスクリプションがあります。NSG に関連付けることができる 2 つのリソースはどれですか？",
+    "o": [
+      "仮想ネットワーク",
+      "仮想マシン",
+      "ネットワーク インターフェイス",
+      "サブネット"
+    ],
+    "a": [
+      2,
+      3
+    ],
+    "e": "NSG は subnet または network interface (NIC) に関連付けます。VNet や VM そのものへ直接関連付けるものではありません。",
+    "learn": "https://learn.microsoft.com/azure/virtual-network/network-security-groups-overview"
+  },
+  {
+    "id": 94,
+    "set": 2,
+    "sourceNo": 44,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "4 つのサブネットを含む Azure 仮想ネットワークがあり、各サブネットには 10 台の仮想マシンがあります。各サブネット上の特定の 2 台の仮想マシンへの TCP ポート 8080 の受信トラフィックを許可する NSG を構成し、可能な限り少ない数の NSG ルールで実現する必要があります。NSG 内の宛先として何を使用しますか？",
+    "o": [
+      "アプリケーション セキュリティ グループ",
+      "サービス タグ",
+      "仮想マシンのサブネット"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Application Security Group (ASG) で対象 VM の NIC を論理グループ化すれば、IP アドレスを個別列挙せず、1 つの宛先グループを NSG rule で指定できます。",
+    "learn": "https://learn.microsoft.com/azure/virtual-network/application-security-groups"
+  },
+  {
+    "id": 95,
+    "set": 2,
+    "sourceNo": 45,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "Windows Server を実行する複数の Azure 仮想マシンを作成します。RDP ポートをインターネットに公開せずに仮想マシンへ接続する必要があります。どの Azure サービスをデプロイする必要がありますか？",
+    "o": [
+      "Azure Bastion",
+      "Azure Front Door",
+      "Azure Network Watcher",
+      "Azure Virtual Desktop"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Azure Bastion は VM に public IP を付けたり RDP/SSH ポートをインターネットへ公開したりせず、Azure portal などから安全に接続できます。",
+    "learn": "https://learn.microsoft.com/azure/bastion/bastion-overview"
+  },
+  {
+    "id": 96,
+    "set": 2,
+    "sourceNo": 46,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "NSG1、NSG2、NSG3 という 3 つのネットワーク セキュリティ グループがあります。ポート 80 は NSG3 ではブロックされ、NSG1 と NSG2 では許可されています。VM1 は Subnet1/NIC1 で NIC1 に NSG2、VM2 は Subnet1/NIC2 で NIC2 に NSG3、VM3 は Subnet3/NIC3 で NIC3 に NSG3、VM4 は Subnet2 にあります。Subnet1 は NSG1、Subnet2 は NSG3、Subnet3 は NSG 未関連です。ポート 80 上でインターネット経由でアクセスできる仮想マシンはどれですか？",
+    "o": [
+      "VM1",
+      "VM2",
+      "VM3",
+      "VM4"
+    ],
+    "a": [
+      0
+    ],
+    "e": "VM1 は subnet 側 NSG1 と NIC 側 NSG2 の両方で port 80 が Allow です。VM2 は NIC の NSG3、VM3 は NIC の NSG3、VM4 は subnet の NSG3 でブロックされます。",
+    "learn": "https://learn.microsoft.com/azure/virtual-network/network-security-group-how-it-works"
+  },
+  {
+    "id": 97,
+    "set": 2,
+    "sourceNo": 47,
+    "cat": "ネットワーク",
+    "multi": true,
+    "q": "RG1 というリソース グループがあります。リモート デスクトップ管理と HTTP のトラフィックを許可する NSG1 というネットワーク セキュリティ グループを作成し、複数の仮想ネットワークのサブネットで使用する予定です。NSG1 と必要なセキュリティ ルールを作成するために実行する 2 つの PowerShell コマンドレットはどれですか？",
+    "o": [
+      "Add-AzLoadBalancerFrontendIpConfig",
+      "Add-AzNetworkInterfaceTapConfig",
+      "New-AzNetworkSecurityGroup",
+      "New-AzNetworkSecurityRuleConfig"
+    ],
+    "a": [
+      2,
+      3
+    ],
+    "e": "New-AzNetworkSecurityRuleConfig でルール構成を作成し、そのルールを含めて New-AzNetworkSecurityGroup で NSG を作成します。",
+    "learn": "https://learn.microsoft.com/azure/virtual-network/manage-network-security-group"
+  },
+  {
+    "id": 98,
+    "set": 2,
+    "sourceNo": 48,
+    "cat": "ネットワーク",
+    "multi": true,
+    "q": "ASP.NET アプリケーションを含む Azure サブスクリプションがあります。アプリケーションは Windows Server を実行する 4 台の Azure 仮想マシンでホストされ、LB1 というロード バランサーが要求を分散します。サイトのユーザーがアプリケーションに対して行ったすべての要求で同じ Web サーバーに接続されるようにする必要があります。実行する必要がある 2 つのアクションはどれですか？",
+    "o": [
+      "インバウンド NAT 規則を構成する",
+      "セッション永続化を [クライアント IP] に設定する",
+      "セッション永続化を [なし] に設定する",
+      "セッション永続化を [プロトコル] に設定する"
+    ],
+    "a": [
+      1,
+      3
+    ],
+    "e": "Azure Load Balancer の sticky session は session persistence を Client IP と Client IP and protocol の設定で実現します。本問の選択肢では Client IP と Protocol を選びます。",
+    "learn": "https://learn.microsoft.com/azure/load-balancer/distribution-mode-concepts"
+  },
+  {
+    "id": 99,
+    "set": 2,
+    "sourceNo": 49,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "4 台の仮想マシンを含む Azure サブスクリプションがあります。各仮想マシンは異なる仮想ネットワーク上のサブネットに接続されています。VM1 に DNS サーバーの役割をインストールし、各仮想ネットワークで VM1 の IP アドレスを DNS サーバーとして使用するように構成します。4 台の仮想マシンすべてが VM1 を使用して IP アドレスを解決できるようにする必要があります。どうしますか？",
+    "o": [
+      "4 台の仮想マシンすべてに DNS サーバーを構成する",
+      "ネットワーク ピアリングを構成する",
+      "ルート テーブルを作成して 4 つのサブネットすべてに関連付ける",
+      "サイト間 (S2S) VPN を作成する"
+    ],
+    "a": [
+      1
+    ],
+    "e": "異なる VNet 上の VM が VM1 の DNS サーバーへ到達するには VNet 間の接続性が必要です。VNet peering は Azure バックボーン上で低管理コストに接続できます。",
+    "learn": "https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview"
+  },
+  {
+    "id": 100,
+    "set": 2,
+    "sourceNo": 50,
+    "cat": "ネットワーク",
+    "multi": true,
+    "q": "パブリック Microsoft Load Balancer を使用して Microsoft Azure に Web アプリケーションをデプロイし、仮想マシン間でトラフィックを分散しました。ユーザーは断続的な接続の問題を報告します。一貫性のあるアプリケーション アクセスのために接続の問題をトラブルシューティングする必要があります。実行する必要がある 2 つのアクションはどれですか？",
+    "o": [
+      "ロード バランサーの分散モードをソース IP アフィニティに変更する",
+      "ヘルス プローブの構成を確認する",
+      "仮想マシンのネットワーク セキュリティ グループ規則を確認する",
+      "ロード バランサーとパブリック IP に一致する SKU を確認する"
+    ],
+    "a": [
+      0,
+      1
+    ],
+    "e": "同一クライアントを同一バックエンドへ維持する必要がある場合は source IP affinity を確認し、断続的な接続では health probe が正常なバックエンドだけを選択できているか確認します。",
+    "learn": "https://learn.microsoft.com/azure/load-balancer/load-balancer-troubleshoot-health-probe-status"
+  }
+]

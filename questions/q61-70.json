@@ -1,0 +1,195 @@
+[
+  {
+    "id": 61,
+    "set": 2,
+    "sourceNo": 11,
+    "cat": "監視",
+    "multi": true,
+    "q": "メトリック値とアクティビティ ログ イベントに基づいて Azure アラートを作成する必要があります。アラート通知が送信される回数を制限し、アラートがトリガーされたときに Azure Functions を呼び出し、アラートの重大度を「警告」に設定してトリガー時に適用されるように構成する必要があります。作成する必要がある 2 つのリソースはどれですか？",
+    "o": [
+      "アクション グループ",
+      "アラート ルール",
+      "通知",
+      "セキュリティで保護された Webhook"
+    ],
+    "a": [
+      0,
+      1
+    ],
+    "e": "アラートの条件・重大度は Alert rule で定義し、通知先や Azure Function などのアクションは Action group にまとめます。",
+    "learn": "https://learn.microsoft.com/azure/azure-monitor/alerts/alerts-overview"
+  },
+  {
+    "id": 62,
+    "set": 2,
+    "sourceNo": 12,
+    "cat": "監視",
+    "multi": false,
+    "q": "Linux を実行する Azure 仮想マシンがあり、この仮想マシンは JSON 形式でログ データを出力するカスタム アプリケーションをホストしています。Log Analytics ワークスペースでログを収集するためのソリューションを提案する必要があります。推奨事項には何を含める必要がありますか？",
+    "o": [
+      "Azure VMAccess 拡張機能",
+      "カスタム スクリプト拡張機能バージョン 2",
+      "Linux 用 DSC 拡張機能",
+      "Linux 用の Azure Monitor エージェント"
+    ],
+    "a": [
+      3
+    ],
+    "e": "Log Analytics にゲスト OS のログを収集する標準エージェントは Azure Monitor Agent (AMA) です。Data Collection Rule と組み合わせて収集対象を定義します。",
+    "learn": "https://learn.microsoft.com/azure/azure-monitor/agents/azure-monitor-agent-overview"
+  },
+  {
+    "id": 63,
+    "set": 2,
+    "sourceNo": 13,
+    "cat": "バックアップ",
+    "multi": true,
+    "q": "VM1 と VM2 という 2 つの仮想マシンがあり、同じバックアップ ポリシーを使用して Vault1 という Recovery Services コンテナーにバックアップされています。追加の仮想マシンと Recovery Services コンテナーを作成する予定で、このプロセス中に Vault1 は使用停止になります。Vault1 を削除する必要があります。Vault1 を削除する前に実行する必要がある 3 つのアクションはどれですか？",
+    "o": [
+      "VM1 と VM2 を削除する",
+      "論理的な削除機能を無効にし、すべてのバックアップ データを削除する",
+      "Vault1 で読み取りロックを有効にする",
+      "ソフト削除状態のすべての項目を完全に削除する",
+      "VM1 と VM2 のバックアップを停止する"
+    ],
+    "a": [
+      1,
+      3,
+      4
+    ],
+    "e": "Recovery Services vault を削除するには保護対象を停止してバックアップ データを削除し、soft-deleted items が残っている場合は完全削除する必要があります。VM 自体の削除や読み取りロックは不要です。",
+    "learn": "https://learn.microsoft.com/azure/backup/backup-azure-delete-vault"
+  },
+  {
+    "id": 64,
+    "set": 2,
+    "sourceNo": 14,
+    "cat": "バックアップ",
+    "multi": false,
+    "q": "Windows Server を実行する Server1 という名前の Azure 仮想マシンがあります。ファイルとフォルダーをバックアップするように Azure Backup を構成する必要があります。Server1 に何をインストールする必要がありますか？",
+    "o": [
+      "Microsoft Azure Backup Server (MABS)",
+      "Microsoft Azure Site Recovery プロバイダー",
+      "Azure 接続マシンのエージェント",
+      "Microsoft Azure Recovery Services (MARS) エージェント"
+    ],
+    "a": [
+      3
+    ],
+    "e": "ファイルとフォルダーを Recovery Services vault に直接バックアップする場合は MARS エージェントを使用します。",
+    "learn": "https://learn.microsoft.com/azure/backup/backup-azure-about-mars"
+  },
+  {
+    "id": 65,
+    "set": 2,
+    "sourceNo": 15,
+    "cat": "バックアップ",
+    "multi": false,
+    "q": "Azure Backup を使用してバックアップする Azure 仮想マシンがあります。バックアップ ポリシーのサブタイプは Standard、バックアップ スケジュールの頻度は週単位、インスタント回復スナップショットの保持期間は 5 日、毎週のバックアップ ポイントの保持期間は日曜日 08:00 に 12 週間です。Instant Restore で消費されるストレージ量を減らし、スナップショットを 2 日だけ保持する必要があります。最初に何をする必要がありますか？",
+    "o": [
+      "バックアップ スケジュールの頻度を [毎日] に変更する",
+      "毎週のバックアップ ポイントの保持期間を 1 週間に変更する",
+      "バックアップ ポリシーを変更してインスタント回復スナップショットのリテンション期間を短縮する",
+      "追加の BLOB ストレージ コンテナーをプロビジョニングする"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Standard ポリシーで Instant Restore snapshot retention を 2 日に下げるには、まずスケジュールを Daily に変更する必要があります。その後にスナップショット保持期間を変更します。",
+    "learn": "https://learn.microsoft.com/azure/backup/backup-instant-restore-capability"
+  },
+  {
+    "id": 66,
+    "set": 2,
+    "sourceNo": 16,
+    "cat": "バックアップ",
+    "multi": false,
+    "q": "RG1 というリソース グループを含む Azure サブスクリプションと、Windows Server を実行するオンプレミスの Server1 があります。Azure Backup を使用して Server1 から Azure にファイルとフォルダーをバックアップする予定です。RG1 に Vault1 という Recovery Services コンテナーを作成し、Microsoft Azure Recovery Services (MARS) エージェントを Server1 にインストールします。Server1 が Vault1 にデータをバックアップできることを確認するため、次に何をする必要がありますか？",
+    "o": [
+      "Vault1 のバックアップ ポリシーを作成する",
+      "Vault1 の資格情報をダウンロードし、Server1 を Vault1 に登録する",
+      "Vault1 のソフト削除を有効にする",
+      "Vault1 のセキュリティ設定を変更する"
+    ],
+    "a": [
+      1
+    ],
+    "e": "MARS エージェントをインストールした後は、vault credentials をダウンロードして対象サーバーを Recovery Services vault に登録します。",
+    "learn": "https://learn.microsoft.com/azure/backup/install-mars-agent"
+  },
+  {
+    "id": 67,
+    "set": 2,
+    "sourceNo": 17,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "contoso.com という Microsoft Entra テナントにリンクされた Azure サブスクリプションがあります。contoso.com のすべてのユーザーは現在、B2B コラボレーションに外部ユーザーを招待できます。Guest Inviter、User Administrator、Global Administrator の各ロールのメンバーのみがゲスト ユーザーを招待できるようにする必要があります。何を構成しますか？",
+    "o": [
+      "アクセス レビュー",
+      "条件付きアクセス",
+      "クロステナント アクセス設定",
+      "外部コラボレーションの設定"
+    ],
+    "a": [
+      3
+    ],
+    "e": "ゲスト招待を許可するユーザー範囲は Microsoft Entra の External collaboration settings で制御します。",
+    "learn": "https://learn.microsoft.com/entra/external-id/external-collaboration-settings-configure"
+  },
+  {
+    "id": 68,
+    "set": 2,
+    "sourceNo": 18,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "Microsoft Entra テナントとオンプレミスの Active Directory ドメインに複数のユーザーが含まれています。セルフサービス パスワード リセット (SSPR) を構成する必要があります。このソリューションではコストを最小限に抑える必要があります。どの Microsoft Entra ID エディションを使用する必要がありますか？",
+    "o": [
+      "Microsoft Entra ID Free",
+      "Microsoft Entra ID P1",
+      "Microsoft Entra ID P2"
+    ],
+    "a": [
+      1
+    ],
+    "e": "オンプレミス AD への password writeback を含む SSPR を利用するには Microsoft Entra ID P1 以上が必要です。P2 は追加の Identity Protection / PIM 機能を含むため、この要件には過剰です。",
+    "learn": "https://learn.microsoft.com/entra/identity/authentication/concept-sspr-licensing"
+  },
+  {
+    "id": 69,
+    "set": 2,
+    "sourceNo": 19,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "contoso.com という Microsoft Entra テナントに Group1 があります。Group1 のメンバーは、User1 (メンバー、オンプレミスから同期あり)、User2 (メンバー、オンプレミスから同期なし)、User3 (ゲスト、オンプレミスから同期なし) です。Microsoft Entra Connect Sync でパスワード ライトバックが有効です。Group1 のセルフサービス パスワード リセット (SSPR) を有効にします。SSPR を使用できるユーザーはどれですか？",
+    "o": [
+      "User2 のみ",
+      "User1 と User2 のみ",
+      "User2 と User3 のみ",
+      "User1、User2、User3"
+    ],
+    "a": [
+      1
+    ],
+    "e": "User1 は同期ユーザーで password writeback によりオンプレミス パスワードをリセットできます。User2 はクラウド メンバーとして SSPR を利用できます。B2B ゲストの User3 はリソース テナントの SSPR 対象にはなりません。",
+    "learn": "https://learn.microsoft.com/entra/identity/authentication/tutorial-enable-sspr"
+  },
+  {
+    "id": 70,
+    "set": 2,
+    "sourceNo": 20,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "User1 というユーザーを含む Microsoft Entra テナントがあります。User1 が外部ユーザーをテナントに招待できることを確認する必要があります。最小限の特権の原則に従う必要があります。どのロールを User1 に割り当てる必要がありますか？",
+    "o": [
+      "グローバル管理者",
+      "グループ管理者",
+      "ゲスト招待者",
+      "セキュリティ管理者"
+    ],
+    "a": [
+      2
+    ],
+    "e": "Guest Inviter は外部ゲストの招待に必要な権限を与える専用ロールで、Global Administrator より最小権限です。",
+    "learn": "https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference"
+  }
+]

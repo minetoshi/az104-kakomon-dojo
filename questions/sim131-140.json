@@ -1,0 +1,210 @@
+[
+  {
+    "id": 131,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 31,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "財務チームに Azure のコストと予算を管理させたい一方、VM やネットワークなどのリソース構成は変更させたくありません。サブスクリプション スコープで適切なロールはどれですか？",
+    "o": [
+      "Cost Management Contributor",
+      "Contributor",
+      "Owner",
+      "Billing Reader"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Cost Management Contributor はコスト表示や予算などの Cost Management 設定を管理できますが、一般リソースの変更権限は持ちません。",
+    "learn": "https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/management-and-governance#cost-management-contributor"
+  },
+  {
+    "id": 132,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 32,
+    "cat": "監視/コスト",
+    "multi": true,
+    "q": "RG-App の月次予算が 80% に達したら自動的に VM-Test を停止する仕組みを作ります。必要な 2 つの要素はどれですか？",
+    "o": [
+      "予算アラート",
+      "Action Group から実行する Automation/Runbook",
+      "NSG",
+      "Azure DNS ゾーン"
+    ],
+    "a": [
+      0,
+      1
+    ],
+    "e": "Cost Management の Budget でしきい値を設定し、Action Group 経由で Automation Runbook などの自動アクションを実行できます。",
+    "learn": "https://learn.microsoft.com/azure/cost-management-billing/costs/cost-management-budget-scenario"
+  },
+  {
+    "id": 133,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 33,
+    "cat": "ID/ガバナンス",
+    "multi": true,
+    "q": "Azure Resource Manager の削除ロック (CanNotDelete) を直接適用できる 3 つのスコープ/リソースはどれですか？",
+    "o": [
+      "サブスクリプション",
+      "リソース グループ",
+      "仮想マシン",
+      "管理グループ",
+      "Blob コンテナー内の個別 BLOB"
+    ],
+    "a": [
+      0,
+      1,
+      2
+    ],
+    "e": "管理ロックは subscription、resource group、個別 ARM resource に適用できます。管理グループやデータ プレーンの個別オブジェクトには直接適用しません。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/management/lock-resources"
+  },
+  {
+    "id": 134,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 34,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "50 台の Azure VM を `Finance`、`Sales`、`IT` の部門別に分類し、Cost Management やレポートで集計したいと考えています。最も適切な機能はどれですか？",
+    "o": [
+      "タグ",
+      "NSG",
+      "管理ロック",
+      "可用性セット"
+    ],
+    "a": [
+      0
+    ],
+    "e": "タグは Department などのキーと値で Azure リソースを分類し、レポートやコスト分析に利用できます。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/management/tag-resources"
+  },
+  {
+    "id": 135,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 35,
+    "cat": "ストレージ",
+    "multi": false,
+    "q": "外部パートナーに Blob コンテナーへの読み取りアクセスを 6 時間だけ与え、自動的に失効させたいと考えています。最適な仕組みはどれですか？",
+    "o": [
+      "共有アクセス署名 (SAS)",
+      "ストレージ アカウント キーを共有する",
+      "Public access を有効にする",
+      "Azure CDN"
+    ],
+    "a": [
+      0
+    ],
+    "e": "SAS は対象リソース、操作、開始/終了時刻を制限した一時アクセスを提供できます。",
+    "learn": "https://learn.microsoft.com/azure/storage/common/storage-sas-overview"
+  },
+  {
+    "id": 136,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 36,
+    "cat": "ストレージ",
+    "multi": false,
+    "q": "Azure Files の SMB 共有に対し、ユーザーが ID を使って認証できるようにしたいと考えています。最初に構成すべきものはどれですか？",
+    "o": [
+      "ID ベース認証",
+      "Public access",
+      "Blob versioning",
+      "Static website"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Azure Files の SMB では Microsoft Entra Kerberos や AD DS などの ID ベース認証を構成できます。",
+    "learn": "https://learn.microsoft.com/azure/storage/files/storage-files-active-directory-overview"
+  },
+  {
+    "id": 137,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 37,
+    "cat": "ストレージ",
+    "multi": true,
+    "q": "階層型名前空間を有効にして Data Lake Storage Gen2 として利用できる 2 種類のストレージ アカウントはどれですか？",
+    "o": [
+      "Standard 汎用 v2",
+      "Premium Block Blob",
+      "Premium File Share",
+      "Premium Page Blob"
+    ],
+    "a": [
+      0,
+      1
+    ],
+    "e": "ADLS Gen2 の hierarchical namespace は Standard GPv2 と Premium Block Blob でサポートされます。",
+    "learn": "https://learn.microsoft.com/azure/storage/blobs/create-data-lake-storage-account"
+  },
+  {
+    "id": 138,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 38,
+    "cat": "ストレージ",
+    "multi": false,
+    "q": "同一 Azure リージョン内の複数可用性ゾーンへデータを同期複製したいと考えています。どの冗長性オプションを選びますか？",
+    "o": [
+      "ZRS",
+      "LRS",
+      "GRS",
+      "RA-GRS"
+    ],
+    "a": [
+      0
+    ],
+    "e": "ZRS は同一リージョン内の複数 availability zones に同期複製します。",
+    "learn": "https://learn.microsoft.com/azure/storage/common/storage-redundancy"
+  },
+  {
+    "id": 139,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 39,
+    "cat": "ストレージ",
+    "multi": false,
+    "q": "Blob Object Replication のソース アカウントで change feed は有効ですが、versioning が無効です。レプリケーションを構成する前に何を有効にしますか？",
+    "o": [
+      "Blob versioning",
+      "Static website",
+      "NFS v3",
+      "Access tracking"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Object Replication にはソースと宛先の Blob versioning が必要です。ソース側では change feed も必要です。",
+    "learn": "https://learn.microsoft.com/azure/storage/blobs/object-replication-overview"
+  },
+  {
+    "id": 140,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 40,
+    "cat": "ストレージ",
+    "multi": true,
+    "q": "Blob Object Replication を構成します。必須となる 3 つの機能はどれですか？",
+    "o": [
+      "ソースの Blob versioning",
+      "宛先の Blob versioning",
+      "ソースの change feed",
+      "宛先の change feed",
+      "ソースの static website"
+    ],
+    "a": [
+      0,
+      1,
+      2
+    ],
+    "e": "Object Replication では source/destination の versioning と、source の change feed が必要です。",
+    "learn": "https://learn.microsoft.com/azure/storage/blobs/object-replication-configure"
+  }
+]

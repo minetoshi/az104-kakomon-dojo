@@ -1,0 +1,195 @@
+[
+  {
+    "id": 71,
+    "set": 2,
+    "sourceNo": 21,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "Azure サブスクリプションがあります。Get-AzRoleDefinition を実行すると、CustomRole1 の Id が 111-222-333-444-555 と表示されます。リソース グループ レベルでアクセスを管理する PowerShell スクリプトで `$RoleName = \"111-222-333-444-555\"`、`$Role = Get-AzRoleDefinition -Name $RoleName`、`New-AzRoleAssignment -SignInName user1@contoso.com -RoleDefinitionName $Role.Name -ResourceGroupName $rg` を実行していますが、User1 が RG1 にアクセスできません。スクリプトが失敗しないように何を変更しますか？",
+    "o": [
+      "`$Role = Add-AzRoleDefinition -Name $RoleName`",
+      "`$Role = Get-AzRoleAssignment -Name $RoleName`",
+      "`$Role = Set-AzRoleAssignment -Name $RoleName`",
+      "`$RoleName = \"CustomRole1\"`"
+    ],
+    "a": [
+      3
+    ],
+    "e": "Get-AzRoleDefinition の -Name にはロール名を渡します。Id を変数に入れるのではなく、出力にある CustomRole1 を RoleName に設定します。",
+    "learn": "https://learn.microsoft.com/powershell/module/az.resources/get-azroledefinition"
+  },
+  {
+    "id": 72,
+    "set": 2,
+    "sourceNo": 22,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "複数の仮想マシンを含む Azure サブスクリプションがあります。User1 というユーザーが RG1 というリソース グループ内のすべてのリソースを表示できるようにする必要があります。最小限の特権の原則を使用します。どのロールを User1 に割り当てますか？",
+    "o": [
+      "請求書リーダー",
+      "Contributor",
+      "Reader",
+      "タグ共同作成者"
+    ],
+    "a": [
+      2
+    ],
+    "e": "表示のみが要件なので Reader が最小権限です。Contributor はリソース変更まで可能なため過剰です。",
+    "learn": "https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/general#reader"
+  },
+  {
+    "id": 73,
+    "set": 2,
+    "sourceNo": 23,
+    "cat": "ID/ガバナンス",
+    "multi": true,
+    "q": "複数の管理グループと Azure サブスクリプションがあります。リソースが誤って削除されないようにする必要があります。削除ロックを適用できる 3 つのリソースの種類はどれですか？",
+    "o": [
+      "管理グループ",
+      "リソース グループ",
+      "ストレージ アカウント データ",
+      "サブスクリプション",
+      "仮想マシン"
+    ],
+    "a": [
+      1,
+      3,
+      4
+    ],
+    "e": "Azure Resource Manager の管理ロックは subscription、resource group、個々の ARM resource に適用できます。管理グループやストレージ アカウント内部のデータ オブジェクトには直接適用しません。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/management/lock-resources"
+  },
+  {
+    "id": 74,
+    "set": 2,
+    "sourceNo": 24,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "25 台の仮想マシンを含む Azure サブスクリプションがあります。レポートの目的で、各仮想マシンが特定の部門に関連付けられるようにする必要があります。何を使用しますか？",
+    "o": [
+      "管理単位",
+      "管理グループ",
+      "ストレージ アカウント",
+      "タグ"
+    ],
+    "a": [
+      3
+    ],
+    "e": "Azure resource tag は Department などのキー/値を付与して、コスト・運用・レポート用途でリソースを分類するために使います。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/management/tag-resources"
+  },
+  {
+    "id": 75,
+    "set": 2,
+    "sourceNo": 25,
+    "cat": "監視/コスト",
+    "multi": false,
+    "q": "200 台の仮想マシンを含む Azure サブスクリプションがあります。Azure Advisor を使用してコストに関する推奨事項を提供する予定です。Advisor アラートが生成されるたびに、Azure のすべての管理者が通知を受け取るようにする必要があります。このソリューションでは管理作業を最小限に抑える必要があります。ソリューションには何を含めますか？",
+    "o": [
+      "アクション グループ",
+      "アプリケーション セキュリティ グループ",
+      "Azure Automation アカウント",
+      "容量予約グループ"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Azure Advisor alert の通知先をまとめて管理するには Action group を使います。メール、SMS、Webhook、Azure Function などのアクションを一元化できます。",
+    "learn": "https://learn.microsoft.com/azure/advisor/advisor-alerts-portal"
+  },
+  {
+    "id": 76,
+    "set": 2,
+    "sourceNo": 26,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "10 台の仮想マシンを含む Azure サブスクリプションがあります。User1 が Azure portal を使用してすべての仮想マシンにタグ付けできることを確認する必要があります。最小限の特権の原則に従う必要があります。どうしますか？",
+    "o": [
+      "Azure portal で Microsoft.Compute/virtualMachines/*/write アクセス許可を持つカスタム ロールを作成する",
+      "Azure portal で仮想マシンのアクセス制御 (IAM) 設定を個別に変更する",
+      "Azure portal で Azure サブスクリプションのポリシー設定を変更する",
+      "コマンド ラインから az role assignment create コマンドを実行する"
+    ],
+    "a": [
+      3
+    ],
+    "e": "Tag Contributor など必要最小限の組み込みロールをサブスクリプション スコープで一度割り当てれば、全 VM にタグ操作を許可できます。az role assignment create でその割り当てを作成できます。",
+    "learn": "https://learn.microsoft.com/azure/role-based-access-control/role-assignments-cli"
+  },
+  {
+    "id": 77,
+    "set": 2,
+    "sourceNo": 27,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "RG1 というリソース グループを含む Azure サブスクリプションがあります。RG1 には 10 個のリソースが含まれています。リソースが誤って削除されないようにする必要があります。リソースが含まれていない場合は RG1 を削除できるようにする必要があります。どうしますか？",
+    "o": [
+      "Azure Cloud Shell から New-AzureRmResourceGroup コマンドレットを実行する",
+      "Azure Cloud Shell から Set-AzResourceGroup コマンドレットを実行する",
+      "Azure portal から RG1 にタグを追加する",
+      "Azure portal から RG1 に削除ロックを追加する"
+    ],
+    "a": [
+      3
+    ],
+    "e": "RG1 に CanNotDelete ロックを設定すると、そのロックは子リソースへ継承され、誤削除を防げます。RG1 自体を削除する段階ではロックを解除してから削除します。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/management/lock-resources"
+  },
+  {
+    "id": 78,
+    "set": 2,
+    "sourceNo": 28,
+    "cat": "コンピュート/ARM",
+    "multi": false,
+    "q": "RG1 というリソース グループを含む Azure サブスクリプションがあります。Azure 仮想マシン用の Azure Resource Manager (ARM) テンプレートがあります。テンプレートを使用して RG1 に仮想マシンをプロビジョニングするために PowerShell を使用する必要があります。どの PowerShell コマンドレットを実行しますか？",
+    "o": [
+      "New-AzManagementGroupDeployment",
+      "New-AzResourceGroupDeployment",
+      "New-AzSubscriptionDeployment",
+      "New-AzVM"
+    ],
+    "a": [
+      1
+    ],
+    "e": "リソース グループ スコープの ARM template deployment は New-AzResourceGroupDeployment を使用します。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/templates/deploy-powershell"
+  },
+  {
+    "id": 79,
+    "set": 2,
+    "sourceNo": 29,
+    "cat": "コンピュート/ARM",
+    "multi": false,
+    "q": "会社には Azure サブスクリプションにデプロイされた一連のリソースがあります。リソースは Azure Resource Manager (ARM) テンプレートを使用して app-grp1 というリソース グループにデプロイされます。app-grp1 内のリソースが作成された日付と時刻を確認する必要があります。Azure portal で app-grp1 のどのブレードを確認しますか？",
+    "o": [
+      "デプロイメント",
+      "診断設定",
+      "デプロイメント スタック",
+      "Policy"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Resource group の Deployments にはデプロイ履歴、時刻、状態、期間などが記録されるため、ARM template で作成された時刻の確認に使えます。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/templates/deployment-history"
+  },
+  {
+    "id": 80,
+    "set": 2,
+    "sourceNo": 30,
+    "cat": "コンピュート/ARM",
+    "multi": false,
+    "q": "ARM テンプレートのデプロイ中に、インライン パラメーターとして配列を渡す必要があります。どうしますか？",
+    "o": [
+      "配列値を含むようにテンプレートを変更する",
+      "--template-file スイッチを使用して配列値を渡す",
+      "デプロイ コマンドの --parameters スイッチで配列値を指定する",
+      "配列値を含む個別のパラメーター ファイルを作成する"
+    ],
+    "a": [
+      2
+    ],
+    "e": "Azure CLI の ARM/Bicep deployment でインラインのパラメーター値を渡す場合は --parameters を使います。配列も JSON 形式で指定できます。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/templates/deploy-cli"
+  }
+]

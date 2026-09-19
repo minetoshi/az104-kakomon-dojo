@@ -47,21 +47,21 @@
     "baseId": 63,
     "cat": "バックアップ",
     "multi": true,
-    "q": "Recovery Services vault を完全に削除します。保護中の VM バックアップと soft-deleted backup items が残っています。必要な 3 つの操作はどれですか？",
+    "q": "Recovery Services vault を削除する予定です。vault には、保護中の Azure VM、登録済みの MARS 保護サーバー、および Private Endpoint が残っています。vault を削除できる状態にするために必要な 3 つのアクションはどれですか？",
     "o": [
-      "VM のバックアップを停止する",
-      "バックアップ データを削除する",
-      "soft-deleted items を完全削除する",
-      "VM 本体を削除する",
-      "Vault に ReadOnly ロックを追加する"
+      "VM のバックアップを停止し、不要なバックアップ データを削除する",
+      "登録済みの保護サーバーを登録解除する",
+      "vault の Private Endpoint 接続を削除する",
+      "保護対象の VM 本体を削除する",
+      "vault に CanNotDelete ロックを追加する"
     ],
     "a": [
       0,
       1,
       2
     ],
-    "e": "Vault 削除前には保護停止、バックアップ データ削除、soft-deleted item の purge が必要です。VM 本体の削除は不要です。",
-    "learn": "https://learn.microsoft.com/azure/backup/backup-azure-delete-vault"
+    "e": "Recovery Services vault を削除するには、保護中のデータ ソースとバックアップ データを処理し、登録済みサーバーなどの依存関係を解除し、Private Endpoint 接続も削除する必要があります。保護対象 VM 本体を削除する必要はありません。soft delete の挙動は Secure by Default の展開状況によって変わるため、最新手順を確認します。",
+    "learn": "https://learn.microsoft.com/ja-jp/azure/backup/backup-azure-delete-vault"
   },
   {
     "id": 164,

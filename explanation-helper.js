@@ -312,6 +312,10 @@
     [/Outbound rule/i,"Outbound rule は Load Balancer の送信 SNAT を制御する機能で、受信セッションの固定方法ではありません。"],
     [/HA Ports/i,"HA Ports は全ポート/プロトコルを対象に内部負荷分散するシナリオ向けで、クライアント セッション固定の設定ではありません。"],
     [/Traffic Manager/i,"Traffic Manager は DNS ベースのグローバル トラフィック分散で、VNet 間のプライベート IP 到達性を作りません。"],
+    [/A レコードを追加|A レコードを編集/i,"A レコードはホスト名を IPv4 アドレスへ直接対応付けますが、子ドメインを別 DNS サーバーへ委任するには親ゾーンの NS レコードが必要です。"],
+    [/カスタム DNS サーバーを使用するように構成/i,"カスタム DNS サーバー指定は名前解決先を変更する設定ですが、Azure Private DNS ゾーンへの VM レコード自動登録は Virtual Network Link の auto-registration で構成します。"],
+    [/Microsoft\.Compute.*書き込みアクセス許可.*カスタム ロール/i,"VM write 権限を含むカスタム ロールはタグ以外の変更も許し得ます。タグ付けだけなら Tag Contributor の方が最小権限です。"],
+    [/^初期化$/i,"Init コンテナーはメイン コンテナー起動前に一度だけ実行する初期化処理向けです。継続的なキャッシュ更新には sidecar が適します。"],
     [/VM 名を変更/i,"VM 名を変更しても Load Balancer の probe や session persistence の問題は解決しません。"],
     [/Resource Group を移動/i,"Resource Group の移動は管理上の配置変更で、Load Balancer の接続一貫性や正常性プローブを修正する操作ではありません。"]
   ];

@@ -1,0 +1,205 @@
+[
+  {
+    "id": 101,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 1,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "VNetA にある VM-A はプライベート IP のみを持っています。短期間だけインターネット上の外部ベンダーから VM-A に直接接続できるようにし、構成変更を最小限にしたいと考えています。まず追加すべきものはどれですか？",
+    "o": [
+      "パブリック IP アドレス",
+      "2 個目の NIC",
+      "Azure Firewall",
+      "VNet ピアリング"
+    ],
+    "a": [
+      0
+    ],
+    "e": "インターネットから VM に直接到達させる最小構成は Public IP の関連付けです。実運用では NSG や Bastion などで露出を抑える設計も検討します。",
+    "learn": "https://learn.microsoft.com/azure/virtual-network/ip-services/public-ip-addresses"
+  },
+  {
+    "id": 102,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 2,
+    "cat": "ネットワーク",
+    "multi": true,
+    "q": "NSG-Web で SSH 管理と HTTPS のみを許可します。許可する必要がある 2 つの TCP ポートはどれですか？",
+    "o": [
+      "22",
+      "53",
+      "80",
+      "443",
+      "3389"
+    ],
+    "a": [
+      0,
+      3
+    ],
+    "e": "SSH は TCP 22、HTTPS は TCP 443 を使用します。",
+    "learn": "https://learn.microsoft.com/azure/virtual-network/network-security-groups-overview"
+  },
+  {
+    "id": 103,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 3,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "Linux と Windows の Azure VM に管理接続したいのですが、各 VM にパブリック IP を付けず、22/3389 をインターネットへ公開したくありません。どのサービスが最適ですか？",
+    "o": [
+      "Azure Bastion",
+      "Azure Front Door",
+      "Azure DNS",
+      "Azure Load Balancer"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Azure Bastion は VM 側に Public IP を持たせずに、Azure portal などから RDP/SSH 接続できます。",
+    "learn": "https://learn.microsoft.com/azure/bastion/bastion-overview"
+  },
+  {
+    "id": 104,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 4,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "Windows Server 上のアプリが TCP 8080 で待ち受けているかを、そのサーバー上で一覧から確認したいと考えています。最も直接的なコマンドはどれですか？",
+    "o": [
+      "netstat -an",
+      "ipconfig /flushdns",
+      "nslookup localhost",
+      "route print"
+    ],
+    "a": [
+      0
+    ],
+    "e": "netstat -an では待受中の TCP/UDP ポートを数値形式で確認できます。",
+    "learn": "https://learn.microsoft.com/windows-server/administration/windows-commands/netstat"
+  },
+  {
+    "id": 105,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 5,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "3 つのピアリング済み VNet で private.contoso.com という共通のプライベート名前空間を使い、独自 DNS サーバーの管理は避けたいと考えています。何を使用しますか？",
+    "o": [
+      "Azure Private DNS ゾーン",
+      "Azure Public DNS ゾーン",
+      "各 VM の hosts ファイル",
+      "Azure Front Door"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Private DNS zone を各 VNet にリンクすると、独自 DNS サーバーを管理せずに共通のプライベート名前解決を提供できます。",
+    "learn": "https://learn.microsoft.com/azure/dns/private-dns-overview"
+  },
+  {
+    "id": 106,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 6,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "corp.example.com ゾーンから dev.corp.example.com を別チームの DNS サーバーへ委任します。親ゾーンに追加すべきレコードはどれですか？",
+    "o": [
+      "A",
+      "CNAME",
+      "NS",
+      "TXT"
+    ],
+    "a": [
+      2
+    ],
+    "e": "サブドメインの委任は親ゾーンに子ドメイン名の NS レコードセットを作成して行います。",
+    "learn": "https://learn.microsoft.com/azure/dns/delegate-subdomain"
+  },
+  {
+    "id": 107,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 7,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "priv.contoso.com という Azure Private DNS ゾーンがあります。VNet2 内で新しく作成される VM の名前をこのゾーンへ自動登録したいと考えています。必要な構成はどれですか？",
+    "o": [
+      "VNet2 への仮想ネットワーク リンクを作成し自動登録を有効にする",
+      "各 VM に Public IP を割り当てる",
+      "DNS Private Resolver のアウトバウンド エンドポイントだけを作成する",
+      "VNet2 に NAT Gateway を追加する"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Private DNS zone の virtual network link で auto-registration を有効にすると、リンク先 VNet の VM レコードを自動登録できます。",
+    "learn": "https://learn.microsoft.com/azure/dns/private-dns-virtual-network-links"
+  },
+  {
+    "id": 108,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 8,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "Azure Load Balancer のバックエンド 6 台へ、新しい TCP フローをできるだけ均等に分散したいと考えています。クライアント固定は不要です。推奨される分散モードはどれですか？",
+    "o": [
+      "5 タプル ハッシュ",
+      "ソース IP アフィニティ",
+      "Client IP and protocol",
+      "インバウンド NAT"
+    ],
+    "a": [
+      0
+    ],
+    "e": "既定の 5-tuple hash は送信元/宛先 IP、送信元/宛先ポート、プロトコルを用いてフローを分散し、一般的な均等分散に適します。",
+    "learn": "https://learn.microsoft.com/azure/load-balancer/distribution-mode-concepts"
+  },
+  {
+    "id": 109,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 9,
+    "cat": "ネットワーク",
+    "multi": true,
+    "q": "Standard Load Balancer 配下で一部のユーザーだけが断続的に失敗します。まず確認すべき 2 項目はどれですか？",
+    "o": [
+      "ヘルス プローブが成功しているか",
+      "バックエンド VM の対象ポートが待受中か",
+      "VM のサイズを上げる",
+      "Public IP を動的にする"
+    ],
+    "a": [
+      0,
+      1
+    ],
+    "e": "Load Balancer の接続障害では、正常性プローブとバックエンドの実際の待受状態を優先して確認します。",
+    "learn": "https://learn.microsoft.com/azure/load-balancer/load-balancer-troubleshoot-health-probe-status"
+  },
+  {
+    "id": 110,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 10,
+    "cat": "ネットワーク",
+    "multi": false,
+    "q": "VM-A から VM-B の TCP 443 通信が NSG によって許可されるか拒否されるかを、パケット キャプチャを行わずに即座に判定したいと考えています。Network Watcher のどの機能を使用しますか？",
+    "o": [
+      "IP フロー検証",
+      "接続モニター",
+      "トポロジ",
+      "VPN トラブルシューティング"
+    ],
+    "a": [
+      0
+    ],
+    "e": "IP flow verify は、指定した送信元/宛先・ポートの通信に対して NSG の Allow/Deny と該当ルールを返します。",
+    "learn": "https://learn.microsoft.com/azure/network-watcher/ip-flow-verify-overview"
+  }
+]

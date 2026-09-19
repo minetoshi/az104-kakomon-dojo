@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AZ-104 過去問道場</title>
+<style>
+:root{
+  --blue:#0b63b6;--blue2:#07559d;--bg:#f6f7f9;--card:#fff;--text:#1f2937;
+  --muted:#667085;--line:#d9dee7;--ok:#12823b;--ng:#c62828;--warn:#946200;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;line-height:1.75}
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 4px #0000000d}
+.header-inner{max-width:920px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.logo{font-weight:800;color:var(--blue);font-size:18px;white-space:nowrap}
+.header-stats{margin-left:auto;font-size:12px;color:var(--muted);text-align:right}
+main{max-width:920px;margin:18px auto 72px;padding:0 12px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 8px #0000000a}
+.toolbar{padding:14px;display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+label.small{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+select,button{font:inherit}
+select{width:100%;padding:9px 10px;border:1px solid #cbd2dc;border-radius:9px;background:#fff}
+button{border:0;border-radius:9px;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+.btn{padding:10px 16px;background:var(--blue);color:white;font-weight:700}
+.btn:hover:not(:disabled){background:var(--blue2)}
+.btn.secondary{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.progress-wrap{padding:0 14px 14px}
+.progress-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);margin-bottom:7px}
+.progress{height:8px;border-radius:999px;background:#e9edf3;overflow:hidden}
+.progress>div{height:100%;background:var(--blue);width:0;transition:width .2s}
+.question-card{margin-top:14px;padding:20px}
+.qtop{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:12px}
+.qnum{font-size:21px;font-weight:800}
+.badge{font-size:12px;background:#eef5ff;color:#0b5cab;padding:3px 8px;border-radius:999px}
+.badge.multi{background:#fff3da;color:#7a5200}
+.qtext{font-size:18px;font-weight:600;white-space:pre-wrap}
+.hint{font-size:12px;color:var(--muted);margin-top:8px}
+.options{margin-top:18px;display:grid;gap:10px}
+.option{display:flex;align-items:flex-start;gap:11px;padding:12px 13px;border:1px solid #dfe3e9;border-radius:10px;background:#fafafa;cursor:pointer}
+.option:hover{background:#f3f7fb}
+.option input{margin-top:7px;transform:scale(1.18)}
+.option.correct{border-color:#79c68f;background:#effaf2}
+.option.wrong{border-color:#ef9a9a;background:#fff1f1}
+.option .mark{margin-left:auto;font-weight:800}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.feedback{display:none;margin-top:20px;border-top:1px solid var(--line);padding-top:18px}
+.feedback.show{display:block}
+.result{font-size:20px;font-weight:800;margin-bottom:8px}
+.result.ok{color:var(--ok)} .result.ng{color:var(--ng)}
+.explain{background:#f8fafc;border-left:4px solid var(--blue);padding:12px 14px;border-radius:8px}
+.learn-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:#075ba8;font-weight:700;text-decoration:none}
+.learn-link:hover{text-decoration:underline}
+.navgrid{margin-top:14px;padding:14px}
+.navgrid h2{font-size:15px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.qjump{padding:7px 0;background:#f1f3f6;color:#334155;border:1px solid #dfe3e9;border-radius:7px;font-size:12px}
+.qjump.current{background:var(--blue);color:#fff;border-color:var(--blue)}
+.qjump.done{box-shadow:inset 0 -3px 0 var(--ok)}
+.qjump.bad{box-shadow:inset 0 -3px 0 var(--ng)}
+.notice{margin-top:14px;padding:12px 14px;background:#fff8df;border:1px solid #ead9a5;border-radius:10px;color:#6d5520;font-size:13px}
+.error{padding:20px;color:var(--ng)}
+footer{max-width:920px;margin:0 auto 30px;padding:0 16px;color:var(--muted);font-size:12px}
+@media(max-width:640px){
+ .toolbar{grid-template-columns:1fr 1fr}.toolbar .reset-wrap{grid-column:1/-1}
+ .question-card{padding:16px}.qtext{font-size:17px}.grid{grid-template-columns:repeat(5,1fr)}
+ .actions .btn{flex:1;min-width:120px}.header-stats{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">AZ-104 過去問道場</div>
+    <div class="header-stats" id="headStats">読み込み中...</div>
+  </div>
+</header>
+
+<main>
+  <section class="panel toolbar">
+    <div>
+      <label class="small" for="setFilter">問題セット</label>
+      <select id="setFilter">
+        <option value="all">全100問（1 → 100）</option>
+        <option value="1">第1セット（1 → 50）</option>
+        <option value="2">第2セット（51 → 100）</option>
+      </select>
+    </div>
+    <div>
+      <label class="small" for="catFilter">カテゴリ</label>
+      <select id="catFilter"><option value="all">すべて</option></select>
+    </div>
+    <div class="reset-wrap">
+      <button class="btn secondary" id="resetBtn" type="button">進捗をリセット</button>
+    </div>
+  </section>
+
+  <section class="panel progress-wrap">
+    <div class="progress-row">
+      <span id="progressText">0 / 0</span>
+      <span id="scoreText">正解 0 / 回答 0</span>
+    </div>
+    <div class="progress"><div id="progressBar"></div></div>
+  </section>
+
+  <section class="panel question-card" id="questionCard">
+    <div id="loading">問題データを読み込んでいます…</div>
+  </section>
+
+  <section class="panel navgrid">
+    <h2>問題一覧（番号順固定）</h2>
+    <div class="grid" id="qgrid"></div>
+  </section>
+
+  <div class="notice">
+    問題はスクリーンショットから保存した学習用データです。解説の下に Microsoft Learn の関連ページを表示します。
+  </div>
+</main>
+
+<footer>AZ-104 学習用。Microsoft Learn へのリンクは理解を深めるための公式資料参照です。</footer>
+
+<script>
+const files = [
+  "questions/q01-10.json","questions/q11-20.json","questions/q21-30.json","questions/q31-40.json","questions/q41-50.json",
+  "questions/q51-60.json","questions/q61-70.json","questions/q71-80.json","questions/q81-90.json","questions/q91-100.json"
+];
+
+let allQuestions = [];
+let viewQuestions = [];
+let currentIndex = 0;
+const stateKey = "az104-dojo-v2-progress";
+let state = JSON.parse(localStorage.getItem(stateKey) || "{}");
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+
+function saveState(){ localStorage.setItem(stateKey, JSON.stringify(state)); }
+
+function normalize(){
+  allQuestions.sort((a,b)=>Number(a.id)-Number(b.id));
+  const cats=[...new Set(allQuestions.map(q=>q.cat).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ja"));
+  $("catFilter").innerHTML='<option value="all">すべて</option>'+cats.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join("");
+}
+
+function applyFilters(keepId){
+  const set=$("setFilter").value, cat=$("catFilter").value;
+  viewQuestions=allQuestions.filter(q=>(set==="all"||String(q.set)===set)&&(cat==="all"||q.cat===cat));
+  const idx=keepId ? viewQuestions.findIndex(q=>q.id===keepId) : -1;
+  currentIndex=idx>=0?idx:Math.min(currentIndex,Math.max(0,viewQuestions.length-1));
+  render();
+}
+
+function answerRecord(id){ return state[String(id)] || null; }
+
+function render(){
+  if(!viewQuestions.length){
+    $("questionCard").innerHTML='<div class="error">条件に一致する問題がありません。</div>';
+    $("qgrid").innerHTML="";
+    updateStats();
+    return;
+  }
+  const q=viewQuestions[currentIndex];
+  const rec=answerRecord(q.id);
+  const inputType=q.multi?"checkbox":"radio";
+  const group="q"+q.id;
+  const required=q.a.length;
+
+  $("questionCard").innerHTML =
+    '<div class="qtop">'+
+      '<div class="qnum">第'+(currentIndex+1)+'問 / '+viewQuestions.length+'</div>'+
+      '<span class="badge">通算 #'+q.id+'</span>'+
+      '<span class="badge">セット'+q.set+' - 元問題 '+q.sourceNo+'</span>'+
+      '<span class="badge">'+esc(q.cat||"")+'</span>'+
+      (q.multi?'<span class="badge multi">複数選択 '+required+'個</span>':'')+
+    '</div>'+
+    '<div class="qtext">'+esc(q.q)+'</div>'+
+    (q.multi?'<div class="hint">正しい選択肢を '+required+' 個選んでください。</div>':'')+
+    '<div class="options" id="options">'+
+      q.o.map((opt,i)=>{
+        const checked=rec?.selected?.includes(i) ? " checked" : "";
+        const locked=rec ? " disabled" : "";
+        let cls="option", mark="";
+        if(rec){
+          if(q.a.includes(i)){ cls+=" correct"; mark='<span class="mark">✓</span>'; }
+          else if(rec.selected.includes(i)){ cls+=" wrong"; mark='<span class="mark">×</span>'; }
+        }
+        return '<label class="'+cls+'"><input type="'+inputType+'" name="'+group+'" value="'+i+'"'+checked+locked+'><span>'+esc(opt)+'</span>'+mark+'</label>';
+      }).join("")+
+    '</div>'+
+    '<div class="actions">'+
+      '<button class="btn secondary" id="prevBtn" type="button" '+(currentIndex===0?'disabled':'')+'>← 前へ</button>'+
+      (!rec?'<button class="btn" id="checkBtn" type="button">回答を確認</button>':'')+
+      '<button class="btn" id="nextBtn" type="button" '+(currentIndex===viewQuestions.length-1?'disabled':'')+'>次へ →</button>'+
+    '</div>'+
+    '<div class="feedback '+(rec?'show':'')+'" id="feedback">'+
+      (rec?feedbackHtml(q,rec):'')+
+    '</div>';
+
+  $("prevBtn").addEventListener("click",()=>go(-1));
+  $("nextBtn").addEventListener("click",()=>go(1));
+  if($("checkBtn")) $("checkBtn").addEventListener("click",()=>checkAnswer(q));
+  renderGrid();
+  updateStats();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function feedbackHtml(q,rec){
+  const ans=q.a.map(i=>q.o[i]).join(" / ");
+  return '<div class="result '+(rec.correct?'ok':'ng')+'">'+(rec.correct?'正解':'不正解')+'</div>'+
+    '<div><strong>正答：</strong>'+esc(ans)+'</div>'+
+    '<div class="explain"><strong>解説</strong><br>'+esc(q.e||"")+'</div>'+
+    (q.learn?'<a class="learn-link" href="'+esc(q.learn)+'" target="_blank" rel="noopener noreferrer">Microsoft Learn で関連事項を確認 ↗</a>':'');
+}
+
+function checkAnswer(q){
+  const inputs=[...document.querySelectorAll('#options input:checked')];
+  const selected=inputs.map(x=>Number(x.value)).sort((a,b)=>a-b);
+  if(selected.length===0){ alert("回答を選択してください。"); return; }
+  if(q.multi && selected.length!==q.a.length){
+    alert("この問題は "+q.a.length+" 個選択です。");
+    return;
+  }
+  const correct=[...q.a].sort((a,b)=>a-b);
+  const ok=selected.length===correct.length && selected.every((v,i)=>v===correct[i]);
+  state[String(q.id)]={selected,correct:ok,at:Date.now()};
+  saveState();
+  render();
+}
+
+function go(delta){
+  currentIndex=Math.max(0,Math.min(viewQuestions.length-1,currentIndex+delta));
+  render();
+}
+
+function renderGrid(){
+  const q=viewQuestions[currentIndex];
+  $("qgrid").innerHTML=viewQuestions.map((x,i)=>{
+    const r=answerRecord(x.id);
+    let cls="qjump";
+    if(i===currentIndex) cls+=" current";
+    if(r) cls+=r.correct?" done":" bad";
+    return '<button type="button" class="'+cls+'" data-i="'+i+'">'+(i+1)+'</button>';
+  }).join("");
+  document.querySelectorAll(".qjump").forEach(b=>b.addEventListener("click",()=>{
+    currentIndex=Number(b.dataset.i);render();
+  }));
+}
+
+function updateStats(){
+  const answered=viewQuestions.filter(q=>answerRecord(q.id)).length;
+  const correct=viewQuestions.filter(q=>answerRecord(q.id)?.correct).length;
+  const total=viewQuestions.length;
+  const pct=total?Math.round(answered/total*100):0;
+  $("progressText").textContent=answered+" / "+total+" 問回答";
+  $("scoreText").textContent="正解 "+correct+" / 回答 "+answered+(answered?"（"+Math.round(correct/answered*100)+"%）":"");
+  $("progressBar").style.width=pct+"%";
+  $("headStats").textContent="登録 "+allQuestions.length+"問 / 回答 "+Object.keys(state).length+"問";
+}
+
+$("setFilter").addEventListener("change",()=>applyFilters());
+$("catFilter").addEventListener("change",()=>applyFilters());
+$("resetBtn").addEventListener("click",()=>{
+  if(confirm("保存されている回答履歴をすべて消しますか？")){
+    state={}; saveState(); render();
+  }
+});
+
+(async()=>{
+  try{
+    const chunks=await Promise.all(files.map(async f=>{
+      const r=await fetch(f,{cache:"no-store"});
+      if(!r.ok) throw new Error(f+" : HTTP "+r.status);
+      return r.json();
+    }));
+    allQuestions=chunks.flat();
+    const ids=allQuestions.map(q=>Number(q.id));
+    const dup=ids.filter((v,i,a)=>a.indexOf(v)!==i);
+    if(dup.length) throw new Error("問題IDが重複しています: "+[...new Set(dup)].join(", "));
+    normalize();
+    viewQuestions=[...allQuestions];
+    currentIndex=0;
+    render();
+  }catch(err){
+    $("questionCard").innerHTML='<div class="error"><strong>問題データの読み込みに失敗しました。</strong><br>'+esc(err.message)+'<br><br>GitHub Pages など HTTP(S) サーバー上で開いてください。</div>';
+    console.error(err);
+  }
+})();
+</script>
+</body>
+</html>

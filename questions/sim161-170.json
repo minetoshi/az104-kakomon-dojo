@@ -1,0 +1,205 @@
+[
+  {
+    "id": 161,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 61,
+    "cat": "監視",
+    "multi": true,
+    "q": "CPU メトリックと Activity Log の条件で Azure Monitor アラートを作成し、発火時に Azure Function を呼び出してメール通知も行いたいと考えています。必要な 2 つの主要リソースはどれですか？",
+    "o": [
+      "アラート ルール",
+      "アクション グループ",
+      "NSG",
+      "管理ロック"
+    ],
+    "a": [
+      0,
+      1
+    ],
+    "e": "Alert rule が条件・重大度を定義し、Action group がメールや Azure Function などの通知/アクションを定義します。",
+    "learn": "https://learn.microsoft.com/azure/azure-monitor/alerts/alerts-overview"
+  },
+  {
+    "id": 162,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 62,
+    "cat": "監視",
+    "multi": false,
+    "q": "Linux VM 上のアプリが `/var/log/app/*.json` にログを出力しています。Data Collection Rule を使って Log Analytics に収集するため、VM に導入するエージェントはどれですか？",
+    "o": [
+      "Azure Monitor Agent",
+      "VMAccess extension",
+      "Custom Script Extension",
+      "Dependency Agent のみ"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Azure Monitor Agent (AMA) は DCR と組み合わせてゲスト OS のログやメトリックを収集します。",
+    "learn": "https://learn.microsoft.com/azure/azure-monitor/agents/azure-monitor-agent-overview"
+  },
+  {
+    "id": 163,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 63,
+    "cat": "バックアップ",
+    "multi": true,
+    "q": "Recovery Services vault を完全に削除します。保護中の VM バックアップと soft-deleted backup items が残っています。必要な 3 つの操作はどれですか？",
+    "o": [
+      "VM のバックアップを停止する",
+      "バックアップ データを削除する",
+      "soft-deleted items を完全削除する",
+      "VM 本体を削除する",
+      "Vault に ReadOnly ロックを追加する"
+    ],
+    "a": [
+      0,
+      1,
+      2
+    ],
+    "e": "Vault 削除前には保護停止、バックアップ データ削除、soft-deleted item の purge が必要です。VM 本体の削除は不要です。",
+    "learn": "https://learn.microsoft.com/azure/backup/backup-azure-delete-vault"
+  },
+  {
+    "id": 164,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 64,
+    "cat": "バックアップ",
+    "multi": false,
+    "q": "オンプレミスの Windows Server からファイルとフォルダーだけを Recovery Services vault へ直接バックアップします。インストールするエージェントはどれですか？",
+    "o": [
+      "MARS エージェント",
+      "Azure Connected Machine Agent",
+      "Site Recovery Mobility Service",
+      "Azure Monitor Agent"
+    ],
+    "a": [
+      0
+    ],
+    "e": "ファイル/フォルダーを Recovery Services vault へ直接バックアップする用途では Microsoft Azure Recovery Services (MARS) agent を使用します。",
+    "learn": "https://learn.microsoft.com/azure/backup/backup-azure-about-mars"
+  },
+  {
+    "id": 165,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 65,
+    "cat": "バックアップ",
+    "multi": false,
+    "q": "Standard Azure VM Backup policy で Instant Restore snapshot retention を 2 日に設定したいのですが、現在のバックアップ頻度は Weekly です。最初に必要な変更はどれですか？",
+    "o": [
+      "バックアップ頻度を Daily に変更する",
+      "Vault を Premium にする",
+      "VM を停止する",
+      "Soft delete を無効にする"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Standard policy で短い Instant Restore snapshot retention を設定する場合、まず Daily schedule が必要となる構成があります。",
+    "learn": "https://learn.microsoft.com/azure/backup/backup-instant-restore-capability"
+  },
+  {
+    "id": 166,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 66,
+    "cat": "バックアップ",
+    "multi": false,
+    "q": "Windows Server に MARS エージェントをインストール済みです。Recovery Services vault へ登録してバックアップを開始するため、次に行う操作はどれですか？",
+    "o": [
+      "Vault credentials をダウンロードしてサーバーを登録する",
+      "NSG を作成する",
+      "VM Extension を追加する",
+      "ストレージ アカウント キーを作成する"
+    ],
+    "a": [
+      0
+    ],
+    "e": "MARS agent では vault credentials を使って対象サーバーを Recovery Services vault に登録します。",
+    "learn": "https://learn.microsoft.com/azure/backup/install-mars-agent"
+  },
+  {
+    "id": 167,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 67,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "Microsoft Entra テナントで、Guest Inviter、User Administrator、Global Administrator だけが外部ゲストを招待できるように制限します。設定箇所はどれですか？",
+    "o": [
+      "External collaboration settings",
+      "Conditional Access",
+      "Authentication methods",
+      "Identity Protection"
+    ],
+    "a": [
+      0
+    ],
+    "e": "外部ゲスト招待を許可する主体は External collaboration settings で設定します。",
+    "learn": "https://learn.microsoft.com/entra/external-id/external-collaboration-settings-configure"
+  },
+  {
+    "id": 168,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 68,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "オンプレミス AD と同期したユーザーに SSPR を提供し、パスワード変更をオンプレミスへ writeback する必要があります。コストを抑える場合に必要な最小 Microsoft Entra ID エディションはどれですか？",
+    "o": [
+      "Free",
+      "P1",
+      "P2"
+    ],
+    "a": [
+      1
+    ],
+    "e": "Password writeback を含む SSPR には Microsoft Entra ID P1 以上が必要です。",
+    "learn": "https://learn.microsoft.com/entra/identity/authentication/concept-sspr-licensing"
+  },
+  {
+    "id": 169,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 69,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "SSPR を GroupA に有効化しました。GroupA にはクラウド メンバー UserA、オンプレミス同期メンバー UserB、B2B ゲスト UserC がいます。Password writeback は有効です。SSPR を利用できるのは誰ですか？",
+    "o": [
+      "UserA と UserB",
+      "UserC のみ",
+      "UserA と UserC",
+      "3 人全員"
+    ],
+    "a": [
+      0
+    ],
+    "e": "クラウド メンバーと、password writeback が有効な同期メンバーは SSPR を利用できます。B2B ゲストはリソース テナントの SSPR 対象ではありません。",
+    "learn": "https://learn.microsoft.com/entra/identity/authentication/tutorial-enable-sspr"
+  },
+  {
+    "id": 170,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 70,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "UserA に外部ユーザーを招待する権限だけを与え、他の管理権限は極力与えたくありません。最適な Microsoft Entra ロールはどれですか？",
+    "o": [
+      "Guest Inviter",
+      "Global Administrator",
+      "Security Administrator",
+      "Groups Administrator"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Guest Inviter は外部ゲスト招待に必要な専用権限を持つため、最小権限に適しています。",
+    "learn": "https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference"
+  }
+]

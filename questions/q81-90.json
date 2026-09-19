@@ -1,0 +1,197 @@
+[
+  {
+    "id": 81,
+    "set": 2,
+    "sourceNo": 31,
+    "cat": "コンピュート/ARM",
+    "multi": false,
+    "q": "Azure 仮想マシンのデプロイに使用される Template1 という Azure Resource Manager (ARM) テンプレートがあります。Template1 には Microsoft.Compute/virtualMachines リソース定義が含まれています。Template1 を使用して 2 つの Azure 仮想マシンをデプロイする必要があります。Template1 に何を追加する必要がありますか？",
+    "o": [
+      "copy 要素",
+      "API のバージョン",
+      "Azure サブスクリプション ID",
+      "リソース グループの場所"
+    ],
+    "a": [
+      0
+    ],
+    "e": "ARM template で同一種類のリソースを複数インスタンス作成する場合は copy loop を使用します。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/templates/copy-resources"
+  },
+  {
+    "id": 82,
+    "set": 2,
+    "sourceNo": 32,
+    "cat": "コンピュート",
+    "multi": false,
+    "q": "Azure 仮想マシンがあります。この仮想マシンが物理インフラストラクチャの基本メンテナンス アクティビティの影響を受けるという通知を受け取りました。サービスの中断を回避するために、仮想マシンを別のホストに移動する必要があります。どうしますか？",
+    "o": [
+      "Azure Policy を適用する",
+      "Azure タグを適用する",
+      "仮想マシンを別の Azure サブスクリプションに移動する",
+      "仮想マシンを再デプロイする"
+    ],
+    "a": [
+      3
+    ],
+    "e": "VM の Redeploy は OS ディスクや構成を保持したまま、別の Azure ホストへ VM を移動します。ホスト障害や基盤側問題の切り分けに使います。",
+    "learn": "https://learn.microsoft.com/troubleshoot/azure/virtual-machines/windows/redeploy-to-new-node-windows"
+  },
+  {
+    "id": 83,
+    "set": 2,
+    "sourceNo": 33,
+    "cat": "コンピュート",
+    "multi": true,
+    "q": "Azure 仮想マシンをデプロイする予定で、Azure Spot インスタンスを使用するかどうかを評価しています。Azure Spot インスタンスが削除される原因となる 2 つの要因はどれですか？",
+    "o": [
+      "インスタンスの平均 CPU 使用率",
+      "Azure 容量のニーズ",
+      "インスタンスの現在の価格",
+      "1 日のうちの時間"
+    ],
+    "a": [
+      1,
+      2
+    ],
+    "e": "Spot VM は Azure が容量を必要とした場合、または Spot の価格が設定した上限価格を超えた場合に eviction される可能性があります。",
+    "learn": "https://learn.microsoft.com/azure/virtual-machines/spot-vms"
+  },
+  {
+    "id": 84,
+    "set": 2,
+    "sourceNo": 34,
+    "cat": "コンテナー",
+    "multi": false,
+    "q": "開発チームは Azure Container Instances のデプロイを計画しています。コンテナーには永続ストレージ レイヤーが必要です。次のうち、使用する必要があるサービスはどれですか？",
+    "o": [
+      "Azure Blob Storage",
+      "Azure Files",
+      "Azure Queue Storage",
+      "Azure SQL Database"
+    ],
+    "a": [
+      1
+    ],
+    "e": "Azure Container Instances では Azure Files 共有をボリュームとしてマウントし、コンテナーのライフサイクルを越えてデータを永続化できます。",
+    "learn": "https://learn.microsoft.com/azure/container-instances/container-instances-volume-azure-files"
+  },
+  {
+    "id": 85,
+    "set": 2,
+    "sourceNo": 35,
+    "cat": "App Service",
+    "multi": false,
+    "q": "container1 という Docker コンテナー イメージを含む Azure サブスクリプションがあります。WebApp1 という新しい Azure App Service Web アプリを作成する予定です。WebApp1 で container1 を使用できるようにする必要があります。構成する必要がある WebApp1 の設定はどれですか？",
+    "o": [
+      "継続的デプロイメント",
+      "料金プラン",
+      "公開 (Publish)",
+      "ランタイム スタック"
+    ],
+    "a": [
+      2
+    ],
+    "e": "既存 Docker image を Web App として実行するには Publish を Docker Container に設定します。Runtime stack はコード発行時の組み込みランタイム指定です。",
+    "learn": "https://learn.microsoft.com/azure/app-service/configure-custom-container"
+  },
+  {
+    "id": 86,
+    "set": 2,
+    "sourceNo": 36,
+    "cat": "コンテナー",
+    "multi": false,
+    "q": "App1 という Azure Container App はキャッシュされたデータを使用するように構成されています。新しいコンテナーを追加し、App1 によって使用されるキャッシュが自動的に更新されるようにする必要があります。どの種類のコンテナーを構成しますか？",
+    "o": [
+      "BLOB",
+      "初期化 (init)",
+      "特権",
+      "サイドカー"
+    ],
+    "a": [
+      3
+    ],
+    "e": "Sidecar container はアプリ本体と並行して継続動作する補助コンテナーです。キャッシュ更新のような常駐処理に適します。Init container は起動前の一回限りの処理です。",
+    "learn": "https://learn.microsoft.com/azure/container-apps/containers"
+  },
+  {
+    "id": 87,
+    "set": 2,
+    "sourceNo": 37,
+    "cat": "App Service",
+    "multi": true,
+    "q": "App1 という Azure App Service Web アプリがあります。診断ログは、アプリケーション ログ (ファイル システム)=エラー、アプリケーション ログ (BLOB)=情報、詳細なエラー メッセージ=警告、Web サーバーのログ記録=詳細、に構成されています。警告以上をすべて格納するように診断ログを構成する必要があります。どの種類の診断ログと重大度を有効にしますか？",
+    "o": [
+      "アプリケーション ログ (BLOB)",
+      "アプリケーション ログ (ファイル システム)",
+      "詳細なエラー メッセージ",
+      "詳細",
+      "警告"
+    ],
+    "a": [
+      0,
+      4
+    ],
+    "e": "永続保存には Application Logging (Blob) を使い、レベルを Warning にすると Warning、Error、Critical が保存対象になります。",
+    "learn": "https://learn.microsoft.com/azure/app-service/troubleshoot-diagnostic-logs"
+  },
+  {
+    "id": 88,
+    "set": 2,
+    "sourceNo": 38,
+    "cat": "App Service",
+    "multi": true,
+    "q": "Web アプリを含む Basic Azure App Service プランがあります。CPU 使用率が 80% を超えた状態が 15 分続いたときに Web アプリが自動的にスケーリングできることを確認する必要があります。実行する必要がある 2 つのアクションはどれですか？",
+    "o": [
+      "デプロイ スロットを構成する",
+      "メトリックに基づいてスケーリングするスケーリング条件を構成し、ルールを追加する",
+      "インスタンス数に基づいてスケーリングするスケーリング条件を構成し、インスタンス数を設定する",
+      "App Service プランをスケールアウトする",
+      "App Service プランをスケールアップする"
+    ],
+    "a": [
+      1,
+      4
+    ],
+    "e": "Basic tier では autoscale を利用できないため、まず Standard 以上へ scale up します。その後 CPU メトリックを条件にした autoscale rule を追加します。",
+    "learn": "https://learn.microsoft.com/azure/app-service/manage-scale-up"
+  },
+  {
+    "id": 89,
+    "set": 2,
+    "sourceNo": 39,
+    "cat": "App Service",
+    "multi": false,
+    "q": "Windows で実行される Azure App Service Web アプリを作成する必要があります。この Web アプリには 5 つのインスタンスへのスケーリング、45 GB のストレージ、およびカスタム ドメイン名が必要です。このソリューションではコストを最小限に抑える必要があります。どの App Service プランを使用しますか？",
+    "o": [
+      "Basic",
+      "Free",
+      "Premium",
+      "Standard"
+    ],
+    "a": [
+      3
+    ],
+    "e": "Standard はカスタム ドメイン、十分なストレージ、最大 10 インスタンスへのスケールを提供し、5 インスタンス要件を満たす選択肢の中で最小コストです。",
+    "learn": "https://learn.microsoft.com/azure/app-service/overview-hosting-plans"
+  },
+  {
+    "id": 90,
+    "set": 2,
+    "sourceNo": 40,
+    "cat": "App Service",
+    "multi": false,
+    "q": "Linux ベースの Docker コンテナーに Web アプリをデプロイする予定です。カスタム ドメイン名をサポートし、需要に基づいて自動的にスケールアウトでき、管理作業とコストを最小限に抑える必要があります。どのソリューションを推奨しますか？",
+    "o": [
+      "Azure App Service",
+      "Azure Container Instances",
+      "Azure Kubernetes Service (AKS)",
+      "Azure 仮想マシン スケール セット"
+    ],
+    "a": [
+      0
+    ],
+    "e": "App Service for Containers はカスタム ドメインと autoscale をマネージドで提供します。ACI は本格的な Web App の autoscale/カスタムドメイン用途に不足し、AKS/VMSS は管理負荷が大きくなります。",
+    "learn": "https://learn.microsoft.com/azure/app-service/overview"
+  }
+]

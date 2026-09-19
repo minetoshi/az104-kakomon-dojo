@@ -1,0 +1,205 @@
+[
+  {
+    "id": 171,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 71,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "PowerShell スクリプトで `Get-AzRoleDefinition -Name` を使用してカスタム ロールを取得します。変数にロールの GUID を入れたところ取得に失敗しました。`-Name` に渡すべき値はどれですか？",
+    "o": [
+      "ロールの表示名",
+      "ロール定義 ID の GUID",
+      "サブスクリプション ID",
+      "リソース グループ ID"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Get-AzRoleDefinition の -Name はロールの名前を指定します。GUID を使う場合は Id に対応する方法を使用します。",
+    "learn": "https://learn.microsoft.com/powershell/module/az.resources/get-azroledefinition"
+  },
+  {
+    "id": 172,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 72,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "監査担当者に RG-A 内のすべての Azure リソースを閲覧させたいだけで、変更権限は与えません。割り当てるロールはどれですか？",
+    "o": [
+      "Reader",
+      "Contributor",
+      "Owner",
+      "User Access Administrator"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Reader は Azure リソースの表示のみを許可する最小権限の組み込みロールです。",
+    "learn": "https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/general#reader"
+  },
+  {
+    "id": 173,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 73,
+    "cat": "ID/ガバナンス",
+    "multi": true,
+    "q": "Azure の管理ロックを設定できる 3 つの対象はどれですか？",
+    "o": [
+      "サブスクリプション",
+      "リソース グループ",
+      "Azure VM",
+      "管理グループ",
+      "Storage Blob の個別オブジェクト"
+    ],
+    "a": [
+      0,
+      1,
+      2
+    ],
+    "e": "ARM management lock は subscription、resource group、個別 ARM resource に適用できます。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/management/lock-resources"
+  },
+  {
+    "id": 174,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 74,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "Azure VM をアプリケーション名と環境名で分類し、Resource Graph やコスト分析で検索しやすくしたいと考えています。何を使用しますか？",
+    "o": [
+      "タグ",
+      "NSG",
+      "Resource lock",
+      "Availability zone"
+    ],
+    "a": [
+      0
+    ],
+    "e": "タグはキーと値を使って Azure リソースを論理的に分類できます。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/management/tag-resources"
+  },
+  {
+    "id": 175,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 75,
+    "cat": "監視/コスト",
+    "multi": false,
+    "q": "Azure Advisor のコスト推奨事項に関するアラートを、複数の管理者へメール送信し、必要に応じて Webhook も実行したいと考えています。通知先とアクションをまとめるリソースはどれですか？",
+    "o": [
+      "Action Group",
+      "Application Security Group",
+      "Availability Set",
+      "Management Group"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Action Group は Azure Monitor/Advisor アラートの通知や自動アクションを一元管理します。",
+    "learn": "https://learn.microsoft.com/azure/advisor/advisor-alerts-portal"
+  },
+  {
+    "id": 176,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 76,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "UserA にサブスクリプション内の全リソースへタグを追加・更新する権限だけを与えたいと考えています。適切な組み込みロールをサブスクリプション スコープで割り当てる場合、代表的なロールはどれですか？",
+    "o": [
+      "Tag Contributor",
+      "Contributor",
+      "Owner",
+      "Reader"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Tag Contributor はタグ操作に特化した組み込みロールで、一般リソース変更権限を広く与えません。",
+    "learn": "https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/general#tag-contributor"
+  },
+  {
+    "id": 177,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 77,
+    "cat": "ID/ガバナンス",
+    "multi": false,
+    "q": "RG-Protected 内の全リソースを誤削除から保護したいと考えています。リソース グループ単位で一括保護する最も簡単な方法はどれですか？",
+    "o": [
+      "RG-Protected に CanNotDelete ロックを追加する",
+      "すべてのリソースへ個別タグを付ける",
+      "NSG を追加する",
+      "Azure Policy の Audit を割り当てる"
+    ],
+    "a": [
+      0
+    ],
+    "e": "リソース グループに CanNotDelete ロックを設定すると、配下のリソースにも削除制御が継承されます。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/management/lock-resources"
+  },
+  {
+    "id": 178,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 78,
+    "cat": "コンピュート/ARM",
+    "multi": false,
+    "q": "PowerShell を使って `infra.json` を RG-Prod にデプロイします。どのコマンドレットを使用しますか？",
+    "o": [
+      "New-AzResourceGroupDeployment",
+      "New-AzSubscriptionDeployment",
+      "New-AzManagementGroupDeployment",
+      "Set-AzVM"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Resource Group スコープの ARM template deployment では New-AzResourceGroupDeployment を使用します。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/templates/deploy-powershell"
+  },
+  {
+    "id": 179,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 79,
+    "cat": "コンピュート/ARM",
+    "multi": false,
+    "q": "RG-Prod に過去いつ ARM テンプレートがデプロイされ、成功または失敗したかを Azure portal で確認したいと考えています。どの画面を確認しますか？",
+    "o": [
+      "Deployments",
+      "Locks",
+      "Tags",
+      "Access control (IAM)"
+    ],
+    "a": [
+      0
+    ],
+    "e": "Resource group の Deployments にはテンプレートのデプロイ履歴、時刻、状態などが記録されます。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/templates/deployment-history"
+  },
+  {
+    "id": 180,
+    "kind": "similar",
+    "set": 3,
+    "baseId": 80,
+    "cat": "コンピュート/ARM",
+    "multi": false,
+    "q": "Azure CLI の `az deployment group create` で、`subnets` という配列パラメーターをコマンドから直接渡します。使用する引数はどれですか？",
+    "o": [
+      "--parameters",
+      "--template-file",
+      "--resource-group",
+      "--mode"
+    ],
+    "a": [
+      0
+    ],
+    "e": "インライン パラメーターは --parameters で指定します。",
+    "learn": "https://learn.microsoft.com/azure/azure-resource-manager/templates/deploy-cli"
+  }
+]

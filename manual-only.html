@@ -3,130 +3,232 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AZ-104 課金リスク項目 操作マニュアル</title>
+<title>AZ-104 課金リスク項目 詳細操作マニュアル</title>
 <style>
-:root{--ink:#222;--line:#ddd;--blue:#315f8d;--amber:#9a6900;--bg:#f7f8fa}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;color:var(--ink);line-height:1.7;background:#fff}a{color:#2467aa}.wrap{width:min(980px,100%);margin:auto;padding:0 14px}header{border-bottom:1px solid var(--line);padding:12px 0}.head{display:flex;gap:10px;align-items:center}.head a{text-decoration:none;font-weight:900}.sp{flex:1}.pill{background:#fff0d8;color:#8a5a00;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900}main{padding:22px 0 60px}h1{font-size:clamp(28px,6vw,44px);margin:0 0 8px}h2{margin-top:34px;border-left:6px solid #d79200;padding-left:10px}h3{margin:18px 0 6px}.lead{color:#555}.box{border:1px solid var(--line);border-radius:7px;padding:14px;margin:14px 0}.warn{background:#fff8e7;border-color:#e4c574}.shot{border:1px solid #c8c8c8;border-radius:7px;background:#fbfbfb;margin:12px 0;overflow:hidden}.shot .top{background:#eceff3;padding:8px 10px;font-weight:900}.shot .body{padding:10px 12px}.field{display:grid;grid-template-columns:180px 1fr;gap:10px;border-bottom:1px solid #eee;padding:7px 0}.field:last-child{border-bottom:none}.value{font-weight:800}.why{background:#f5f9fd;border-left:4px solid #5b86b2;padding:9px 11px;margin:10px 0}.exam{background:#f2faf4;border-left:4px solid #4f9b5d;padding:9px 11px;margin:10px 0}.nope{background:#fff4f2;border-left:4px solid #c46b5e;padding:9px 11px;margin:10px 0}.steps{counter-reset:s}.steps li{margin:7px 0}.steps li::marker{font-weight:900}.tag{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900;background:#fff0d8;color:#8a5a00;margin-right:6px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.btn{display:inline-block;border:1px solid #8aa6c2;border-radius:5px;padding:9px 12px;text-decoration:none;font-weight:800;background:#fff}.primary{background:#4d79a8;color:#fff;border-color:#4d79a8}@media(max-width:700px){.field{grid-template-columns:1fr}.field .value{margin-top:-4px}}
+:root{--ink:#202124;--muted:#5f6368;--line:#dadce0;--blue:#315f8d;--green:#24743b;--amber:#8a5a00;--red:#a23b31}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;color:var(--ink);line-height:1.72;background:#fff}a{color:#2467aa}.wrap{width:min(1040px,100%);margin:auto;padding:0 14px}header{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);padding:10px 0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px)}.head{display:flex;gap:10px;align-items:center}.head a{text-decoration:none;font-weight:900}.sp{flex:1}.pill{background:#fff0d8;color:var(--amber);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900}main{padding:22px 0 70px}h1{font-size:clamp(30px,6vw,46px);line-height:1.2;margin:0 0 8px}h2{margin-top:42px;border-left:6px solid #d79200;padding-left:10px}h3{margin:24px 0 8px}.lead{color:var(--muted)}.box{border:1px solid var(--line);border-radius:8px;padding:14px;margin:14px 0}.warn{background:#fff8e7;border-color:#e4c574}.danger{background:#fff2f0;border-color:#e3aaa2}.info{background:#f5f9fd;border-color:#bcd1e6}.good{background:#f3fbf5;border-color:#acd2b4}.toc{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.toc a{border:1px solid #ccd7e2;border-radius:6px;padding:9px 11px;text-decoration:none;font-weight:800;background:#fff}.shot{border:1px solid #c8c8c8;border-radius:8px;overflow:hidden;margin:12px 0;background:#fcfcfc}.shot .top{background:#edf0f4;padding:8px 10px;font-weight:900}.shot .body{padding:10px 12px}.field{display:grid;grid-template-columns:230px 1fr;gap:10px;border-bottom:1px solid #eee;padding:7px 0}.field:last-child{border-bottom:none}.value{font-weight:800}.exam{background:#f2faf4;border-left:4px solid #4f9b5d;padding:10px 12px;margin:10px 0}.why{background:#f5f9fd;border-left:4px solid #5b86b2;padding:10px 12px;margin:10px 0}.cost{background:#fff8e7;border-left:4px solid #d79b23;padding:10px 12px;margin:10px 0}.nope{background:#fff2f0;border-left:4px solid #c46b5e;padding:10px 12px;margin:10px 0}.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}.flow span{border:1px solid #bbb;border-radius:999px;padding:5px 9px;background:#fff;font-weight:800}.flow b{color:#777}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.btn{display:inline-block;border:1px solid #8aa6c2;border-radius:5px;padding:9px 12px;text-decoration:none;font-weight:800;background:#fff}.primary{background:#4d79a8;color:#fff;border-color:#4d79a8}details{border:1px solid #ddd;border-radius:6px;padding:9px 11px;margin:8px 0;background:#fff}summary{cursor:pointer;font-weight:800}.step{border-bottom:1px solid #eee;padding:9px 0}.step:last-child{border-bottom:none}.num{display:inline-block;width:27px;height:27px;line-height:27px;border-radius:50%;background:#315f8d;color:#fff;text-align:center;font-weight:900;margin-right:7px}.toplink{float:right;font-size:12px}.mini{font-size:13px;color:#666}@media(max-width:760px){.field{grid-template-columns:1fr}.toc{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header><div class="wrap head"><a href="exam-guide.html">← 受験直前チェック</a><div class="sp"></div><span class="pill">課金なしで読む</span></div></header>
+<header><div class="wrap head"><a href="exam-guide.html">← 受験直前チェック</a><div class="sp"></div><span class="pill">作らずに覚える・詳細版</span></div></header>
 <main class="wrap">
-<h1>課金リスク項目 操作マニュアル</h1>
-<p class="lead">実際に有料リソースを作らなくても、Portal の画面遷移・設定項目・確認ポイント・試験での判断を追えるようにした「ハードコピー風」教材です。</p>
+<h1>課金リスク項目 詳細操作マニュアル</h1>
+<p class="lead">実際に有料リソースを作らず、Azure Portalでどこを開き、何を選び、何を確認するかを「ハードコピー風」に追う教材です。試験では、画面名よりも <b>目的・前提条件・設定の方向</b> を答えられる状態を目標にします。</p>
 
-<div class="box warn"><strong>方針</strong><br>このページの内容は、料金が発生する可能性のある Azure リソースを実際に作成しなくても学習できるようにしています。画面名や設定名は Azure Portal の現行仕様に合わせますが、Portal UI は将来変更される可能性があります。</div>
+<div class="box warn"><b>このページでは Create / Save / Enable の最終確定を押す必要はありません。</b> 項目名・選択肢・依存関係を読めれば十分です。Azure Portal UIは更新されるため、場所が少し変わっても「何の設定を探しているか」で追えるようにしてください。</div>
 
-<h2>1. VM / Disk / Resize / Redeploy</h2>
-<div class="shot"><div class="top">Azure Portal ＞ Virtual machines ＞ Create</div><div class="body">
-<div class="field"><span>Resource group</span><span class="value">rg-az104-lab</span></div>
-<div class="field"><span>Availability options</span><span class="value">Availability zone / Availability set</span></div>
-<div class="field"><span>Image</span><span class="value">Windows Server または Linux</span></div>
-<div class="field"><span>Size</span><span class="value">VM SKU</span></div>
-<div class="field"><span>Public inbound ports</span><span class="value">None / RDP / SSH</span></div>
-</div></div>
-<ol class="steps"><li>VM作成画面で Availability option と Size を確認。</li><li>Disks で OS disk / Data disk を確認。</li><li>VM ＞ Size は Resize、Redeploy + reapply はホスト再配置の切り分けと理解。</li><li>Data disk は detach → 別VMへ attach の流れ。</li></ol>
-<div class="exam"><b>試験ポイント:</b> Resize=SKU変更、Redeploy=別ホストへ移動、Move=RG/Subscription/Region移動。Availability Zone と Availability Set を混同しない。</div>
-
-<h2>2. VM Scale Sets</h2>
-<div class="shot"><div class="top">Virtual machine scale sets ＞ Scaling / Upgrade policy</div><div class="body">
-<div class="field"><span>Scaling</span><span class="value">Manual / Autoscale</span></div>
-<div class="field"><span>Metric</span><span class="value">CPU Percentage など</span></div>
-<div class="field"><span>Upgrade policy</span><span class="value">Rolling / Manual / Automatic</span></div>
-</div></div>
-<div class="why"><b>Rolling:</b> バッチ更新で可用性を保ちやすい。<br><b>Manual:</b> モデル変更後も既存インスタンスは手動更新。</div>
-
-<h2>3. Azure Container Registry</h2>
-<div class="shot"><div class="top">Container registries ＞ Access control (IAM)</div><div class="body">
-<div class="field"><span>RBAC Registry Permissions</span><span class="value">AcrPull / AcrPush</span></div>
-<div class="field"><span>RBAC + ABAC Repository Permissions</span><span class="value">Repository Reader / Writer 系</span></div>
-</div></div>
-<div class="exam"><b>試験ポイント:</b> 問題文の「レジストリの権限モード」を必ず確認。AcrPull/AcrPushを無条件に選ばない。</div>
-
-<h2>4. App Service</h2>
-<div class="shot"><div class="top">App Service ＞ Configuration / Networking / Deployment slots</div><div class="body">
-<div class="field"><span>HTTPS Only</span><span class="value">HTTP→HTTPS強制</span></div>
-<div class="field"><span>Minimum TLS version</span><span class="value">1.2 など</span></div>
-<div class="field"><span>VNet Integration</span><span class="value">App Service から VNet への outbound</span></div>
-<div class="field"><span>Private Endpoint</span><span class="value">VNet から App Service への private inbound</span></div>
-<div class="field"><span>Deployment slots</span><span class="value">staging / production / swap</span></div>
-</div></div>
-<div class="exam"><b>試験ポイント:</b> VNet Integration と Private Endpoint は向きが違う。Slot setting は swap されない設定として扱う。</div>
-
-<h2>5. Storage / SAS / Private Endpoint</h2>
-<div class="shot"><div class="top">Storage account ＞ Networking / Data protection / Shared access signature</div><div class="body">
-<div class="field"><span>Networking</span><span class="value">Public access / Selected networks / Private Endpoint</span></div>
-<div class="field"><span>Data protection</span><span class="value">Versioning / Soft delete / Change feed</span></div>
-<div class="field"><span>SAS</span><span class="value">Service / Account / User delegation</span></div>
-<div class="field"><span>Stored access policy</span><span class="value">Service SAS と関連付け</span></div>
-</div></div>
-<div class="exam"><b>試験ポイント:</b> User delegation SAS=Entra ID。Stored access policy と結び付けるのは Service SAS。Private Endpoint は private IP を作る。</div>
-
-<h2>6. Azure Files</h2>
-<div class="shot"><div class="top">Storage account ＞ File shares</div><div class="body">
-<div class="field"><span>Protocol</span><span class="value">SMB / NFS</span></div>
-<div class="field"><span>SMB Port</span><span class="value">TCP 445</span></div>
-<div class="field"><span>Identity-based access</span><span class="value">Entra / AD DS 系の構成</span></div>
-<div class="field"><span>Protection</span><span class="value">Share snapshot / Soft delete</span></div>
-</div></div>
-
-<h2>7. Networking / UDR / Load Balancer</h2>
-<div class="shot"><div class="top">Route table ＞ Routes</div><div class="body">
-<div class="field"><span>Address prefix</span><span class="value">0.0.0.0/0</span></div>
-<div class="field"><span>Next hop type</span><span class="value">Virtual appliance</span></div>
-<div class="field"><span>Next hop address</span><span class="value">NVA の private IP</span></div>
-</div></div>
-<div class="shot"><div class="top">Load Balancer ＞ Rules / Health probes</div><div class="body">
-<div class="field"><span>Frontend</span><span class="value">Public IP / Private IP</span></div>
-<div class="field"><span>Backend pool</span><span class="value">NIC / VMSS instances</span></div>
-<div class="field"><span>Health probe</span><span class="value">正常性判定</span></div>
-<div class="field"><span>Session persistence</span><span class="value">None / Client IP / Client IP and protocol</span></div>
-</div></div>
-<div class="exam"><b>試験ポイント:</b> Probe=正常性、Distribution mode=振り分け、Session persistence=固定性。別概念。</div>
-
-<h2>8. Network Watcher</h2>
-<div class="shot"><div class="top">Network Watcher ＞ Network diagnostic tools</div><div class="body">
-<div class="field"><span>IP flow verify</span><span class="value">NSG Allow/Deny と該当ルール</span></div>
-<div class="field"><span>Next hop</span><span class="value">選択される route / next hop</span></div>
-<div class="field"><span>Packet capture</span><span class="value">実パケット取得</span></div>
-<div class="field"><span>Connection Monitor</span><span class="value">継続的な接続性/遅延監視</span></div>
-</div></div>
-
-<h2>9. Azure Monitor / Alerts</h2>
-<div class="shot"><div class="top">Azure Monitor ＞ Alerts / Diagnostic settings</div><div class="body">
-<div class="field"><span>Alert rule</span><span class="value">いつ発火するか</span></div>
-<div class="field"><span>Action group</span><span class="value">通知先・Webhook・Runbook等</span></div>
-<div class="field"><span>Alert processing rule</span><span class="value">通知抑制・Action Group加工</span></div>
-<div class="field"><span>Diagnostic settings</span><span class="value">Log Analytics / Storage / Event Hub へ送信</span></div>
-</div></div>
-<div class="exam"><b>KQL:</b> where=行の絞り込み、project=列選択、summarize=集計。</div>
-
-<h2>10. Backup / Site Recovery</h2>
-<div class="shot"><div class="top">Recovery Services vault / Backup vault</div><div class="body">
-<div class="field"><span>Recovery Services vault</span><span class="value">Azure VM Backup / MARS / Site Recovery</span></div>
-<div class="field"><span>Backup vault</span><span class="value">Azure Disk Backup など</span></div>
-<div class="field"><span>Backup policy</span><span class="value">Schedule / Retention / Instant Restore</span></div>
-</div></div>
-<div class="shot"><div class="top">Site Recovery ＞ Replicated items ＞ Failover</div><div class="body">
-<div class="field"><span>Test failover</span><span class="value">本番影響なしのDR訓練</span></div>
-<div class="field"><span>Failover</span><span class="value">実際の切替</span></div>
-<div class="field"><span>Commit</span><span class="value">使用 recovery point を確定</span></div>
-<div class="field"><span>Re-protect</span><span class="value">逆方向のレプリケーション開始</span></div>
-</div></div>
-<div class="exam"><b>試験ポイント:</b> Test failover と本番Failoverを区別。Failover後は検証→Commit→Re-protect。</div>
-
-<h2>このページの使い方</h2>
-<div class="box">
-<ol>
-<li>各セクションの「Portal経路」を見て、画面を頭の中で再現する。</li>
-<li>設定値を隠して、自分なら何を選ぶか答える。</li>
-<li>「試験ポイント」を自分の言葉で説明する。</li>
-<li>過去問道場の該当分野を解く。</li>
-<li>85%未満なら、このマニュアルへ戻る。</li>
-</ol>
+<div class="toc">
+<a href="#m1">1. Private Endpoint</a>
+<a href="#m2">2. Standard Load Balancer</a>
+<a href="#m3">3. Azure Bastion</a>
+<a href="#m4">4. NAT Gateway / VPN Gateway</a>
+<a href="#m5">5. App Service Standard以上</a>
+<a href="#m6">6. Azure Monitor / Alerts</a>
+<a href="#m7">7. Azure Backup</a>
+<a href="#m8">8. Azure Site Recovery</a>
 </div>
 
-<div class="actions"><a class="btn primary" href="index.html">過去問道場へ戻る</a><a class="btn" href="exam-guide.html">受験直前チェックへ</a></div>
+<h2 id="m1"><span class="toplink"><a href="#">↑上へ</a></span>1. Private Endpoint</h2>
+<p><b>目的:</b> Storage、SQL、Key Vault、App ServiceなどのPaaSへ、VNet内のprivate IPで到達する構成を理解します。</p>
+<div class="flow"><span>Client VM</span><b>→</b><span>VNet / Subnet</span><b>→</b><span>Private Endpoint NIC</span><b>→</b><span>Private Link</span><b>→</b><span>PaaS</span></div>
+
+<div class="shot"><div class="top">対象PaaS ＞ Networking ＞ Private endpoint connections ＞ + Private endpoint</div><div class="body">
+<div class="field"><span>Resource group</span><span class="value">Private Endpointを置くRG</span></div>
+<div class="field"><span>Name</span><span class="value">pe-storage01 等</span></div>
+<div class="field"><span>Target resource</span><span class="value">Storage / SQL / App Service 等</span></div>
+<div class="field"><span>Target sub-resource</span><span class="value">blob / file / sites 等</span></div>
+<div class="field"><span>Virtual network</span><span class="value">接続元VNet</span></div>
+<div class="field"><span>Subnet</span><span class="value">Private Endpoint用のSubnet</span></div>
+<div class="field"><span>Private DNS integration</span><span class="value">通常はYesを検討</span></div>
+</div></div>
+
+<div class="step"><span class="num">1</span><b>Resource / sub-resourceを選ぶ</b><br>StorageでもBlobとFileではPrivate DNS zone名が変わります。</div>
+<div class="step"><span class="num">2</span><b>VNet / Subnetを選ぶ</b><br>Private Endpoint用NICに、そのSubnetからprivate IPが割り当てられます。</div>
+<div class="step"><span class="num">3</span><b>DNS連携を見る</b><br>FQDNをprivate IPへ解決するにはPrivate DNS zoneとの関連が重要です。</div>
+<div class="step"><span class="num">4</span><b>Public accessを別設定として考える</b><br>Private Endpointを作っただけでPublic network accessが必ず無効になるわけではありません。要件に応じてPaaS側のpublic accessを制御します。</div>
+
+<div class="exam"><b>試験の決め手:</b> 「PaaSにVNet内のprivate IPを持たせたい」→ Private Endpoint。<br>「PaaSのpublic endpointは維持し、特定Subnetを信頼したい」→ Service Endpoint。</div>
+<details><summary>理解チェック</summary><p><b>Q:</b> App ServiceからVNet内SQLへ出ていく通信はPrivate Endpoint？<br><b>A:</b> App Service側はVNet Integration。Private Endpointは主にPaaSへのinbound private access。</p></details>
+
+<h2 id="m2"><span class="toplink"><a href="#">↑上へ</a></span>2. Standard Load Balancer</h2>
+<p><b>目的:</b> Frontend / Backend pool / Health probe / Rule / Session persistenceを分離して覚えます。</p>
+<div class="flow"><span>Client</span><b>→</b><span>Frontend IP</span><b>→</b><span>LB Rule</span><b>→</b><span>Healthy Backend</span></div>
+<div class="shot"><div class="top">Load balancers ＞ Create</div><div class="body">
+<div class="field"><span>SKU</span><span class="value">Standard</span></div>
+<div class="field"><span>Type</span><span class="value">Public / Internal</span></div>
+<div class="field"><span>Frontend IP</span><span class="value">Public IP または VNet private IP</span></div>
+</div></div>
+<div class="shot"><div class="top">Settings ＞ Health probes ＞ + Add</div><div class="body">
+<div class="field"><span>Protocol</span><span class="value">TCP / HTTP / HTTPS</span></div>
+<div class="field"><span>Port</span><span class="value">Backendの実待受ポート</span></div>
+<div class="field"><span>Path</span><span class="value">HTTP/HTTPS時のhealth endpoint</span></div>
+<div class="field"><span>Interval</span><span class="value">Probe間隔</span></div>
+</div></div>
+<div class="shot"><div class="top">Settings ＞ Load balancing rules ＞ + Add</div><div class="body">
+<div class="field"><span>Frontend</span><span class="value">対象Frontend IP</span></div>
+<div class="field"><span>Backend pool</span><span class="value">対象VM/NIC/VMSS</span></div>
+<div class="field"><span>Frontend port</span><span class="value">例 443</span></div>
+<div class="field"><span>Backend port</span><span class="value">例 443</span></div>
+<div class="field"><span>Health probe</span><span class="value">上で作ったprobe</span></div>
+<div class="field"><span>Session persistence</span><span class="value">None / Client IP / Client IP and protocol</span></div>
+</div></div>
+<div class="why"><b>切り分け:</b><br>Health probe=「Backendは正常か」<br>Rule=「Frontendの何番ポートをBackendの何番へ流すか」<br>Distribution/Session persistence=「どのBackendへ振るか」</div>
+<div class="exam"><b>障害問題:</b> Probe → Backend portの待受 → NSG → Rule の順で確認すると整理しやすい。</div>
+
+<h2 id="m3"><span class="toplink"><a href="#">↑上へ</a></span>3. Azure Bastion</h2>
+<p><b>目的:</b> VMへPublic IPを付けず、Portal/ブラウザ経由でRDP/SSHする構成を理解します。</p>
+<div class="flow"><span>Browser</span><b>→</b><span>Azure Bastion</span><b>→</b><span>VM private IP</span></div>
+<div class="shot"><div class="top">Virtual network ＞ Bastion ＞ Deploy Bastion</div><div class="body">
+<div class="field"><span>Virtual network</span><span class="value">VMと接続するVNet</span></div>
+<div class="field"><span>Subnet</span><span class="value">AzureBastionSubnet（構成方式に依存）</span></div>
+<div class="field"><span>Public IP</span><span class="value">Bastion側で使用</span></div>
+<div class="field"><span>VM Public IP</span><span class="value">不要</span></div>
+</div></div>
+<div class="cost"><b>課金注意:</b> Bastionはデプロイした時点から時間課金が始まるSKUがあります。Microsoft公式のチュートリアルでも、テスト後の削除を推奨しています。この教材では実機作成しません。</div>
+<div class="exam"><b>試験:</b> 「VMにPublic IPを付けず、安全にRDP/SSH」「ブラウザから接続」→ Bastion。</div>
+
+<h2 id="m4"><span class="toplink"><a href="#">↑上へ</a></span>4. NAT Gateway / VPN Gateway</h2>
+<h3>NAT Gateway</h3>
+<p><b>役割:</b> Subnetからインターネットへのoutbound接続を安定したSNATで提供。Inbound接続サービスではありません。</p>
+<div class="shot"><div class="top">NAT gateways ＞ Create</div><div class="body">
+<div class="field"><span>Public IP / Prefix</span><span class="value">Outbound SNATに使用</span></div>
+<div class="field"><span>Subnet association</span><span class="value">NAT Gatewayを使わせるSubnet</span></div>
+</div></div>
+<div class="exam"><b>試験:</b> 「多数VMの安定したoutbound」「明示的な送信Public IP」→ NAT Gateway。</div>
+
+<h3>VPN Gateway</h3>
+<div class="flow"><span>On-prem / Client</span><b>→</b><span>Encrypted VPN</span><b>→</b><span>Virtual Network Gateway</span><b>→</b><span>VNet</span></div>
+<div class="shot"><div class="top">Virtual network gateways ＞ Create</div><div class="body">
+<div class="field"><span>Gateway type</span><span class="value">VPN</span></div>
+<div class="field"><span>VPN type</span><span class="value">Route-based</span></div>
+<div class="field"><span>SKU</span><span class="value">設問の帯域/機能条件で選択</span></div>
+<div class="field"><span>Virtual network</span><span class="value">GatewaySubnetを持つVNet</span></div>
+<div class="field"><span>Public IP</span><span class="value">Gateway用</span></div>
+</div></div>
+<div class="exam"><b>S2S:</b> On-prem LAN ↔ Azure VNet。<br><b>P2S:</b> 個別クライアント ↔ Azure VNet。<br><b>Peering:</b> Azure VNet同士。VPN Gatewayとは別。</div>
+
+<h2 id="m5"><span class="toplink"><a href="#">↑上へ</a></span>5. App Service Standard以上</h2>
+<p><b>目的:</b> Free F1では触れない、本試験頻出のDeployment slots / Autoscale / VNet Integration / Backupを画面イメージで覚えます。</p>
+
+<h3>Deployment slots</h3>
+<div class="flow"><span>staging</span><b>→ swap →</b><span>production</span></div>
+<div class="shot"><div class="top">App Service ＞ Deployment ＞ Deployment slots</div><div class="body">
+<div class="field"><span>Add slot</span><span class="value">staging</span></div>
+<div class="field"><span>Clone settings</span><span class="value">production設定を複製可能</span></div>
+<div class="field"><span>Swap</span><span class="value">staging ↔ production</span></div>
+<div class="field"><span>Deployment slot setting</span><span class="value">slotに固定する設定</span></div>
+</div></div>
+<div class="exam"><b>試験:</b> 接続文字列など環境固有値をswapさせたくない → Deployment slot setting (sticky setting)。</div>
+
+<h3>Autoscale</h3>
+<div class="shot"><div class="top">App Service Plan / Monitor ＞ Autoscale</div><div class="body">
+<div class="field"><span>Metric source</span><span class="value">App Service Plan / Web App等</span></div>
+<div class="field"><span>Metric</span><span class="value">CPU Percentage / Memory等</span></div>
+<div class="field"><span>Condition</span><span class="value">例: CPU > 70% for 10 min</span></div>
+<div class="field"><span>Action</span><span class="value">Increase count by 1</span></div>
+<div class="field"><span>Instance bounds</span><span class="value">Minimum / Default / Maximum</span></div>
+</div></div>
+<div class="exam"><b>区別:</b> Scale up=SKU変更。Scale out=インスタンス数。Azure Monitor Autoscale=メトリック/スケジュールに応じてインスタンス数を変える。</div>
+
+<h3>VNet Integration / Private Endpoint</h3>
+<div class="why"><b>VNet Integration:</b> App Service → VNet側へのoutbound。<br><b>Private Endpoint:</b> VNet → App Serviceへのprivate inbound。</div>
+
+<h3>Backup</h3>
+<div class="shot"><div class="top">App Service ＞ Backups</div><div class="body">
+<div class="field"><span>Storage account</span><span class="value">Backup保存先</span></div>
+<div class="field"><span>Schedule</span><span class="value">手動 / 定期</span></div>
+<div class="field"><span>Retention</span><span class="value">保持期間</span></div>
+<div class="field"><span>Restore</span><span class="value">既存/別slot等へ復元</span></div>
+</div></div>
+
+<h2 id="m6"><span class="toplink"><a href="#">↑上へ</a></span>6. Azure Monitor / Alerts</h2>
+<p><b>目的:</b> 「データを集める」「条件を判定する」「通知する」「通知を抑制する」を分けます。</p>
+<div class="flow"><span>Metrics / Logs</span><b>→</b><span>Alert rule</span><b>→</b><span>Action Group</span><b>→</b><span>Email / Webhook / Automation</span></div>
+<div class="shot"><div class="top">Azure Monitor ＞ Alerts ＞ + Create ＞ Alert rule</div><div class="body">
+<div class="field"><span>Scope</span><span class="value">監視対象resource</span></div>
+<div class="field"><span>Condition</span><span class="value">Metric / Log query等</span></div>
+<div class="field"><span>Actions</span><span class="value">Action Group</span></div>
+<div class="field"><span>Details</span><span class="value">Severity / Rule name</span></div>
+</div></div>
+<div class="shot"><div class="top">Azure Monitor ＞ Alerts ＞ Alert processing rules</div><div class="body">
+<div class="field"><span>Scope</span><span class="value">対象alertのscope</span></div>
+<div class="field"><span>Filter</span><span class="value">Severity / Resource type等</span></div>
+<div class="field"><span>Rule</span><span class="value">Suppress notifications / Apply action group</span></div>
+<div class="field"><span>Schedule</span><span class="value">Maintenance時間のみ有効化可能</span></div>
+</div></div>
+<div class="exam"><b>切り分け:</b> Alert rule=発火条件。Action Group=通知先。Alert Processing Rule=発火後の通知抑制/加工。</div>
+
+<h2 id="m7"><span class="toplink"><a href="#">↑上へ</a></span>7. Azure Backup</h2>
+<p><b>目的:</b> Vault、Policy、Backup、Restore、Soft deleteを一連で理解します。</p>
+<div class="flow"><span>VM / Server / Disk</span><b>→</b><span>Backup Policy</span><b>→</b><span>Vault</span><b>→</b><span>Recovery Point</span><b>→</b><span>Restore</span></div>
+
+<h3>Recovery Services vault</h3>
+<div class="shot"><div class="top">Recovery Services vaults ＞ Create</div><div class="body">
+<div class="field"><span>用途</span><span class="value">Azure VM Backup / MARS / Site Recovery 等</span></div>
+<div class="field"><span>Storage replication</span><span class="value">LRS / GRS 等</span></div>
+<div class="field"><span>Soft delete</span><span class="value">保護機能。現行Secure by Defaultに注意</span></div>
+</div></div>
+
+<h3>VM Backup Policy</h3>
+<div class="shot"><div class="top">Vault ＞ Backup policies</div><div class="body">
+<div class="field"><span>Frequency</span><span class="value">Daily / Enhanced等のpolicy typeによる</span></div>
+<div class="field"><span>Retention</span><span class="value">Daily / Weekly / Monthly / Yearly</span></div>
+<div class="field"><span>Instant Restore</span><span class="value">Snapshot保持</span></div>
+</div></div>
+<div class="exam"><b>試験:</b> Weekly Standard policyではInstant Restore retentionの扱いがDailyと異なる。古いPractice問題はaudit noteも読む。</div>
+
+<h3>Restore</h3>
+<div class="shot"><div class="top">Protected item ＞ Restore VM</div><div class="body">
+<div class="field"><span>Restore point</span><span class="value">復旧したい時点</span></div>
+<div class="field"><span>Restore configuration</span><span class="value">Create new / Replace existing 等</span></div>
+<div class="field"><span>Staging location</span><span class="value">復元方式に応じてStorage等</span></div>
+</div></div>
+<div class="exam"><b>元VMを残して検証したい:</b> Create new virtual machine。</div>
+
+<h2 id="m8"><span class="toplink"><a href="#">↑上へ</a></span>8. Azure Site Recovery</h2>
+<p><b>目的:</b> Test failover / Failover / Commit / Re-protect の順序を手順として覚えます。</p>
+<div class="flow"><span>Replication</span><b>→</b><span>Test failover</span><b>→</b><span>Failover</span><b>→</b><span>Validate</span><b>→</b><span>Commit</span><b>→</b><span>Re-protect</span></div>
+
+<h3>8-1. Enable replication の画面イメージ</h3>
+<div class="shot"><div class="top">Recovery Services vault ＞ Site Recovery ＞ Enable replication</div><div class="body">
+<div class="field"><span>Source</span><span class="value">Primary region / VM</span></div>
+<div class="field"><span>Target</span><span class="value">Secondary region / Resource group / VNet</span></div>
+<div class="field"><span>Replication policy</span><span class="value">Recovery point retention等</span></div>
+</div></div>
+
+<h3>8-2. Test failover</h3>
+<div class="shot"><div class="top">Vault ＞ Replicated items ＞ VM ＞ Test failover</div><div class="body">
+<div class="field"><span>Recovery point</span><span class="value">Latest / Latest processed / App-consistent等</span></div>
+<div class="field"><span>Test network</span><span class="value">本番影響を避ける隔離VNetを推奨</span></div>
+</div></div>
+<div class="why"><b>Test failover:</b> 継続レプリケーションや本番環境に影響させずDR訓練を行う。</div>
+
+<h3>8-3. 本番 Failover → Commit</h3>
+<div class="step"><span class="num">1</span><b>Failover</b> を開始しRecovery pointを選択。</div>
+<div class="step"><span class="num">2</span>Secondary側VMが起動したらアプリ/接続を検証。</div>
+<div class="step"><span class="num">3</span>問題なければ <b>Commit</b>。Commit後は別recovery pointへ戻せなくなる。</div>
+<div class="step"><span class="num">4</span>将来Primaryへ戻すため <b>Re-protect</b>。</div>
+<div class="step"><span class="num">5</span>逆方向レプリケーションが安定後、必要なタイミングでFailback。</div>
+<div class="exam"><b>試験で強い順序:</b> Test failoverは訓練。実Failover後はValidate → Commit。逆方向レプリケーションはRe-protect。</div>
+
+<h2>最後の暗記ではなく判断表</h2>
+<table style="width:100%;border-collapse:collapse">
+<tr><th style="border:1px solid #ddd;padding:8px;background:#f5f5f5">要件</th><th style="border:1px solid #ddd;padding:8px;background:#f5f5f5">選ぶもの</th></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">PaaSをprivate IP化</td><td style="border:1px solid #ddd;padding:8px"><b>Private Endpoint</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">SubnetからPaaS public endpointを信頼</td><td style="border:1px solid #ddd;padding:8px"><b>Service Endpoint</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">VMにPublic IPなしでRDP/SSH</td><td style="border:1px solid #ddd;padding:8px"><b>Bastion</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">Subnetのoutbound SNAT</td><td style="border:1px solid #ddd;padding:8px"><b>NAT Gateway</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">On-premとAzureを暗号化接続</td><td style="border:1px solid #ddd;padding:8px"><b>VPN Gateway</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">stagingから無停止に近い切替</td><td style="border:1px solid #ddd;padding:8px"><b>Deployment slot swap</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">アラート条件</td><td style="border:1px solid #ddd;padding:8px"><b>Alert rule</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">アラート通知先</td><td style="border:1px solid #ddd;padding:8px"><b>Action Group</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">メンテ中だけ通知抑制</td><td style="border:1px solid #ddd;padding:8px"><b>Alert Processing Rule</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">DR訓練</td><td style="border:1px solid #ddd;padding:8px"><b>Test failover</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">Failover結果を確定</td><td style="border:1px solid #ddd;padding:8px"><b>Commit</b></td></tr>
+<tr><td style="border:1px solid #ddd;padding:8px">逆方向レプリケーション</td><td style="border:1px solid #ddd;padding:8px"><b>Re-protect</b></td></tr>
+</table>
+
+<div class="actions"><a class="btn primary" href="free-12m-labs.html">12か月無料ハンズオンへ</a><a class="btn" href="index.html">290問 過去問道場へ</a></div>
 </main>
 </body>
 </html>

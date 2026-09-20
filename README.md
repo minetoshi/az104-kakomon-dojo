@@ -185,3 +185,22 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 - 本番100分の時間戦略
 
 ハンズオンの進捗はブラウザの localStorage に保存されます。
+
+
+## 12か月無料アカウント向けハンズオン
+ユーザーが12か月無料の対象であることを前提に、課金ゼロを狙いつつ実機比率を上げた学習ルートを追加しました。
+
+- `free-12m-labs.html`
+  - VNet / Subnet / NSG / UDR
+  - Blob Storage / SAS / versioning / soft delete / lifecycle
+  - Azure Files / snapshot / soft delete
+  - AzCopy / Storage Explorer
+  - 無料対象 VM + Managed Disks
+  - Azure Container Registry Standard
+  - App Service Free tier の基本操作
+  - Container Apps の常時無料枠を使った任意演習
+- 無料枠外または付随課金が読みにくい機能は `manual-only.html` に残す
+- 毎回 Azure Portal の `Cost Management + Billing > Free services` で対象SKU・残量・有効期限を確認する
+- Budget は通知用であり自動停止ではないことを明記
+
+12か月無料枠の対象・数量は Microsoft 側で変更される可能性があるため、教材内の数値より Azure Portal の Free services と Microsoft公式無料サービス一覧を優先します。

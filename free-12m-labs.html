@@ -28,7 +28,7 @@
 <strong>2026年9月時点で公式無料サービス一覧から確認できる主な12か月無料枠</strong>
 <table>
 <tr><th>サービス</th><th>公式無料枠の例</th><th>この教材で使う量</th></tr>
-<tr><td>Virtual Machines</td><td>B2ts v2 / B2pts v2 / B2ats v2 を各750時間/月</td><td>対象SKU 1台、短時間</td></tr>
+<tr><td>Virtual Machines</td><td>12か月無料として表示される対象のバースト可能VMを月750時間まで（対象SKUはMicrosoftのページ間でも表示差があるため、PortalのFree servicesを最優先）</td><td>対象SKU 1台、短時間</td></tr>
 <tr><td>Managed Disks</td><td>P6 64GB SSD ×2、snapshot 1GB、I/O枠</td><td>P6を最大2本、snapshotは極小</td></tr>
 <tr><td>Blob Storage</td><td>Hot LRS 5GB、読み取り20,000、書き込み10,000/月</td><td>数KBのテキスト数個</td></tr>
 <tr><td>Azure Files</td><td>LRS 100GB、200万回のファイル操作/月</td><td>数KBのファイル1〜2個</td></tr>
@@ -397,7 +397,7 @@ resource dummy 'Microsoft.Storage/storageAccounts@2023-05-01' = [for name in nam
 
 <h2 id="lab7"><span class="toplink"><a href="#">↑上へ</a></span>Lab 7　無料対象VM / Managed Disk / Redeploy</h2>
 <div class="labhead"><span class="badge free">12か月無料</span><b>所要 50〜70分</b><span class="meta">公式: Compute</span></div>
-<div class="box danger"><b>このLabだけは開始前に必ずFree servicesを確認。</b> VM SKUは、あなたのPortalで12か月無料と明示されるものだけを選んでください。2026年9月の公式料金ページでは B2ts v2 / B2pts v2 / B2ats v2 が各750時間/月と案内されていますが、リージョン在庫やアカウント表示を優先します。</div>
+<div class="box danger"><b>このLabだけは開始前に必ずFree servicesを確認。</b> VM SKUは、あなたのPortalで12か月無料と明示されるものだけを選んでください。Microsoftの無料サービス一覧・VM料金ページでは対象SKUの表記に差が見られるため、この教材ではSKU名を固定せず、<b>あなたのFree services画面を正</b>とします。</div>
 
 <h3>7-1. VM作成</h3>
 <div class="shot"><div class="top">Virtual machines ＞ Create ＞ Azure virtual machine</div><div class="body">
@@ -410,7 +410,7 @@ resource dummy 'Microsoft.Storage/storageAccounts@2023-05-01' = [for name in nam
 <div class="field"><span>Public IP</span><span class="value">None</span></div>
 <div class="field"><span>OS disk</span><span class="value">無料枠対象P6 64GBを意識</span></div>
 </div></div>
-<div class="cost"><b>課金回避:</b> Public IP、Bastion、Load Balancer、Premiumな追加機能を付けません。VMサイズを「よく似た別SKU」に変えないでください。</div>
+<div class="cost"><b>課金回避:</b> VM用Public IP、Bastion Basic/Standard/Premium、Load Balancer、Premiumな追加機能を付けません。Bastionは対応リージョンでDeveloper SKU (free) が表示される場合のみ任意で使います。VMサイズを「よく似た別SKU」に変えないでください。</div>
 
 <h3>7-2. Run commandでOSを確認</h3>
 <ol class="steps">
@@ -422,6 +422,17 @@ resource dummy 'Microsoft.Storage/storageAccounts@2023-05-01' = [for name in nam
 df -h
 lsblk</div>
 <p>Public IPを付けずに、PortalからゲストOS情報を確認できることを体験します。</p>
+
+<h3>7-2B. Bastion Developer（利用可能リージョンなら任意・無料）</h3>
+<div class="box safe"><b>Bastion Developer SKU は開発/テスト向けに無料</b>です。共有プール型で、一度に1台のVM接続、VNet Peering非対応などの制限があります。対応リージョンでのみ利用できます。</div>
+<ol class="steps">
+<li>VMまたはVNetの <b>Connect ＞ Bastion</b> を開く。</li>
+<li>画面に <b>Developer SKU (free)</b> が表示される場合だけ使用する。</li>
+<li>Developer SKUでは専用の <code>AzureBastionSubnet</code> やBastion用Public IPを自分で作る必要はありません。</li>
+<li>認証情報を指定して <b>Connect</b>。VMのprivate IPへブラウザー経由で接続できることを確認。</li>
+<li>Developer SKUが表示されない場合は作成せず、<a href="manual-only.html#m3">Bastionマニュアル</a>へ進む。</li>
+</ol>
+<div class="exam"><b>試験:</b> Bastionの本質は「VMにPublic IPを付けずRDP/SSH」。Developerは無料・機能限定、Basic/Standard/Premiumは専用デプロイで機能が増える、と整理します。</div>
 
 <h3>7-3. Data disk</h3>
 <ol class="steps">
@@ -548,7 +559,7 @@ lsblk</div>
 <ul>
 <li>Private Endpoint</li>
 <li>Standard Load Balancer の実通信</li>
-<li>Azure Bastion / NAT Gateway / VPN Gateway / Application Gateway</li>
+<li>Azure Bastion Basic / Standard / Premium（Developer SKUは対応リージョンなら任意実機） / NAT Gateway / VPN Gateway / Application Gateway</li>
 <li>App Service Standard/Premium のDeployment slots / Autoscale / VNet Integration</li>
 <li>Recovery Services vaultで実VM Backup</li>
 <li>Azure Backup vaultで実Disk Backup</li>

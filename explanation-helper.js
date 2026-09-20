@@ -395,15 +395,16 @@
   function build(q){
     const correct=new Set(q.a||[]);
     const options=(q.o||[]).map((opt,i)=>{
-      const n=noteFor(opt,q,i);
+      const explicit=(q.ox&&q.ox[i])?q.ox[i]:"";
+      const n=explicit||noteFor(opt,q,i);
       if(correct.has(i)){
         return {index:i,ok:true,text:n||"この選択肢が設問の要件を直接満たします。"};
       }
-      return {index:i,ok:false,text:n ? n+" ただし、この設問で要求されている条件を直接満たす選択肢ではありません。" : "この選択肢では設問の主要要件を直接満たせません。正解選択肢の役割・スコープ・前提条件と比較して消去します。"};
+      return {index:i,ok:false,text:n ? n+(explicit?"":" ただし、この設問で要求されている条件を直接満たす選択肢ではありません。") : "この選択肢では設問の主要要件を直接満たせません。正解選択肢の役割・スコープ・前提条件と比較して消去します。"};
     });
     return {
       decision:decision(q),
-      correctReason:(q.e||"")+" "+(q.a||[]).map(i=>noteFor(q.o[i])).filter(Boolean).join(" "),
+      correctReason:q.e||((q.a||[]).map(i=>noteFor(q.o[i],q,i)).filter(Boolean).join(" ")),
       options,
       tip:tip(q)
     };

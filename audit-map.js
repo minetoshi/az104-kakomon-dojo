@@ -1,5 +1,17 @@
 (function(){
   const SPECIAL={
+    "s1-q08":{
+      status:"practice-nuance",
+      label:"Practice想定・条件注記",
+      note:"Practice の想定解は 5-tuple hash です。現行 Azure Load Balancer でも 5-tuple は既定の分散モードですが、これだけで断続的なタイムアウト原因を特定・解消できるとは限りません。設問では『均等分散』条件が決め手です。実運用では health probe、バックエンドの待受、NSG なども併せて確認してください。",
+      extra:[{title:"Microsoft Learn: Load Balancer の分散モード",url:"https://learn.microsoft.com/ja-jp/azure/load-balancer/distribution-mode-concepts"},{title:"Microsoft Learn: Load Balancer の正常性プローブ",url:"https://learn.microsoft.com/ja-jp/azure/load-balancer/load-balancer-custom-probe-overview"}]
+    },
+    "s2-q01":{
+      status:"practice-nuance",
+      label:"Practice想定・現行Storage注記",
+      note:"Practice の想定解は Azure Files の『ファイル共有』です。ただし現行 Azure Storage は Blob、File、Queue、Table の各サービスで Microsoft Entra ID による認可をサポートします。この設問は『SMB の Azure Files で ID ベース認証を構成する』という文脈として解釈してください。一般論として『ID ベースのアクセスが使える Storage サービスは Files だけ』と暗記しないでください。",
+      extra:[{title:"Microsoft Learn: Azure Storage のデータ アクセス認可",url:"https://learn.microsoft.com/ja-jp/azure/storage/common/authorize-data-access"},{title:"Microsoft Learn: Microsoft Entra ID で Azure Storage を承認",url:"https://learn.microsoft.com/ja-jp/rest/api/storageservices/authorize-with-azure-active-directory"}]
+    },
     "s1-q19":{
       status:"practice-nuance",
       label:"Practice想定・現行仕様注記",
@@ -70,7 +82,7 @@
     }
   };
   window.AZ104_AUDIT={
-    date:"2026-09-19",
+    date:"2026-09-20",
     get(q){
       return SPECIAL[q.uid]||{status:"verified",label:"Microsoft Learn監査済",note:""};
     }

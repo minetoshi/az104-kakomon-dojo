@@ -7,15 +7,16 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
   - 第1セット: 50問
   - 第2セット: 50問
 - 類似問題: 100問
-- **合計: 200問**
+- 公式範囲補強: 50問
+- **合計: 250問**
 
-類似問題は、過去問と同じ論点を別シナリオ・別数値・別の問い方で確認できるように作成しています。
+類似問題は過去問と同じ論点を別シナリオ・別数値・別の問い方で確認できるようにしています。公式範囲補強50問は、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドと既存200問を突き合わせ、不足していたスキル項目を埋めるために追加しました。
 
 ## 過去問道場
-`index.html` に200問対応のページを実装しています。
+`index.html` に250問対応のページを実装しています。
 
 主な機能:
-- 全200問 / 過去問100問 / 第1セット / 第2セット / 類似問題100問の切り替え
+- 全250問 / 過去問100問 / 第1セット / 第2セット / 類似問題100問 / 公式範囲補強50問の切り替え
 - 番号順 / ランダム / 間違えた問題のみ
 - カテゴリ絞り込み
 - 10問 / 20問 / 50問 / 100問 / 対象すべて
@@ -30,19 +31,21 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 - iPhone 対応
 
 ## 問題データ
-過去問は `questions/set-01/` と `questions/set-02/`、類似問題は `questions/similar/` に、ページから直接読み込む JavaScript 形式で保存しています。
+過去問は `questions/set-01/` と `questions/set-02/`、類似問題は `questions/similar/`、公式範囲補強は `questions/coverage/` に、ページから直接読み込む JavaScript 形式で保存しています。
 
 元データ確認用として JSON も `questions/` 配下に保存しています。
 
 ## 品質チェック
-- 読み込み対象: **200問**
+- 読み込み対象: **250問**
 - 第1セット: 50問
 - 第2セット: 50問
 - 類似問題: 100問
+- 公式範囲補強: 50問
 - UID 重複なし
 - 正答インデックス異常なし
 - 複数選択問題の正答数チェック済み
-- 類似問題100問すべてに Microsoft Learn リンクあり
+- 公式範囲補強50問は全選択肢に明示的な個別解説あり
+- 公式範囲補強50問は全問に Microsoft Learn リンクあり
 - `index.html` の JavaScript 構文チェック済み
 
 ## 方針
@@ -53,7 +56,7 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 
 
 ## 解説の構成
-回答後は全200問で、次の順に学習できるようにしています。
+回答後は全250問で、次の順に学習できるようにしています。
 
 1. **判断ポイント**: 問題文のどの条件が決め手か
 2. **正解理由**: なぜその選択肢が要件を満たすか
@@ -86,3 +89,24 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 - `s2-q26`: Tag Contributor と scope を明示して理解する
 - `s2-q27`: Practice 想定と現行 Resource Lock の挙動にずれ
 - `s2-q48`: Practice の2選択肢は現行の「Client IP and protocol」1モードを分割表現
+
+
+## 2026-09-20 公式試験範囲カバレッジ
+Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現在のスキル** と既存200問を突き合わせ、不足項目を補う50問を追加しました。
+
+主な追加領域:
+- Microsoft Entra のユーザー/グループ、Azure Policy、管理グループ
+- Storage firewall / VNet、Stored Access Policy、access key、customer-managed key
+- Storage Explorer、AzCopy、Azure Files snapshot / soft delete
+- Bicep の解釈・変更・deploy・ARM→Bicep 変換
+- VM Encryption at host、VM移動、resize、Availability Zone / Set
+- VM Scale Sets、Azure Container Registry
+- App Service backup / networking / deployment slots
+- Service Endpoint / Private Endpoint / Effective security rules
+- Alert Processing Rule、VM Insights、Connection Monitor
+- Backup vault、Site Recovery、test failover、Backup reports / alerts
+
+公式スキル項目と対応問題の完全なマッピング:
+- `audit/2026-09-20-official-skills-coverage.md`
+
+この追加により、学習ガイドに列挙された公式スキル項目は、すべて少なくとも1問以上の対応問題を持つ状態にしています。

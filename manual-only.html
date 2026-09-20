@@ -7,6 +7,8 @@
 <style>
 :root{--ink:#202124;--muted:#5f6368;--line:#dadce0;--blue:#315f8d;--green:#24743b;--amber:#8a5a00;--red:#a23b31}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;color:var(--ink);line-height:1.72;background:#fff}a{color:#2467aa}.wrap{width:min(1040px,100%);margin:auto;padding:0 14px}header{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);padding:10px 0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px)}.head{display:flex;gap:10px;align-items:center}.head a{text-decoration:none;font-weight:900}.sp{flex:1}.pill{background:#fff0d8;color:var(--amber);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900}main{padding:22px 0 70px}h1{font-size:clamp(30px,6vw,46px);line-height:1.2;margin:0 0 8px}h2{margin-top:42px;border-left:6px solid #d79200;padding-left:10px}h3{margin:24px 0 8px}.lead{color:var(--muted)}.box{border:1px solid var(--line);border-radius:8px;padding:14px;margin:14px 0}.warn{background:#fff8e7;border-color:#e4c574}.danger{background:#fff2f0;border-color:#e3aaa2}.info{background:#f5f9fd;border-color:#bcd1e6}.good{background:#f3fbf5;border-color:#acd2b4}.toc{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.toc a{border:1px solid #ccd7e2;border-radius:6px;padding:9px 11px;text-decoration:none;font-weight:800;background:#fff}.shot{border:1px solid #c8c8c8;border-radius:8px;overflow:hidden;margin:12px 0;background:#fcfcfc}.shot .top{background:#edf0f4;padding:8px 10px;font-weight:900}.shot .body{padding:10px 12px}.field{display:grid;grid-template-columns:230px 1fr;gap:10px;border-bottom:1px solid #eee;padding:7px 0}.field:last-child{border-bottom:none}.value{font-weight:800}.exam{background:#f2faf4;border-left:4px solid #4f9b5d;padding:10px 12px;margin:10px 0}.why{background:#f5f9fd;border-left:4px solid #5b86b2;padding:10px 12px;margin:10px 0}.cost{background:#fff8e7;border-left:4px solid #d79b23;padding:10px 12px;margin:10px 0}.nope{background:#fff2f0;border-left:4px solid #c46b5e;padding:10px 12px;margin:10px 0}.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}.flow span{border:1px solid #bbb;border-radius:999px;padding:5px 9px;background:#fff;font-weight:800}.flow b{color:#777}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.btn{display:inline-block;border:1px solid #8aa6c2;border-radius:5px;padding:9px 12px;text-decoration:none;font-weight:800;background:#fff}.primary{background:#4d79a8;color:#fff;border-color:#4d79a8}details{border:1px solid #ddd;border-radius:6px;padding:9px 11px;margin:8px 0;background:#fff}summary{cursor:pointer;font-weight:800}.step{border-bottom:1px solid #eee;padding:9px 0}.step:last-child{border-bottom:none}.num{display:inline-block;width:27px;height:27px;line-height:27px;border-radius:50%;background:#315f8d;color:#fff;text-align:center;font-weight:900;margin-right:7px}.toplink{float:right;font-size:12px}.mini{font-size:13px;color:#666}@media(max-width:760px){.field{grid-template-columns:1fr}.toc{grid-template-columns:1fr}}
+
+.portalmap{border:1px solid #c4cad1;border-radius:8px;overflow:hidden;margin:14px 0;background:#fff}.portalmap .bar{background:#e9edf2;padding:7px 10px;font-size:12px;font-weight:900;color:#555}.portalmap .content{display:grid;grid-template-columns:190px 1fr}.portalmap .left{background:#f7f8fa;border-right:1px solid #ddd;padding:9px}.portalmap .left div{padding:6px;border-radius:4px;margin-bottom:3px}.portalmap .left .active{background:#e8f0f8;color:#315f8d;font-weight:900}.portalmap .right{padding:11px}.portalmap .prow{display:grid;grid-template-columns:190px 1fr;gap:8px;padding:6px 0;border-bottom:1px solid #eee}.portalmap .pval{border:1px solid #c8cdd3;border-radius:4px;padding:5px 7px;font-weight:800}.mistakes{border:1px solid #efc0b8;background:#fff5f3;border-radius:7px;padding:12px;margin:12px 0}.mistakes h4{margin:0 0 6px;color:#a23b31}.quizset{border:1px solid #cfd8e3;background:#f8fbff;border-radius:7px;padding:12px;margin:12px 0}.quizset h4{margin:0 0 7px}.quizset details{background:#fff}.quizans{margin-top:7px;padding:8px 10px;background:#eef7f0;border-left:4px solid #4f9b5d}@media(max-width:760px){.portalmap .content{grid-template-columns:1fr}.portalmap .left{border-right:0;border-bottom:1px solid #ddd}.portalmap .prow{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -50,6 +52,11 @@
 <div class="exam"><b>試験の決め手:</b> 「PaaSにVNet内のprivate IPを持たせたい」→ Private Endpoint。<br>「PaaSのpublic endpointは維持し、特定Subnetを信頼したい」→ Service Endpoint。</div>
 <details><summary>理解チェック</summary><p><b>Q:</b> App ServiceからVNet内SQLへ出ていく通信はPrivate Endpoint？<br><b>A:</b> App Service側はVNet Integration。Private Endpointは主にPaaSへのinbound private access。</p></details>
 
+<div data-enhance="m1">
+ <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — Private Endpoint 作成ウィザード</div><div class="content"><div class="left"><div class="">Basics</div><div class="">Resource</div><div class="active">Virtual network</div><div class="">DNS</div><div class="">Review + create</div></div><div class="right"><div class="prow"><span>Target sub-resource</span><span class="pval">blob / file / sites など</span></div><div class="prow"><span>Virtual network</span><span class="pval">接続元VNet</span></div><div class="prow"><span>Subnet</span><span class="pval">Private Endpoint用Subnet</span></div><div class="prow"><span>Private IP</span><span class="pval">Subnetから割り当て</span></div><div class="prow"><span>DNS integration</span><span class="pval">Private DNS zoneと連携</span></div></div></div></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Private Endpointを作ればPublic accessも自動的に無効になると思う</li><li>DNSを設定せずFQDNがpublic IPへ解決される</li><li>App ServiceのVNet IntegrationとPrivate Endpointを同じ方向の機能だと思う</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. PaaSにVNet内のprivate IPを持たせる機能は？</summary><div class="quizans"><b>答え:</b> Private Endpointです。</div></details><details><summary>Q2. Private Endpoint作成後もPublic accessが残ることはある？</summary><div class="quizans"><b>答え:</b> あります。PaaS側のPublic network accessは別途確認します。</div></details><details><summary>Q3. FQDNをprivate IPへ解決させる上で重要なものは？</summary><div class="quizans"><b>答え:</b> Private DNS zoneとVNet linkなどのDNS構成です。</div></details></div>
+ </div>
 <h2 id="m2"><span class="toplink"><a href="#">↑上へ</a></span>2. Standard Load Balancer</h2>
 <p><b>目的:</b> Frontend / Backend pool / Health probe / Rule / Session persistenceを分離して覚えます。</p>
 <div class="flow"><span>Client</span><b>→</b><span>Frontend IP</span><b>→</b><span>LB Rule</span><b>→</b><span>Healthy Backend</span></div>
@@ -75,6 +82,11 @@
 <div class="why"><b>切り分け:</b><br>Health probe=「Backendは正常か」<br>Rule=「Frontendの何番ポートをBackendの何番へ流すか」<br>Distribution/Session persistence=「どのBackendへ振るか」</div>
 <div class="exam"><b>障害問題:</b> Probe → Backend portの待受 → NSG → Rule の順で確認すると整理しやすい。</div>
 
+<div data-enhance="m2">
+ <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — Load Balancer Rule / Probe</div><div class="content"><div class="left"><div class="">Frontend IP</div><div class="">Backend pools</div><div class="">Health probes</div><div class="active">Load balancing rules</div></div><div class="right"><div class="prow"><span>Frontend port</span><span class="pval">443</span></div><div class="prow"><span>Backend port</span><span class="pval">443</span></div><div class="prow"><span>Backend pool</span><span class="pval">VM / VMSS</span></div><div class="prow"><span>Health probe</span><span class="pval">TCP/HTTPS 443</span></div><div class="prow"><span>Session persistence</span><span class="pval">None / Client IP / Client IP+protocol</span></div></div></div></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Probeが成功しているだけでNSGも問題ないと思う</li><li>Backend applicationの待受ポートとprobe portが不一致</li><li>Session persistenceをhealth probeと混同する</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. Backendが正常かを判断する機能は？</summary><div class="quizans"><b>答え:</b> Health probeです。</div></details><details><summary>Q2. 同一クライアントを同じBackendへ寄せる設定は？</summary><div class="quizans"><b>答え:</b> Session persistenceです。</div></details><details><summary>Q3. Internal Load BalancerのFrontendは何を使う？</summary><div class="quizans"><b>答え:</b> VNet内のprivate IPです。</div></details></div>
+ </div>
 <h2 id="m3"><span class="toplink"><a href="#">↑上へ</a></span>3. Azure Bastion</h2>
 <p><b>目的:</b> VMへPublic IPを付けず、Portal/ブラウザ経由でRDP/SSHする構成を理解します。</p>
 <div class="flow"><span>Browser</span><b>→</b><span>Azure Bastion</span><b>→</b><span>VM private IP</span></div>
@@ -87,6 +99,11 @@
 <div class="cost"><b>課金注意:</b> Bastionはデプロイした時点から時間課金が始まるSKUがあります。Microsoft公式のチュートリアルでも、テスト後の削除を推奨しています。この教材では実機作成しません。</div>
 <div class="exam"><b>試験:</b> 「VMにPublic IPを付けず、安全にRDP/SSH」「ブラウザから接続」→ Bastion。</div>
 
+<div data-enhance="m3">
+ <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — Bastion 接続画面</div><div class="content"><div class="left"><div class="">Overview</div><div class="active">Bastion</div><div class="">Connect</div><div class="">Session</div></div><div class="right"><div class="prow"><span>VM Public IP</span><span class="pval">不要</span></div><div class="prow"><span>Target</span><span class="pval">VM private IP</span></div><div class="prow"><span>Protocol</span><span class="pval">RDP / SSH</span></div><div class="prow"><span>Client</span><span class="pval">Azure Portal / native client対応構成</span></div></div></div></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Bastionを使うのに各VMへPublic IPを付ける</li><li>BastionとVPN Gatewayを同じ用途と思う</li><li>検証後にBastionを残し続ける</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. Public IPなしのVMへPortalからRDP/SSHする代表サービスは？</summary><div class="quizans"><b>答え:</b> Azure Bastionです。</div></details><details><summary>Q2. BastionはVNet間ルーティングを作る？</summary><div class="quizans"><b>答え:</b> いいえ。VM管理接続サービスです。</div></details><details><summary>Q3. この教材でBastionを実機作成しない理由は？</summary><div class="quizans"><b>答え:</b> 時間課金などの課金リスクを避けるためです。</div></details></div>
+ </div>
 <h2 id="m4"><span class="toplink"><a href="#">↑上へ</a></span>4. NAT Gateway / VPN Gateway</h2>
 <h3>NAT Gateway</h3>
 <p><b>役割:</b> Subnetからインターネットへのoutbound接続を安定したSNATで提供。Inbound接続サービスではありません。</p>
@@ -107,6 +124,11 @@
 </div></div>
 <div class="exam"><b>S2S:</b> On-prem LAN ↔ Azure VNet。<br><b>P2S:</b> 個別クライアント ↔ Azure VNet。<br><b>Peering:</b> Azure VNet同士。VPN Gatewayとは別。</div>
 
+<div data-enhance="m4">
+ <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — Gateway / NAT の役割比較</div><div class="content"><div class="left"><div class="">NAT Gateway</div><div class="active">VPN Gateway</div><div class="">Connections</div><div class="">Subnet</div></div><div class="right"><div class="prow"><span>NAT Gateway</span><span class="pval">SubnetのInternet outbound</span></div><div class="prow"><span>S2S VPN</span><span class="pval">On-prem network ↔ VNet</span></div><div class="prow"><span>P2S VPN</span><span class="pval">Client device ↔ VNet</span></div><div class="prow"><span>VNet Peering</span><span class="pval">VNet ↔ VNet</span></div></div></div></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>NAT GatewayでInbound RDPを受けられると思う</li><li>P2SとS2Sを逆に覚える</li><li>GatewaySubnetに通常VMを配置する</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. 多数VMの安定したInternet outboundに使うのは？</summary><div class="quizans"><b>答え:</b> NAT Gatewayです。</div></details><details><summary>Q2. 個人PCからAzure VNetへVPN接続するのは？</summary><div class="quizans"><b>答え:</b> Point-to-Site (P2S) VPNです。</div></details><details><summary>Q3. オンプレ拠点LANとAzure VNetを接続するのは？</summary><div class="quizans"><b>答え:</b> Site-to-Site (S2S) VPNです。</div></details></div>
+ </div>
 <h2 id="m5"><span class="toplink"><a href="#">↑上へ</a></span>5. App Service Standard以上</h2>
 <p><b>目的:</b> Free F1では触れない、本試験頻出のDeployment slots / Autoscale / VNet Integration / Backupを画面イメージで覚えます。</p>
 
@@ -141,6 +163,11 @@
 <div class="field"><span>Restore</span><span class="value">既存/別slot等へ復元</span></div>
 </div></div>
 
+<div data-enhance="m5">
+ <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — App Service Standard+ 管理画面</div><div class="content"><div class="left"><div class="active">Deployment slots</div><div class="">Scale out</div><div class="">Networking</div><div class="">Backups</div><div class="">TLS</div></div><div class="right"><div class="prow"><span>Slot</span><span class="pval">staging</span></div><div class="prow"><span>Swap</span><span class="pval">staging → production</span></div><div class="prow"><span>Sticky setting</span><span class="pval">Slot setting</span></div><div class="prow"><span>Autoscale</span><span class="pval">Metric / schedule</span></div><div class="prow"><span>Networking</span><span class="pval">VNet Integration / Private Endpoint</span></div></div></div></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Scale upとScale outを逆にする</li><li>Slot settingにし忘れてDB接続文字列までswapする</li><li>VNet IntegrationをApp Serviceへのinbound private accessだと思う</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. stagingからproductionへ切り替える操作は？</summary><div class="quizans"><b>答え:</b> Slot swapです。</div></details><details><summary>Q2. CPUしきい値でインスタンス数を増やすのは？</summary><div class="quizans"><b>答え:</b> Azure Monitor Autoscaleによるscale outです。</div></details><details><summary>Q3. App ServiceからVNet内DBへの通信は？</summary><div class="quizans"><b>答え:</b> VNet Integrationです。</div></details></div>
+ </div>
 <h2 id="m6"><span class="toplink"><a href="#">↑上へ</a></span>6. Azure Monitor / Alerts</h2>
 <p><b>目的:</b> 「データを集める」「条件を判定する」「通知する」「通知を抑制する」を分けます。</p>
 <div class="flow"><span>Metrics / Logs</span><b>→</b><span>Alert rule</span><b>→</b><span>Action Group</span><b>→</b><span>Email / Webhook / Automation</span></div>
@@ -158,6 +185,11 @@
 </div></div>
 <div class="exam"><b>切り分け:</b> Alert rule=発火条件。Action Group=通知先。Alert Processing Rule=発火後の通知抑制/加工。</div>
 
+<div data-enhance="m6">
+ <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — Monitor Alert 作成ウィザード</div><div class="content"><div class="left"><div class="">Scope</div><div class="active">Condition</div><div class="">Actions</div><div class="">Details</div><div class="">Processing rules</div></div><div class="right"><div class="prow"><span>Scope</span><span class="pval">監視対象Resource</span></div><div class="prow"><span>Condition</span><span class="pval">Metric / Log</span></div><div class="prow"><span>Action</span><span class="pval">Action Group</span></div><div class="prow"><span>Severity</span><span class="pval">0〜4</span></div><div class="prow"><span>Processing rule</span><span class="pval">通知抑制/Action Group適用</span></div></div></div></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Action Groupにアラート条件を書くと思う</li><li>Diagnostic settingsとAlert ruleを混同する</li><li>Maintenance時にAlert rule自体を削除する</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. CPU > 80% の条件を定義するのは？</summary><div class="quizans"><b>答え:</b> Alert ruleのConditionです。</div></details><details><summary>Q2. メール通知先をまとめるのは？</summary><div class="quizans"><b>答え:</b> Action Groupです。</div></details><details><summary>Q3. メンテ中だけ通知抑制するのは？</summary><div class="quizans"><b>答え:</b> Alert Processing Ruleです。</div></details></div>
+ </div>
 <h2 id="m7"><span class="toplink"><a href="#">↑上へ</a></span>7. Azure Backup</h2>
 <p><b>目的:</b> Vault、Policy、Backup、Restore、Soft deleteを一連で理解します。</p>
 <div class="flow"><span>VM / Server / Disk</span><b>→</b><span>Backup Policy</span><b>→</b><span>Vault</span><b>→</b><span>Recovery Point</span><b>→</b><span>Restore</span></div>
@@ -185,6 +217,11 @@
 </div></div>
 <div class="exam"><b>元VMを残して検証したい:</b> Create new virtual machine。</div>
 
+<div data-enhance="m7">
+ <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — Backup Vault / Policy / Restore</div><div class="content"><div class="left"><div class="">Backup center</div><div class="">Vault</div><div class="active">Backup policy</div><div class="">Backup items</div><div class="">Restore</div></div><div class="right"><div class="prow"><span>Vault</span><span class="pval">Recovery Services vault / Backup vault</span></div><div class="prow"><span>Policy</span><span class="pval">Schedule + Retention</span></div><div class="prow"><span>Recovery point</span><span class="pval">復元時点</span></div><div class="prow"><span>Restore</span><span class="pval">Create new / Replace existing等</span></div><div class="prow"><span>Soft delete</span><span class="pval">誤削除保護</span></div></div></div></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Backup vaultとRecovery Services vaultを同じ用途と思う</li><li>VM BackupとSite Recoveryを混同する</li><li>復元検証なのにReplace existingを選ぶ</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. Azure VM全体の通常Backupで代表的なVaultは？</summary><div class="quizans"><b>答え:</b> Recovery Services vaultです。</div></details><details><summary>Q2. Azure Disk Backupで使う代表的Vaultは？</summary><div class="quizans"><b>答え:</b> Backup vaultです。</div></details><details><summary>Q3. 元VMを残して復元検証したい場合は？</summary><div class="quizans"><b>答え:</b> Create new virtual machineを選ぶ考え方です。</div></details></div>
+ </div>
 <h2 id="m8"><span class="toplink"><a href="#">↑上へ</a></span>8. Azure Site Recovery</h2>
 <p><b>目的:</b> Test failover / Failover / Commit / Re-protect の順序を手順として覚えます。</p>
 <div class="flow"><span>Replication</span><b>→</b><span>Test failover</span><b>→</b><span>Failover</span><b>→</b><span>Validate</span><b>→</b><span>Commit</span><b>→</b><span>Re-protect</span></div>
@@ -211,6 +248,11 @@
 <div class="step"><span class="num">5</span>逆方向レプリケーションが安定後、必要なタイミングでFailback。</div>
 <div class="exam"><b>試験で強い順序:</b> Test failoverは訓練。実Failover後はValidate → Commit。逆方向レプリケーションはRe-protect。</div>
 
+<div data-enhance="m8">
+ <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — Site Recovery Replicated Item</div><div class="content"><div class="left"><div class="">Replicated items</div><div class="">Test failover</div><div class="active">Failover</div><div class="">Commit</div><div class="">Re-protect</div></div><div class="right"><div class="prow"><span>Test failover</span><span class="pval">DR訓練</span></div><div class="prow"><span>Failover</span><span class="pval">本番切替</span></div><div class="prow"><span>Validate</span><span class="pval">復旧VM確認</span></div><div class="prow"><span>Commit</span><span class="pval">Recovery point確定</span></div><div class="prow"><span>Re-protect</span><span class="pval">逆方向Replication</span></div></div></div></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Test failoverのテストVM/ネットワークをCleanupしない</li><li>Failover後すぐCommitして検証を飛ばす</li><li>Commit後にRecovery pointを変えられると思う</li><li>Failback前にRe-protectを忘れる</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. 本番影響を避けてDR訓練する操作は？</summary><div class="quizans"><b>答え:</b> Test failoverです。</div></details><details><summary>Q2. Failover後、復旧VMを検証して問題なければ何をする？</summary><div class="quizans"><b>答え:</b> Commitです。</div></details><details><summary>Q3. 元リージョンへ戻す準備として逆方向Replicationを開始する操作は？</summary><div class="quizans"><b>答え:</b> Re-protectです。</div></details></div>
+ </div>
 <h2>最後の暗記ではなく判断表</h2>
 <table style="width:100%;border-collapse:collapse">
 <tr><th style="border:1px solid #ddd;padding:8px;background:#f5f5f5">要件</th><th style="border:1px solid #ddd;padding:8px;background:#f5f5f5">選ぶもの</th></tr>

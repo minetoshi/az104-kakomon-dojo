@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AZ-104 受験直前チェック</title>
+<style>
+:root{--ink:#222;--line:#ddd;--blue:#315f8d;--green:#27833b;--amber:#9a6900;--bg:#f7f8fa}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;color:var(--ink);line-height:1.75;background:#fff}a{color:#2467aa}.wrap{width:min(960px,100%);margin:auto;padding:0 14px}header{border-bottom:1px solid var(--line);padding:12px 0}.head{display:flex;gap:10px;align-items:center}.head a{text-decoration:none;font-weight:900}.sp{flex:1}.pill{background:#eef5fc;color:var(--blue);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800}
+main{padding:22px 0 60px}h1{font-size:clamp(30px,6vw,46px);margin:0 0 8px}h2{border-left:6px solid #d79200;padding-left:10px;margin-top:34px}h3{margin-top:22px}.lead{color:#555}.box{border:1px solid var(--line);border-radius:7px;padding:14px;margin:14px 0;background:#fff}.fact{background:#f5f9fd;border-color:#bcd1e6}.warn{background:#fff8e7;border-color:#e4c574}.good{background:#f2faf4;border-color:#acd2b4}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.card{border:1px solid var(--line);border-radius:7px;padding:12px;background:var(--bg)}.card b{display:block;font-size:18px}.check{display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eee;padding:10px 0}.check input{width:20px;height:20px;margin-top:4px;accent-color:var(--green)}.check.done .txt{text-decoration:line-through;color:#888}.txt strong{display:block}.mini{font-size:12px;color:#666}.rule{border-bottom:1px solid #eee;padding:8px 0}.rule b{color:var(--blue)}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f5f5f5}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.btn{display:inline-block;border:1px solid #8aa6c2;border-radius:5px;padding:9px 12px;text-decoration:none;font-weight:800;background:#fff}.primary{background:#4d79a8;color:#fff;border-color:#4d79a8}.progress{height:14px;border-radius:999px;background:#eee;overflow:hidden}.progress>div{height:100%;background:#4d79a8;width:0}.pct{font-weight:900;margin-top:5px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap head"><a href="index.html">← AZ-104 過去問道場</a><div class="sp"></div><span class="pill">290問対応</span></div></header>
+<main class="wrap">
+<h1>AZ-104 受験直前チェック</h1>
+<p class="lead">問題暗記ではなく、公式範囲・実操作・弱点復習・本番時間配分まで揃えるための最終ページです。</p>
+
+<div class="box fact">
+<strong>本試験の現在の前提</strong>
+<div class="grid">
+<div class="card"><span>試験時間</span><b>100分</b><span class="mini">Microsoft Learn の AZ-104 認定ページ</span></div>
+<div class="card"><span>合格スコア</span><b>700 / 1000 以上</b><span class="mini">スケールスコア。単純な正答率70%ではありません。</span></div>
+<div class="card"><span>公式スキル</span><b>2026-04-17 版</b><span class="mini">ID / Storage / Compute / Network / Monitor</span></div>
+</div>
+<div class="actions"><a class="btn" href="https://learn.microsoft.com/ja-jp/credentials/certifications/resources/study-guides/az-104" target="_blank" rel="noopener">公式学習ガイド</a><a class="btn" href="https://learn.microsoft.com/ja-jp/credentials/certifications/azure-administrator/" target="_blank" rel="noopener">試験ページ / Sandbox</a><a class="btn" href="https://learn.microsoft.com/ja-jp/credentials/certifications/exam-scoring-reports" target="_blank" rel="noopener">採点方式</a></div>
+</div>
+
+<h2>受験してよい状態の目安</h2>
+<div class="box good">
+これは Microsoft 公式基準ではなく、この教材で使う<strong>保守的な学習目安</strong>です。
+<ul>
+<li>本番模試50問を <strong>3回連続 85%以上</strong></li>
+<li>各公式分野が毎回 <strong>75%以上</strong></li>
+<li>間違えた問題を「正解の理由」だけでなく「他の選択肢がなぜ違うか」説明できる</li>
+<li>下のハンズオンを一通り実施、または Portal / CLI / PowerShell / Bicep の操作手順を説明できる</li>
+<li>Microsoft の Exam Sandbox を一度触って問題UIに慣れている</li>
+</ul>
+</div>
+
+<h2>最短で合格力を上げる回し方</h2>
+<table>
+<tr><th>順番</th><th>実施内容</th><th>次へ進む条件</th></tr>
+<tr><td>1</td><td>過去問道場「本番模試 50問 / 100分」</td><td>現在地を測る。点数は気にしすぎない。</td></tr>
+<tr><td>2</td><td>模試で75%未満の分野を「おすすめ弱点20問」で復習</td><td>誤答を全選択肢まで説明する。</td></tr>
+<tr><td>3</td><td>下のハンズオン。特に弱点分野を優先。</td><td>操作の目的と結果を説明できる。</td></tr>
+<tr><td>4</td><td>「今日の復習」で間隔反復</td><td>同じ誤答を繰り返さない。</td></tr>
+<tr><td>5</td><td>再び本番模試</td><td>総合85%・各分野75%以上。</td></tr>
+<tr><td>6</td><td>3回連続で基準達成</td><td>直前チェックへ。</td></tr>
+<tr><td>7</td><td>Exam Sandbox + 下の頻出判断ルール確認</td><td>本番へ。</td></tr>
+</table>
+
+<h2>ハンズオン・チェックリスト</h2>
+<p>実際の Azure サブスクリプションを使う場合、作成したリソースは確認後に削除してください。SKUやリージョンによっては料金が発生します。</p>
+<div class="progress"><div id="bar"></div></div><div class="pct" id="pct">0%</div>
+<div id="checks">
+<label class="check"><input type="checkbox"><span class="txt"><strong>Entra: ユーザー / セキュリティグループを作成</strong>Assigned と Dynamic user の違い、Usage location を確認。 <a href="https://learn.microsoft.com/entra/fundamentals/how-to-manage-groups" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>RBAC: Reader / Contributor / Tag Contributor を別スコープで割り当て</strong>Subscription / RG / resource の継承を確認。 <a href="https://learn.microsoft.com/azure/role-based-access-control/role-assignments-portal" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Governance: Policy を割り当てて非準拠を確認</strong>Audit と Deny、Remediation task の役割を確認。 <a href="https://learn.microsoft.com/azure/governance/policy/overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Governance: CanNotDelete / ReadOnly lock</strong>RGに付けたロックが配下へどう影響するか確認。 <a href="https://learn.microsoft.com/azure/azure-resource-manager/management/lock-resources" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Storage: GPv2 を作成し Networking を Selected networks にする</strong>Firewall / VNet rule / public access の関係を確認。 <a href="https://learn.microsoft.com/azure/storage/common/storage-network-security" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Storage: SAS を発行</strong>Service SAS / Account SAS / User delegation SAS、Stored access policy の違いを説明。 <a href="https://learn.microsoft.com/azure/storage/common/storage-sas-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Storage: Blob versioning / soft delete / lifecycle</strong>「復元」「旧版」「自動tier移行」の違いを確認。 <a href="https://learn.microsoft.com/azure/storage/blobs/data-protection-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Storage: Azure Files を作成</strong>SMB 445、IDベース認証、snapshot / soft delete を確認。 <a href="https://learn.microsoft.com/azure/storage/files/storage-files-introduction" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>CLI: AzCopy で Blob をコピー</strong>copy / sync の用途を確認。 <a href="https://learn.microsoft.com/azure/storage/common/storage-use-azcopy-v10" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Bicep: param / resource / output の小さいテンプレートを作成</strong>RGへ az deployment group create でデプロイ。 <a href="https://learn.microsoft.com/azure/azure-resource-manager/bicep/learn-bicep" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Bicep: for / if / existing / module を読む</strong>既存Bicepを変更できる状態を目標にする。 <a href="https://learn.microsoft.com/azure/azure-resource-manager/bicep/overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>VM: VMを作成して Resize / Redeploy / Disk attach-detach を確認</strong>どの操作が何を保持するか説明。 <a href="https://learn.microsoft.com/azure/virtual-machines/" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>VM: Availability Zone / Availability Set の違い</strong>Fault domain / Update domain を説明。 <a href="https://learn.microsoft.com/azure/virtual-machines/availability" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>VMSS: autoscale と upgrade policy</strong>Rolling / Manual の違いを確認。 <a href="https://learn.microsoft.com/azure/virtual-machine-scale-sets/overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>ACR: Registry を作成し RBACモードの pull/push 権限を確認</strong>ABAC対応モードではロール体系が変わる点も確認。 <a href="https://learn.microsoft.com/azure/container-registry/container-registry-rbac-built-in-roles-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>App Service: Web App + Standard以上を作成</strong>scale up / scale out / autoscale の違いを確認。 <a href="https://learn.microsoft.com/azure/app-service/manage-scale-up" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>App Service: Deployment slot と swap</strong>slot setting が swapされないことを確認。 <a href="https://learn.microsoft.com/azure/app-service/deploy-staging-slots" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>App Service: HTTPS Only / Minimum TLS / certificate</strong>Custom domain と TLS binding の流れを確認。 <a href="https://learn.microsoft.com/azure/app-service/overview-tls" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Networking: VNet / Subnet / NSG を作成</strong>NIC NSG と Subnet NSG の両方が評価されることを確認。 <a href="https://learn.microsoft.com/azure/virtual-network/network-security-groups-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Networking: VNet Peering</strong>Non-transitive、アドレス空間重複不可、P2S route更新を確認。 <a href="https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Networking: UDR で NVA を next hop にする</strong>0.0.0.0/0 + Virtual appliance を説明。 <a href="https://learn.microsoft.com/azure/virtual-network/virtual-networks-udr-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Networking: Service Endpoint と Private Endpoint を比較</strong>Public endpointを残すか、private IPを作るかを説明。 <a href="https://learn.microsoft.com/azure/private-link/private-endpoint-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Load Balancer: backend pool / rule / health probe</strong>5-tuple と session persistence の違いを確認。 <a href="https://learn.microsoft.com/azure/load-balancer/load-balancer-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Network Watcher: IP flow verify / Next hop / Connection Monitor</strong>「NSG判定」「route判定」「継続監視」を使い分け。 <a href="https://learn.microsoft.com/azure/network-watcher/" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Monitor: Diagnostic settings を Log Analytics へ送信</strong>Metrics と Logs、Activity Log の違いを確認。 <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/diagnostic-settings" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>KQL: where / project / summarize を実行</strong>フィルター・列選択・集計を使い分け。 <a href="https://learn.microsoft.com/azure/azure-monitor/logs/get-started-queries" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Monitor: Alert rule + Action Group + Alert Processing Rule</strong>「条件」「通知先」「通知抑制」を分ける。 <a href="https://learn.microsoft.com/azure/azure-monitor/alerts/alerts-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Backup: Recovery Services vault + VM Backup</strong>Policy、Instant Restore、Restore VM を確認。 <a href="https://learn.microsoft.com/azure/backup/backup-azure-vms-first-look-arm" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Backup: Backup vault と Recovery Services vault を区別</strong>Azure Disk Backup と VM Backup/Site Recovery の違いを確認。 <a href="https://learn.microsoft.com/azure/backup/backup-center-overview" target="_blank">Learn</a></span></label>
+<label class="check"><input type="checkbox"><span class="txt"><strong>Site Recovery: Test failover → Failover → Commit → Re-protect</strong>本番切替とDR訓練を区別。 <a href="https://learn.microsoft.com/azure/site-recovery/azure-to-azure-tutorial-failover-failback" target="_blank">Learn</a></span></label>
+</div>
+
+<h2>頻出の切り分けルール</h2>
+<div class="box">
+<div class="rule"><b>Reader / Contributor / Owner</b> — 閲覧のみ / リソース変更 / アクセス管理まで。</div>
+<div class="rule"><b>Policy と RBAC</b> — Policyは「何を作ってよいか」、RBACは「誰が何をできるか」。</div>
+<div class="rule"><b>Tag と Lock</b> — Tagは分類、Lockは削除/変更保護。</div>
+<div class="rule"><b>SAS</b> — User delegation SASはEntra、Stored access policyと結び付くのはService SAS。</div>
+<div class="rule"><b>Storage data protection</b> — versioning=旧版、soft delete=削除復元、immutable=WORM、lifecycle=自動tier/削除。</div>
+<div class="rule"><b>ZRS / GRS</b> — 同一リージョンのZone障害=ZRS、別リージョン複製=GRS系。</div>
+<div class="rule"><b>Redeploy / Resize / Move</b> — ホスト変更 / SKU変更 / RG・Subscription・Region移動。</div>
+<div class="rule"><b>Availability Zone / Set</b> — データセンター分離 / Fault・Update domain。</div>
+<div class="rule"><b>App Service VNet Integration / Private Endpoint</b> — Web AppからVNetへ出る / VNetからWeb Appへprivateに入る。</div>
+<div class="rule"><b>Service Endpoint / Private Endpoint</b> — PaaSのpublic endpointを維持 / PaaSにVNetのprivate IPを作る。</div>
+<div class="rule"><b>NSG</b> — NICとSubnetの両方にある場合、両方で許可される必要がある。</div>
+<div class="rule"><b>ASG</b> — VM/NICを論理グループ化してNSGのsource/destinationに使う。</div>
+<div class="rule"><b>Bastion</b> — VMにPublic IPを付けずRDP/SSH。</div>
+<div class="rule"><b>Peering</b> — アドレス重複不可、非推移的。</div>
+<div class="rule"><b>UDR + NVA</b> — 0.0.0.0/0、next hop=Virtual appliance。</div>
+<div class="rule"><b>Load Balancer</b> — Probe=正常性、distribution mode=振り分け、session persistence=固定性。</div>
+<div class="rule"><b>IP flow verify / Next hop / Packet capture / Connection Monitor</b> — NSG判定 / route / packet実体 / 継続接続監視。</div>
+<div class="rule"><b>Metrics / Logs</b> — 数値時系列 / 構造化ログ分析。</div>
+<div class="rule"><b>KQL</b> — where=行絞り込み、project=列選択、summarize=集計。</div>
+<div class="rule"><b>Alert rule / Action Group / Alert Processing Rule</b> — 発火条件 / 通知・自動処理 / 発火後の抑制・加工。</div>
+<div class="rule"><b>Recovery Services vault / Backup vault</b> — VM Backup・MARS・Site Recovery / Azure Disk Backup等。</div>
+<div class="rule"><b>Site Recovery</b> — Test failoverは訓練、本番Failover後はCommit、反対方向へはRe-protect。</div>
+</div>
+
+<h2>古いPractice問題で特に注意</h2>
+<div class="box warn">
+<ul>
+<li><strong>Storage IDベースアクセス:</strong> Practiceの「Files」文脈を一般化しない。現行StorageはBlob/File/Queue/TableでEntra認可を利用可能。</li>
+<li><strong>Load Balancer 5-tuple:</strong> 5-tupleは現在も正しいが既定。タイムアウト診断ではprobe・backend・NSGも確認。</li>
+<li><strong>Log Analytics dashboard 14日:</strong> Practice想定として残しているが、現行仕様値として固定暗記しない。</li>
+<li><strong>Recovery Services vault削除:</strong> Secure by Default / soft delete の現行挙動をLearnで確認。</li>
+<li><strong>Resource Group lock:</strong> RGへCanNotDeleteを付けるとRG自身の削除もブロックされる。</li>
+<li><strong>ACR roles:</strong> RBAC Registry PermissionsとABAC対応モードでデータプレーンロールが変わる。</li>
+</ul>
+</div>
+
+<h2>本番100分の使い方</h2>
+<div class="box">
+<ul>
+<li>最初の周回は迷う問題に時間を使いすぎず、フラグして進む。</li>
+<li>「最小権限」「管理作業を最小化」「コストを最小化」「private」「自動」という制約語を先に拾う。</li>
+<li>複数選択は、正解候補を1つずつ独立に要件へ照合する。</li>
+<li>ケース/長文では、構成情報より先に最後の質問文を読む。</li>
+<li>最後に未回答が残らないよう、時間切れ前に全問へ回答する。</li>
+</ul>
+</div>
+
+<div class="actions"><a class="btn primary" href="index.html">過去問道場へ戻る</a><a class="btn" href="https://learn.microsoft.com/ja-jp/credentials/certifications/azure-administrator/" target="_blank" rel="noopener">Microsoft公式試験ページ</a></div>
+</main>
+<script>
+const K='az104_hands_on_check_v1';const boxes=[...document.querySelectorAll('#checks input[type=checkbox]')];let saved=[];try{saved=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){}
+function draw(){let n=0;boxes.forEach((b,i)=>{b.checked=!!saved[i];b.closest('.check').classList.toggle('done',b.checked);if(b.checked)n++});const p=Math.round(n/boxes.length*100);document.getElementById('bar').style.width=p+'%';document.getElementById('pct').textContent=n+'/'+boxes.length+' 完了 ('+p+'%)'}
+boxes.forEach((b,i)=>b.addEventListener('change',()=>{saved[i]=b.checked;localStorage.setItem(K,JSON.stringify(saved));draw()}));draw();
+</script>
+</body>
+</html>

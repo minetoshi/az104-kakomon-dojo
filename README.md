@@ -108,6 +108,7 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 
 公式スキル項目と対応問題の完全なマッピング:
 - `audit/2026-09-20-official-skills-coverage.md`
+- `audit/2026-09-20-final-290-current-spec-audit.md`
 
 この追加により、学習ガイドに列挙された公式スキル項目は、すべて少なくとも1問以上の対応問題を持つ状態にしています。
 
@@ -127,3 +128,21 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 - Backup/DR: Site Recovery Commit / Re-protect / Recovery Services vault / Backup Reports
 
 追加40問も、全選択肢に個別解説と Microsoft Learn 公式リンクを持たせています。
+
+
+## 2026-09-20 290問 Current-Spec 最終監査
+全290問について構造整合性を再チェックし、Azure の仕様変更影響が大きい論点を Microsoft Learn で再確認しました。
+
+今回の修正:
+- ACR の AcrPull / AcrPush 問題に RBAC Registry Permissions モードを明記
+- Storage の ID ベースアクセス問題に Blob / File / Queue / Table の現行 Entra 認可範囲を注記
+- Load Balancer 5-tuple 問題に「5-tuple は既定であり、障害原因の切り分けには追加確認が必要」という注記を追加
+
+構造チェック結果:
+- 290問すべて読み込み成功
+- UID重複 0
+- 正答インデックス異常 0
+- Learnリンク不足 0
+- index.html JavaScript 構文エラー 0
+
+詳細は `audit/2026-09-20-final-290-current-spec-audit.md` を参照してください。

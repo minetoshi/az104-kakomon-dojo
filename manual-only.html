@@ -92,17 +92,17 @@
 <div class="flow"><span>Browser</span><b>→</b><span>Azure Bastion</span><b>→</b><span>VM private IP</span></div>
 <div class="shot"><div class="top">Virtual network ＞ Bastion ＞ Deploy Bastion</div><div class="body">
 <div class="field"><span>Virtual network</span><span class="value">VMと接続するVNet</span></div>
-<div class="field"><span>Subnet</span><span class="value">AzureBastionSubnet（構成方式に依存）</span></div>
-<div class="field"><span>Public IP</span><span class="value">Bastion側で使用</span></div>
+<div class="field"><span>Developer SKU</span><span class="value">無料・共有プール。専用AzureBastionSubnet / Bastion用Public IPは不要。対応リージョン限定。</span></div>
+<div class="field"><span>Basic / Standard / Premium</span><span class="value">専用デプロイ。AzureBastionSubnet (/26以上) とPublic IPなどを構成。</span></div>
 <div class="field"><span>VM Public IP</span><span class="value">不要</span></div>
 </div></div>
-<div class="cost"><b>課金注意:</b> Bastionはデプロイした時点から時間課金が始まるSKUがあります。Microsoft公式のチュートリアルでも、テスト後の削除を推奨しています。この教材では実機作成しません。</div>
+<div class="cost"><b>課金注意:</b> <b>Developer SKU は無料</b>ですが機能制限・対応リージョン制限があります。Basic / Standard / Premium は時間課金 + データ転送課金の対象です。この教材では有料SKUは作成せず、Developer SKUが利用可能な場合だけ <a href="free-12m-labs.html#lab7">無料ハンズオン側</a>で任意実機にします。</div>
 <div class="exam"><b>試験:</b> 「VMにPublic IPを付けず、安全にRDP/SSH」「ブラウザから接続」→ Bastion。</div>
 
 <div data-enhance="m3">
  <div class="portalmap"><div class="bar">Azure Portal 画面構成イメージ — Bastion 接続画面</div><div class="content"><div class="left"><div class="">Overview</div><div class="active">Bastion</div><div class="">Connect</div><div class="">Session</div></div><div class="right"><div class="prow"><span>VM Public IP</span><span class="pval">不要</span></div><div class="prow"><span>Target</span><span class="pval">VM private IP</span></div><div class="prow"><span>Protocol</span><span class="pval">RDP / SSH</span></div><div class="prow"><span>Client</span><span class="pval">Azure Portal / native client対応構成</span></div></div></div></div>
- <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Bastionを使うのに各VMへPublic IPを付ける</li><li>BastionとVPN Gatewayを同じ用途と思う</li><li>検証後にBastionを残し続ける</li></ul></div>
- <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. Public IPなしのVMへPortalからRDP/SSHする代表サービスは？</summary><div class="quizans"><b>答え:</b> Azure Bastionです。</div></details><details><summary>Q2. BastionはVNet間ルーティングを作る？</summary><div class="quizans"><b>答え:</b> いいえ。VM管理接続サービスです。</div></details><details><summary>Q3. この教材でBastionを実機作成しない理由は？</summary><div class="quizans"><b>答え:</b> 時間課金などの課金リスクを避けるためです。</div></details></div>
+ <div class="mistakes"><h4>よくある失敗・ひっかけ</h4><ul><li>Bastionを使うのに各VMへPublic IPを付ける</li><li>Developer SKUと専用SKUの要件を混同する</li><li>BastionとVPN Gatewayを同じ用途と思う</li><li>有料のBasic/Standard/Premiumを検証後も残し続ける</li></ul></div>
+ <div class="quizset"><h4>試験ミニ問題 3問</h4><details><summary>Q1. Public IPなしのVMへPortalからRDP/SSHする代表サービスは？</summary><div class="quizans"><b>答え:</b> Azure Bastionです。</div></details><details><summary>Q2. BastionはVNet間ルーティングを作る？</summary><div class="quizans"><b>答え:</b> いいえ。VM管理接続サービスです。</div></details><details><summary>Q3. Bastionで無料実機が可能なSKUは？</summary><div class="quizans"><b>答え:</b> 対応リージョンで利用できるDeveloper SKUです。Basic/Standard/Premiumは有料です。</div></details></div>
  </div>
 <h2 id="m4"><span class="toplink"><a href="#">↑上へ</a></span>4. NAT Gateway / VPN Gateway</h2>
 <h3>NAT Gateway</h3>

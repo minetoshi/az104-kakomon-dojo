@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AZ-104 PowerShell 実践道場</title>
+<style>
+:root{--ink:#202124;--muted:#5f6368;--line:#dadce0;--blue:#315f8d;--green:#24743b;--amber:#8a5a00;--red:#a23b31}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;color:var(--ink);line-height:1.72;background:#fff}a{color:#2467aa}.wrap{width:min(1040px,100%);margin:auto;padding:0 14px}header{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);padding:10px 0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px)}.head{display:flex;gap:10px;align-items:center}.head a{text-decoration:none;font-weight:900}.sp{flex:1}.pill{background:#eef5fc;color:var(--blue);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900}main{padding:22px 0 70px}h1{font-size:clamp(30px,6vw,46px);line-height:1.2;margin:0 0 8px}h2{margin-top:42px;border-left:6px solid #315f8d;padding-left:10px}h3{margin:24px 0 8px}.lead{color:var(--muted)}.box{border:1px solid var(--line);border-radius:8px;padding:14px;margin:14px 0}.info{background:#f5f9fd;border-color:#bcd1e6}.safe{background:#f3fbf5;border-color:#acd2b4}.warn{background:#fff8e7;border-color:#e4c574}.toc{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.toc a{border:1px solid #ccd7e2;border-radius:6px;padding:9px 11px;text-decoration:none;font-weight:800;background:#fff}.cmd{background:#1f2328;color:#f6f8fa;padding:11px 12px;border-radius:7px;overflow:auto;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.exam{background:#f2faf4;border-left:4px solid #4f9b5d;padding:10px 12px;margin:10px 0}.why{background:#f5f9fd;border-left:4px solid #5b86b2;padding:10px 12px;margin:10px 0}.cost{background:#fff8e7;border-left:4px solid #d79b23;padding:10px 12px;margin:10px 0}.failbox{border:1px solid #efc0b8;background:#fff5f3;border-radius:7px;padding:12px;margin:12px 0}.failbox h4{margin:0 0 7px;color:#a23b31}.quiz{border:1px solid #cfd8e3;background:#f8fbff;border-radius:7px;padding:12px;margin:12px 0}.quiz h4{margin:0 0 8px}.quiz details{border:1px solid #ddd;border-radius:6px;padding:9px 11px;margin:7px 0;background:#fff}.quiz summary{cursor:pointer;font-weight:800}.ans{margin-top:7px;padding:8px 10px;background:#eef7f0;border-left:4px solid #4f9b5d}.check{display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eee;padding:10px 0}.check input{width:20px;height:20px;margin-top:4px;accent-color:#24743b}.check.done .txt{text-decoration:line-through;color:#888}.progress{height:14px;border-radius:999px;background:#eee;overflow:hidden}.progress>div{height:100%;background:#315f8d;width:0}.pct{font-weight:900;margin-top:5px}.matrix{width:100%;border-collapse:collapse}.matrix th,.matrix td{border:1px solid #ddd;padding:8px;text-align:left;vertical-align:top}.matrix th{background:#f5f5f5}.badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900;margin-right:6px}.read{background:#eef5fc;color:#315f8d}.safeop{background:#eaf7ed;color:#217337}.write{background:#fff0d8;color:#8a5a00}.toplink{float:right;font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.btn{display:inline-block;border:1px solid #8aa6c2;border-radius:5px;padding:9px 12px;text-decoration:none;font-weight:800;background:#fff}.primary{background:#4d79a8;color:#fff;border-color:#4d79a8}code{background:#f1f3f5;border-radius:4px;padding:1px 4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}@media(max-width:760px){.toc{grid-template-columns:1fr}.matrix{font-size:13px}}
+</style>
+</head>
+<body>
+<header><div class="wrap head"><a href="exam-guide.html">← 受験直前チェック</a><div class="sp"></div><span class="pill">AZ-104 最終補強</span></div></header>
+<main class="wrap">
+<h1>AZ-104 PowerShell 実践道場</h1>
+<p class="lead">Microsoftの2026年4月17日版AZ-104学習ガイドは、受験者にPowerShellの経験を明記しています。このページではコマンド丸暗記ではなく、<b>対象を取得 → 絞り込み → Scopeを確認 → 変更前に確認 → 必要なときだけ実行</b>というAzure管理者の流れを身につけます。</p>
+
+<div class="box safe"><b>課金方針:</b> 基本は読み取りCmdlet、WhatIf、既存の12か月無料ハンズオン資産を使います。新しい有料リソースを作ることは必須にしません。</div>
+<div class="box warn"><b>最重要:</b> 書き込みCmdletの前に必ず <code>Get-AzContext</code> でSubscriptionを確認してください。PowerShellは現在のContextに対して処理します。</div>
+
+<div class="actions"><a class="btn" href="https://learn.microsoft.com/ja-jp/credentials/certifications/resources/study-guides/az-104" target="_blank" rel="noopener">公式AZ-104学習ガイド</a><a class="btn" href="free-12m-labs.html">12か月無料ハンズオン</a><a class="btn primary" href="index.html">290問 過去問道場</a></div>
+
+<h2>進捗</h2>
+<div class="progress"><div id="bar"></div></div><div class="pct" id="pct">0%</div>
+
+<h2>目次</h2>
+<div class="toc">
+<a href="#p0">Lab 0　Cloud Shell / Context</a>
+<a href="#p1">Lab 1　Resource Group / Tag</a>
+<a href="#p2">Lab 2　RBAC</a>
+<a href="#p3">Lab 3　Storage</a>
+<a href="#p4">Lab 4　VM</a>
+<a href="#p5">Lab 5　VNet / NSG / Route</a>
+<a href="#p6">Lab 6　Bicep / ARM Deployment</a>
+<a href="#p7">Lab 7　Monitor / Activity Log</a>
+<a href="#p8">Lab 8　CLI ↔ PowerShell</a>
+<a href="#p9">Lab 9　総合障害シナリオ</a>
+</div>
+
+<section id="checks">
+<h2 id="p0"><span class="toplink"><a href="#">↑上へ</a></span>Lab 0　Cloud Shell / Subscription Context</h2>
+<p><span class="badge safeop">安全</span><b>目的:</b> どのTenant / Subscriptionに対して実行しているかを確認します。</p>
+<div class="cmd">Get-AzContext
+
+Get-AzSubscription | Select-Object Name, Id, State
+
+Set-AzContext -SubscriptionId "&lt;subscription-id&gt;"
+
+Get-AzContext | Select-Object Account, Subscription, Tenant</div>
+<div class="why"><b>基本:</b> Get = 取得、New = 作成、Set = 変更、Remove = 削除。Verb-AzNounの形で読むと、未知のCmdletでも意味を推測できます。</div>
+<div class="failbox"><h4>よくある失敗</h4><ul><li>別SubscriptionのContextのまま変更する</li><li>TenantとSubscriptionを混同する</li><li>出力を確認せずコピー実行する</li></ul></div>
+<div class="quiz"><h4>ミニ問題</h4><details><summary>Q1. 現在のContext確認は？</summary><div class="ans">Get-AzContext。</div></details><details><summary>Q2. Subscription切替は？</summary><div class="ans">Set-AzContext。</div></details><details><summary>Q3. 取得系Verbは？</summary><div class="ans">Get-。</div></details></div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 0 完了</b><br>Context確認とSubscription切替ができる。</span></label>
+
+<h2 id="p1"><span class="toplink"><a href="#">↑上へ</a></span>Lab 1　Resource Group / Tag</h2>
+<p><span class="badge safeop">低リスク</span><b>目的:</b> RGの取得、作成、Tag、削除予告を扱います。</p>
+<div class="cmd">Get-AzResourceGroup | Select-Object ResourceGroupName, Location
+
+Get-AzResourceGroup -Name "rg-az104-free-lab"
+
+New-AzResourceGroup -Name "rg-az104-ps-lab" -Location "japaneast" -Tag @{Purpose="AZ104"; Tool="PowerShell"} -WhatIf
+
+Remove-AzResourceGroup -Name "rg-az104-ps-lab" -WhatIf
+
+Get-Help New-AzResourceGroup -Full
+Get-Command *AzResourceGroup*</div>
+<div class="exam"><b>WhatIf:</b> 実行した場合の変更を表示し、処理を実行しません。対応可否はCmdletごとにHelpで確認します。</div>
+<div class="quiz"><h4>ミニ問題</h4><details><summary>Q1. RG作成Cmdletは？</summary><div class="ans">New-AzResourceGroup。</div></details><details><summary>Q2. 変更予告は？</summary><div class="ans">-WhatIf。</div></details><details><summary>Q3. 詳細Helpは？</summary><div class="ans">Get-Help Cmdlet名 -Full。</div></details></div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 1 完了</b><br>RGのGet / New / Remove / WhatIfを使い分けられる。</span></label>
+
+<h2 id="p2"><span class="toplink"><a href="#">↑上へ</a></span>Lab 2　RBAC</h2>
+<p><span class="badge read">読み取り中心</span><b>目的:</b> Principal / Role / Scopeの3要素を出力から読みます。</p>
+<div class="cmd">Get-AzRoleDefinition | Where-Object Name -in @("Reader","Contributor","Owner","Tag Contributor") | Select-Object Name, Id
+
+Get-AzRoleAssignment -ResourceGroupName "rg-az104-free-lab" | Select-Object DisplayName, RoleDefinitionName, Scope
+
+Get-AzRoleAssignment -ObjectId "&lt;object-id&gt;"</div>
+<div class="cost"><b>書き込み例:</b> 下は本当に権限を付与します。試験用Principalがなければ実行不要です。</div>
+<div class="cmd">New-AzRoleAssignment -ObjectId "&lt;object-id&gt;" -RoleDefinitionName "Reader" -ResourceGroupName "rg-az104-free-lab"
+
+# 代表Scope
+/subscriptions/&lt;subscription-id&gt;
+/subscriptions/&lt;subscription-id&gt;/resourceGroups/rg-az104-free-lab</div>
+<div class="exam"><b>試験:</b> RBACは「誰に」「何のRoleを」「どのScopeで」。最小権限ではRoleだけでなくScopeも広げすぎない。</div>
+<div class="quiz"><h4>ミニ問題</h4><details><summary>Q1. Role Assignment一覧は？</summary><div class="ans">Get-AzRoleAssignment。</div></details><details><summary>Q2. RBACの3要素は？</summary><div class="ans">Principal、Role、Scope。</div></details><details><summary>Q3. RGを閲覧だけなら？</summary><div class="ans">ReaderをRG Scopeに割り当てる。</div></details></div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 2 完了</b><br>Role / Principal / Scopeを読める。</span></label>
+
+<h2 id="p3"><span class="toplink"><a href="#">↑上へ</a></span>Lab 3　Storage</h2>
+<p><span class="badge read">既存無料資産</span><b>目的:</b> Storage accountのSKU、Kind、TLS、Network設定を確認します。</p>
+<div class="cmd">$rg = "rg-az104-free-lab"
+
+Get-AzStorageAccount -ResourceGroupName $rg | Select-Object StorageAccountName, Kind, SkuName, PrimaryLocation
+
+$st = Get-AzStorageAccount -ResourceGroupName $rg -Name "&lt;storage-account-name&gt;"
+$st | Format-List StorageAccountName, Kind, SkuName, MinimumTlsVersion, AllowBlobPublicAccess, EnableHttpsTrafficOnly
+
+Get-AzStorageAccountNetworkRuleSet -ResourceGroupName $rg -Name "&lt;storage-account-name&gt;"
+
+Get-Help New-AzStorageAccount -Examples</div>
+<div class="exam"><b>読むポイント:</b> Standard_LRS、StorageV2、Minimum TLS、Public access、DefaultAction、VirtualNetworkRules。</div>
+<div class="quiz"><h4>ミニ問題</h4><details><summary>Q1. Storage account一覧は？</summary><div class="ans">Get-AzStorageAccount。</div></details><details><summary>Q2. Firewall / VNet ruleは？</summary><div class="ans">Get-AzStorageAccountNetworkRuleSet。</div></details><details><summary>Q3. GPv2のKindは？</summary><div class="ans">StorageV2。</div></details></div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 3 完了</b><br>Storage設定をPowerShellで確認できる。</span></label>
+
+<h2 id="p4"><span class="toplink"><a href="#">↑上へ</a></span>Lab 4　Virtual Machine</h2>
+<p><span class="badge safeop">既存無料VM</span><b>目的:</b> VMのSize、Power state、Disk、NICをPortal表示と対応付けます。</p>
+<div class="cmd">$rg = "rg-az104-free-lab"
+
+Get-AzVM -ResourceGroupName $rg | Select-Object Name, Location, @{N="Size";E={$_.HardwareProfile.VmSize}}
+
+Get-AzVM -ResourceGroupName $rg -Status
+
+$vm = Get-AzVM -ResourceGroupName $rg -Name "vm-az104-free"
+$vm.StorageProfile
+$vm.NetworkProfile</div>
+<div class="cost"><b>状態変更:</b> 以下は実際にVMを停止/起動します。12か月無料ハンズオンで作った対象VMだけに使ってください。</div>
+<div class="cmd">Stop-AzVM -ResourceGroupName $rg -Name "vm-az104-free"
+
+Start-AzVM -ResourceGroupName $rg -Name "vm-az104-free"
+
+Get-AzVM -ResourceGroupName $rg -Name "vm-az104-free" -Status</div>
+<div class="exam"><b>試験:</b> VMの停止状態とDeallocatedを区別。VM削除後もDisk/NIC/Public IPが残る場合があります。</div>
+<div class="quiz"><h4>ミニ問題</h4><details><summary>Q1. Power stateまで取得するには？</summary><div class="ans">Get-AzVM -Status。</div></details><details><summary>Q2. Sizeはどこ？</summary><div class="ans">HardwareProfile.VmSize。</div></details><details><summary>Q3. 削除後に見るものは？</summary><div class="ans">Disk/NIC/Public IPなど関連リソース。</div></details></div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 4 完了</b><br>VMのStatus / Size / Disk / NICを確認できる。</span></label>
+
+<h2 id="p5"><span class="toplink"><a href="#">↑上へ</a></span>Lab 5　VNet / NSG / Route</h2>
+<p><span class="badge read">読み取り中心</span><b>目的:</b> VNet、Subnet、NSG、UDRをPowerShellオブジェクトとして読みます。</p>
+<div class="cmd">$rg = "rg-az104-free-lab"
+
+$vnet = Get-AzVirtualNetwork -ResourceGroupName $rg -Name "vnet-az104-a"
+$vnet.AddressSpace.AddressPrefixes
+$vnet.Subnets | Select-Object Name, AddressPrefix, NetworkSecurityGroup, RouteTable
+
+$nsg = Get-AzNetworkSecurityGroup -ResourceGroupName $rg -Name "nsg-az104-app"
+$nsg.SecurityRules | Sort-Object Priority | Select-Object Name, Priority, Direction, Access, Protocol, SourceAddressPrefix, DestinationPortRange
+
+Get-AzRouteTable -ResourceGroupName $rg | Select-Object Name, Location, Routes</div>
+<div class="cmd">$nic = Get-AzNetworkInterface -ResourceGroupName $rg -Name "&lt;nic-name&gt;"
+
+Get-AzEffectiveNetworkSecurityGroup -NetworkInterfaceName $nic.Name -ResourceGroupName $rg
+
+Get-AzEffectiveRouteTable -NetworkInterfaceName $nic.Name -ResourceGroupName $rg</div>
+<div class="exam"><b>試験:</b> NSGはPriorityの小さい数字が先。NIC/Subnet両方にNSGがあれば両方で許可が必要。</div>
+<div class="quiz"><h4>ミニ問題</h4><details><summary>Q1. VNet取得は？</summary><div class="ans">Get-AzVirtualNetwork。</div></details><details><summary>Q2. NSGルールの確認順は？</summary><div class="ans">Priority昇順。</div></details><details><summary>Q3. NICへ実際に適用されるNSG結果は？</summary><div class="ans">Get-AzEffectiveNetworkSecurityGroup。</div></details></div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 5 完了</b><br>VNet / NSG / Effective Routeを読める。</span></label>
+
+<h2 id="p6"><span class="toplink"><a href="#">↑上へ</a></span>Lab 6　Bicep / ARM Deployment</h2>
+<p><span class="badge safeop">WhatIf中心</span><b>目的:</b> 既存Bicepを変更してデプロイするPowerShell側を補完します。</p>
+<div class="cmd">$rg = "rg-az104-free-lab"
+
+New-AzResourceGroupDeployment -ResourceGroupName $rg -TemplateFile "./main.bicep" -WhatIf
+
+New-AzResourceGroupDeployment -ResourceGroupName $rg -TemplateFile "./main.bicep" -TemplateParameterFile "./main.bicepparam" -WhatIf
+
+# 実デプロイは内容確認後のみ
+# New-AzResourceGroupDeployment -ResourceGroupName $rg -TemplateFile "./main.bicep"</div>
+<div class="why"><b>Microsoft Learn:</b> New-AzResourceGroupDeploymentのWhatIfは、Cmdletを実行した場合の変更を示し、デプロイ自体は実行しません。</div>
+<div class="exam"><b>対応:</b> PowerShell = New-AzResourceGroupDeployment。CLI = az deployment group create / what-if。</div>
+<div class="quiz"><h4>ミニ問題</h4><details><summary>Q1. RGスコープのデプロイCmdletは？</summary><div class="ans">New-AzResourceGroupDeployment。</div></details><details><summary>Q2. 差分確認だけなら？</summary><div class="ans">-WhatIf。</div></details><details><summary>Q3. CLIの対応系統は？</summary><div class="ans">az deployment group。</div></details></div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 6 完了</b><br>BicepをPowerShellからWhatIfできる。</span></label>
+
+<h2 id="p7"><span class="toplink"><a href="#">↑上へ</a></span>Lab 7　Monitor / Activity Log</h2>
+<p><span class="badge read">読み取り</span><b>目的:</b> 「Azure側で何が起きたか」と「リソースのメトリック」を追います。</p>
+<div class="cmd">Get-AzActivityLog -StartTime (Get-Date).AddHours(-6) | Select-Object EventTimestamp, OperationName, Status, ResourceGroupName, Caller | Sort-Object EventTimestamp -Descending
+
+Get-AzMetricDefinition -ResourceId "&lt;resource-id&gt;" | Select-Object Name, Unit, PrimaryAggregationType
+
+Get-AzMetric -ResourceId "&lt;resource-id&gt;" -MetricName "Percentage CPU" -StartTime (Get-Date).AddHours(-1)</div>
+<div class="exam"><b>試験:</b> Activity LogはAzure Resource Manager側の管理プレーンイベント。VM内アプリログやLog Analyticsログとは別。</div>
+<div class="quiz"><h4>ミニ問題</h4><details><summary>Q1. 管理プレーンのSubscriptionイベントは？</summary><div class="ans">Get-AzActivityLog。</div></details><details><summary>Q2. 利用可能なMetric名は？</summary><div class="ans">Get-AzMetricDefinition。</div></details><details><summary>Q3. Activity LogはVMアプリログと同じ？</summary><div class="ans">違います。</div></details></div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 7 完了</b><br>Activity LogとMetricを確認できる。</span></label>
+
+<h2 id="p8"><span class="toplink"><a href="#">↑上へ</a></span>Lab 8　Azure CLI ↔ PowerShell</h2>
+<table class="matrix">
+<tr><th>目的</th><th>Azure CLI</th><th>PowerShell</th></tr>
+<tr><td>Context確認</td><td><code>az account show</code></td><td><code>Get-AzContext</code></td></tr>
+<tr><td>Subscription切替</td><td><code>az account set</code></td><td><code>Set-AzContext</code></td></tr>
+<tr><td>RG一覧</td><td><code>az group list</code></td><td><code>Get-AzResourceGroup</code></td></tr>
+<tr><td>RG作成</td><td><code>az group create</code></td><td><code>New-AzResourceGroup</code></td></tr>
+<tr><td>RBAC一覧</td><td><code>az role assignment list</code></td><td><code>Get-AzRoleAssignment</code></td></tr>
+<tr><td>RBAC作成</td><td><code>az role assignment create</code></td><td><code>New-AzRoleAssignment</code></td></tr>
+<tr><td>VM一覧</td><td><code>az vm list</code></td><td><code>Get-AzVM</code></td></tr>
+<tr><td>VNet取得</td><td><code>az network vnet show</code></td><td><code>Get-AzVirtualNetwork</code></td></tr>
+<tr><td>NSG取得</td><td><code>az network nsg show</code></td><td><code>Get-AzNetworkSecurityGroup</code></td></tr>
+<tr><td>RG Deployment</td><td><code>az deployment group create</code></td><td><code>New-AzResourceGroupDeployment</code></td></tr>
+</table>
+<div class="exam"><b>覚え方:</b> CLIは az service noun verb、PowerShellは Verb-AzNoun。コマンド名そのものより、対象・動詞・Scopeを読む。</div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 8 完了</b><br>代表操作をCLIとPowerShellで対応付けられる。</span></label>
+
+<h2 id="p9"><span class="toplink"><a href="#">↑上へ</a></span>Lab 9　総合障害シナリオ</h2>
+<div class="box info"><b>シナリオ:</b> rg-az104-free-lab内のVMが通信できない。変更はまだしたくない。VM状態、NIC、NSG、Route、直近の管理操作をPowerShellで確認する。</div>
+<div class="quiz">
+<details><summary>Step 1. VM状態</summary><div class="ans"><code>Get-AzVM -ResourceGroupName $rg -Name $vmName -Status</code></div></details>
+<details><summary>Step 2. NIC参照</summary><div class="ans"><code>(Get-AzVM -ResourceGroupName $rg -Name $vmName).NetworkProfile.NetworkInterfaces.Id</code></div></details>
+<details><summary>Step 3. NIC取得</summary><div class="ans"><code>Get-AzNetworkInterface -ResourceGroupName $rg -Name $nicName</code></div></details>
+<details><summary>Step 4. Effective NSG</summary><div class="ans"><code>Get-AzEffectiveNetworkSecurityGroup -NetworkInterfaceName $nicName -ResourceGroupName $rg</code></div></details>
+<details><summary>Step 5. Effective Route</summary><div class="ans"><code>Get-AzEffectiveRouteTable -NetworkInterfaceName $nicName -ResourceGroupName $rg</code></div></details>
+<details><summary>Step 6. 直近Activity Log</summary><div class="ans"><code>Get-AzActivityLog -StartTime (Get-Date).AddHours(-6)</code></div></details>
+</div>
+<div class="exam"><b>狙い:</b> いきなり変更せず、Get系で現在状態を集めて原因候補を潰してから変更する。実務にもAZ-104のトラブルシューティングにも効きます。</div>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 9 完了</b><br>読み取り中心で通信障害の初動を組み立てられる。</span></label>
+</section>
+
+<h2>最低限覚えるセット</h2>
+<table class="matrix">
+<tr><th>分野</th><th>Cmdlet</th></tr>
+<tr><td>Context</td><td>Get-AzContext / Get-AzSubscription / Set-AzContext</td></tr>
+<tr><td>Resource</td><td>Get-AzResourceGroup / New-AzResourceGroup</td></tr>
+<tr><td>RBAC</td><td>Get-AzRoleAssignment / New-AzRoleAssignment</td></tr>
+<tr><td>Storage</td><td>Get-AzStorageAccount / Get-AzStorageAccountNetworkRuleSet</td></tr>
+<tr><td>VM</td><td>Get-AzVM -Status / Stop-AzVM / Start-AzVM</td></tr>
+<tr><td>Network</td><td>Get-AzVirtualNetwork / Get-AzNetworkSecurityGroup / Get-AzEffectiveRouteTable</td></tr>
+<tr><td>IaC</td><td>New-AzResourceGroupDeployment -WhatIf</td></tr>
+<tr><td>Monitor</td><td>Get-AzActivityLog / Get-AzMetric</td></tr>
+</table>
+<div class="box safe"><b>完成条件:</b> 全Cmdletを丸暗記する必要はありません。「Getで調査 → Propertyを読む → Scope確認 → WhatIfできるなら先に確認 → 書き込み」という流れを自力で作れればOKです。</div>
+<div class="actions"><a class="btn primary" href="index.html">290問 過去問道場へ</a><a class="btn" href="free-12m-labs.html">12か月無料ハンズオンへ</a><a class="btn" href="manual-only.html">課金リスク機能マニュアルへ</a></div>
+</main>
+<script>
+const K='az104_powershell_labs_v1';
+const boxes=[...document.querySelectorAll('#checks input[type=checkbox]')];
+let saved=[];try{saved=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){}
+function draw(){let n=0;boxes.forEach((b,i)=>{b.checked=!!saved[i];b.closest('.check').classList.toggle('done',b.checked);if(b.checked)n++});const p=boxes.length?Math.round(n/boxes.length*100):0;document.getElementById('bar').style.width=p+'%';document.getElementById('pct').textContent=n+'/'+boxes.length+' 完了 ('+p+'%)'}
+boxes.forEach((b,i)=>b.addEventListener('change',()=>{saved[i]=b.checked;localStorage.setItem(K,JSON.stringify(saved));draw()}));draw();
+</script>
+</body>
+</html>

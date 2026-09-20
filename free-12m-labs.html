@@ -3,143 +3,525 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AZ-104 12か月無料ハンズオン</title>
+<title>AZ-104 12か月無料ハンズオン 完全版</title>
 <style>
-:root{--ink:#222;--line:#ddd;--blue:#315f8d;--green:#24743b;--amber:#8b5c00;--bg:#f7f8fa}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;color:var(--ink);line-height:1.72;background:#fff}a{color:#2467aa}.wrap{width:min(980px,100%);margin:auto;padding:0 14px}header{border-bottom:1px solid var(--line);padding:12px 0}.head{display:flex;gap:10px;align-items:center}.head a{text-decoration:none;font-weight:900}.sp{flex:1}.pill{background:#eaf7ed;color:var(--green);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900}main{padding:22px 0 60px}h1{font-size:clamp(28px,6vw,44px);margin:0 0 8px}h2{margin-top:34px;border-left:6px solid #4e9a5c;padding-left:10px}h3{margin:20px 0 6px}.lead{color:#555}.box{border:1px solid var(--line);border-radius:7px;padding:14px;margin:14px 0}.safe{background:#f3fbf5;border-color:#acd2b4}.warn{background:#fff8e7;border-color:#e4c574}.danger{background:#fff2f0;border-color:#e3aaa2}.shot{border:1px solid #ccc;border-radius:7px;overflow:hidden;margin:12px 0;background:#fcfcfc}.shot .top{background:#edf0f4;padding:8px 10px;font-weight:900}.shot .body{padding:10px 12px}.field{display:grid;grid-template-columns:210px 1fr;gap:10px;border-bottom:1px solid #eee;padding:7px 0}.field:last-child{border-bottom:none}.value{font-weight:800}.badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900;margin-right:6px}.free{background:#eaf7ed;color:#217337}.manual{background:#fff0d8;color:#8a5a00}.no{background:#ffe8e4;color:#a23b31}.check{display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eee;padding:10px 0}.check input{width:20px;height:20px;margin-top:4px}.check.done .txt{text-decoration:line-through;color:#888}.progress{height:14px;border-radius:999px;background:#eee;overflow:hidden}.progress>div{height:100%;background:#4e9a5c;width:0}.pct{font-weight:900;margin-top:5px}code{background:#f1f3f5;border-radius:4px;padding:2px 5px}.cmd{background:#1f2328;color:#f6f8fa;padding:10px;border-radius:6px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.why{background:#f5f9fd;border-left:4px solid #5b86b2;padding:9px 11px;margin:10px 0}.exam{background:#f2faf4;border-left:4px solid #4f9b5d;padding:9px 11px;margin:10px 0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.btn{display:inline-block;border:1px solid #8aa6c2;border-radius:5px;padding:9px 12px;text-decoration:none;font-weight:800;background:#fff}.primary{background:#4d79a8;color:#fff;border-color:#4d79a8}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f5f5f5}@media(max-width:700px){.field{grid-template-columns:1fr}.field .value{margin-top:-4px}}
+:root{--ink:#202124;--muted:#5f6368;--line:#dadce0;--blue:#315f8d;--green:#24743b;--amber:#8b5c00;--red:#a33a31;--bg:#f7f8fa}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;color:var(--ink);line-height:1.72;background:#fff}a{color:#2467aa}.wrap{width:min(1040px,100%);margin:auto;padding:0 14px}header{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);padding:10px 0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px)}.head{display:flex;gap:10px;align-items:center}.head a{text-decoration:none;font-weight:900}.sp{flex:1}.pill{background:#eaf7ed;color:var(--green);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900}main{padding:22px 0 70px}h1{font-size:clamp(30px,6vw,46px);line-height:1.2;margin:0 0 8px}h2{margin-top:42px;border-left:6px solid #4e9a5c;padding-left:10px}h3{margin:24px 0 8px}.lead{color:var(--muted);font-size:16px}.box{border:1px solid var(--line);border-radius:8px;padding:14px;margin:14px 0}.safe{background:#f3fbf5;border-color:#acd2b4}.warn{background:#fff8e7;border-color:#e4c574}.danger{background:#fff2f0;border-color:#e3aaa2}.info{background:#f5f9fd;border-color:#bcd1e6}.toc{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.toc a{border:1px solid #ccd7e2;border-radius:6px;padding:9px 11px;text-decoration:none;font-weight:800;background:#fff}.shot{border:1px solid #c8c8c8;border-radius:8px;overflow:hidden;margin:12px 0;background:#fcfcfc}.shot .top{background:#edf0f4;padding:8px 10px;font-weight:900}.shot .body{padding:10px 12px}.field{display:grid;grid-template-columns:230px 1fr;gap:10px;border-bottom:1px solid #eee;padding:7px 0}.field:last-child{border-bottom:none}.value{font-weight:800}.badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900;margin-right:6px;vertical-align:1px}.free{background:#eaf7ed;color:#217337}.manual{background:#fff0d8;color:#8a5a00}.no{background:#ffe8e4;color:#a23b31}.check{display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #eee;padding:10px 0}.check input{width:20px;height:20px;margin-top:4px;accent-color:#24743b}.check.done .txt{text-decoration:line-through;color:#888}.progress{height:14px;border-radius:999px;background:#eee;overflow:hidden}.progress>div{height:100%;background:#4e9a5c;width:0}.pct{font-weight:900;margin-top:5px}.cmd{background:#1f2328;color:#f6f8fa;padding:11px 12px;border-radius:7px;overflow:auto;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.why{background:#f5f9fd;border-left:4px solid #5b86b2;padding:10px 12px;margin:10px 0}.exam{background:#f2faf4;border-left:4px solid #4f9b5d;padding:10px 12px;margin:10px 0}.cost{background:#fff8e7;border-left:4px solid #d79b23;padding:10px 12px;margin:10px 0}.cleanup{background:#fff2f0;border-left:4px solid #c46b5e;padding:10px 12px;margin:10px 0}.expected{background:#f7f7f7;border-left:4px solid #777;padding:10px 12px;margin:10px 0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.btn{display:inline-block;border:1px solid #8aa6c2;border-radius:5px;padding:9px 12px;text-decoration:none;font-weight:800;background:#fff}.primary{background:#4d79a8;color:#fff;border-color:#4d79a8}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left;vertical-align:top}th{background:#f5f5f5}details{border:1px solid #ddd;border-radius:6px;padding:9px 11px;margin:8px 0;background:#fff}summary{cursor:pointer;font-weight:800}.labhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.meta{color:#666;font-size:13px}.steps li{margin:8px 0}.mini{font-size:13px;color:#666}.gate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.gate>div{border:1px solid #ddd;border-radius:6px;padding:9px;background:#fff}.gate b{display:block}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid #bbb;border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:#fff}.note{font-size:13px;color:#555}.toplink{float:right;font-size:12px}@media(max-width:760px){.field{grid-template-columns:1fr}.field .value{margin-top:-4px}.toc{grid-template-columns:1fr}.gate{grid-template-columns:1fr}table{font-size:13px}}
 </style>
 </head>
 <body>
-<header><div class="wrap head"><a href="exam-guide.html">← 受験直前チェック</a><div class="sp"></div><span class="pill">12か月無料を活用</span></div></header>
+<header><div class="wrap head"><a href="exam-guide.html">← 受験直前チェック</a><div class="sp"></div><span class="pill">12か月無料対象向け・完全版</span></div></header>
 <main class="wrap">
-<h1>AZ-104 12か月無料ハンズオン</h1>
-<p class="lead">12か月無料の対象アカウントを使い、無料枠が公式に明示されているサービスだけを実機で触ります。無料枠外の機能は <a href="manual-only.html">マニュアル学習</a> に回します。</p>
+<h1>AZ-104 12か月無料ハンズオン 完全版</h1>
+<p class="lead">「無料枠で実際に触れるところは実機」「少しでも課金の読みづらいところはマニュアル」に分けた、AZ-104用の実戦ハンズオンです。各Labに <b>目的 → Portal手順 → CLI/Bicep → 確認 → 試験ポイント → 後片付け → 理解チェック</b> を入れています。</p>
 
-<div class="box warn"><strong>最重要:</strong> 12か月無料は「対象サービスの月間無料量」までです。無料枠を超えた分、無料対象外SKU、付随する Public IP / Private Endpoint / Load Balancer / egress などは別料金になり得ます。Azure Portal の <b>Cost Management + Billing ＞ Free services</b> で、あなたのサブスクリプションに表示される残量・対象SKUを毎回確認してください。</div>
+<div class="box warn"><strong>先に読んでください。</strong> Azure の無料サービスは「対象SKU・月間無料量・12か月の有効期間」まで無料です。対象外SKUや付随リソースを選ぶと課金される場合があります。この教材では、<b>Azure Portal の Cost Management + Billing ＞ Free services にあなたのアカウントで表示される条件を最優先</b>にします。</div>
 
-<h2>0. 課金事故を防ぐ事前設定</h2>
-<div class="shot"><div class="top">Azure Portal ＞ Cost Management + Billing</div><div class="body">
-<div class="field"><span>Free services</span><span class="value">対象サービス / 使用量 / 無料上限 / 有効期限を確認</span></div>
-<div class="field"><span>Budgets</span><span class="value">少額の Budget + メール通知を設定</span></div>
-<div class="field"><span>Resource group</span><span class="value">rg-az104-free-lab に集約</span></div>
-<div class="field"><span>Tag</span><span class="value">Purpose=AZ104 / DeleteAfter=今日の日付</span></div>
-</div></div>
-<div class="box danger"><b>Budget は課金を自動停止しません。</b> 通知用です。0円を狙うなら「無料サービス残量を確認」「対象SKUを外さない」「使い終わったら削除」の3つが本体です。</div>
-
-<h2>公式に確認できる主な無料枠</h2>
-<table>
-<tr><th>サービス</th><th>無料枠の例</th><th>この教材での用途</th></tr>
-<tr><td>Virtual Machines</td><td>対象の burstable VM を月750時間（12か月）</td><td>VM作成、Redeploy、Disk attach/detach</td></tr>
-<tr><td>Managed Disks</td><td>64GB P6 SSD ×2、snapshot 1GB、I/O枠（12か月）</td><td>OS/Data disk、snapshot</td></tr>
-<tr><td>Blob Storage</td><td>Hot LRS 5GB + 読み書き操作枠（12か月）</td><td>SAS、versioning、soft delete、lifecycle</td></tr>
-<tr><td>Azure Files</td><td>LRS 100GB + ファイル操作枠（12か月）</td><td>File share、snapshot、soft delete</td></tr>
-<tr><td>Container Registry</td><td>Standard 1 registry、100GB、10 webhooks（12か月）</td><td>ACR作成、RBAC、repository確認</td></tr>
-<tr><td>Virtual Network</td><td>VNet自体は無料</td><td>Subnet、NSG、UDR、ASG</td></tr>
-<tr><td>App Service</td><td>Free tier の無料量あり</td><td>Web App 基本作成のみ。Standard機能はマニュアル</td></tr>
-<tr><td>Container Apps</td><td>常時無料の月間 vCPU/GiB秒/Request 枠あり</td><td>Container Apps 基本デプロイ</td></tr>
-</table>
-<p class="why">無料枠は変更されることがあります。この表より <b>Portal の Free services と Microsoft の無料サービス一覧を優先</b>してください。</p>
-
-<div class="progress"><div id="bar"></div></div><div class="pct" id="pct">0%</div>
-<div id="checks">
-
-<h2>Lab 1: Resource Group / Tag / Lock / RBAC</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">実機</span><b>rg-az104-free-lab を作成</b><br>Tag を付け、RGスコープで Reader を確認。CanNotDelete lock を作成→削除失敗→lock解除→削除可能、の流れを確認。</span></label>
-<div class="exam"><b>試験:</b> RBACは「誰が何をできるか」、Policyは「どんな構成を許すか」、Lockは「削除/変更保護」、Tagは「分類」。</div>
-
-<h2>Lab 2: VNet / Subnet / NSG / UDR</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">実機</span><b>VNet を2つ作成</b><br>vnet-a=10.10.0.0/16、vnet-b=10.20.0.0/16。Subnet、NSG、ASG、Route table を作り関連付ける。Peering は作成だけ確認し、大量通信はしない。</span></label>
-<div class="shot"><div class="top">Route table ＞ Routes</div><div class="body">
-<div class="field"><span>Destination</span><span class="value">0.0.0.0/0</span></div>
-<div class="field"><span>Next hop</span><span class="value">Virtual appliance</span></div>
-<div class="field"><span>Next hop IP</span><span class="value">10.10.1.4（例。NVA実体は作らなくてよい）</span></div>
-</div></div>
-<div class="exam"><b>試験:</b> VNet Peering は非推移的。重複アドレス空間では作れない。NSGがNICとSubnetの両方にある場合、両方を通過する必要がある。</div>
-
-<h2>Lab 3: Blob Storage</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">12か月無料</span><b>Standard / LRS の GPv2 Storage account を作成</b><br>小さいテキストファイルだけを使い、5GB無料枠・操作数上限を大きく下回る。</span></label>
-<ol>
-<li>Blob container を Private で作成。</li>
-<li>1KB程度のテキストを upload。</li>
-<li>Blob versioning と soft delete を有効化。</li>
-<li>ファイルを書き換え、以前の version が残ることを確認。</li>
-<li>削除→soft-deleted blob の復元を確認。</li>
-<li>Lifecycle rule を作成して「一定日数後に Cool」条件を見る。大量データは置かない。</li>
-<li>Service SAS と User delegation SAS の作成画面を比較。</li>
-</ol>
-<div class="exam"><b>試験:</b> versioning=旧版、soft delete=削除復元、lifecycle=自動tier/削除、immutable=WORM。User delegation SAS=Entra ID。</div>
-
-<h2>Lab 4: Azure Files</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">12か月無料</span><b>Azure Files の file share を作成</b><br>空または数KBのファイルだけを使う。Share snapshot と soft delete を確認。</span></label>
-<div class="exam"><b>試験:</b> SMBはTCP 445。File share snapshot はポイントインタイムコピー。soft delete は削除された share の復元。</div>
-
-<h2>Lab 5: AzCopy / Storage Explorer</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">12か月無料</span><b>小さいファイルを AzCopy / Storage Explorer で操作</b><br>1KB〜数KB程度で十分。数GBの転送はしない。</span></label>
-<div class="cmd">azcopy copy "./sample.txt" "https://&lt;account&gt;.blob.core.windows.net/&lt;container&gt;/sample.txt?&lt;SAS&gt;"</div>
-<div class="exam"><b>試験:</b> Storage Explorer=GUI、AzCopy=大量データ転送向けCLI。</div>
-
-<h2>Lab 6: 無料対象 VM + Managed Disk</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">12か月無料</span><b>Portal の Free services に表示される対象VM SKUで1台だけ作成</b><br>Public IP は付けない。OS disk は無料枠対象容量/SKUを選ぶ。作成後は同日中に削除。</span></label>
 <div class="box safe">
+<strong>2026年9月時点で公式無料サービス一覧から確認できる主な12か月無料枠</strong>
+<table>
+<tr><th>サービス</th><th>公式無料枠の例</th><th>この教材で使う量</th></tr>
+<tr><td>Virtual Machines</td><td>B2ts v2 / B2pts v2 / B2ats v2 を各750時間/月</td><td>対象SKU 1台、短時間</td></tr>
+<tr><td>Managed Disks</td><td>P6 64GB SSD ×2、snapshot 1GB、I/O枠</td><td>P6を最大2本、snapshotは極小</td></tr>
+<tr><td>Blob Storage</td><td>Hot LRS 5GB、読み取り20,000、書き込み10,000/月</td><td>数KBのテキスト数個</td></tr>
+<tr><td>Azure Files</td><td>LRS 100GB、200万回のファイル操作/月</td><td>数KBのファイル1〜2個</td></tr>
+<tr><td>その他</td><td>アカウントの Free services 画面で確認</td><td>表示される対象だけ実機</td></tr>
+</table>
+<p class="note">無料枠は変更されるため、上の数値より Portal と Microsoft公式ページを優先してください。</p>
+</div>
+
+<div class="actions">
+<a class="btn" href="https://azure.microsoft.com/ja-jp/pricing/free-services/" target="_blank" rel="noopener">Microsoft 無料サービス一覧</a>
+<a class="btn" href="manual-only.html">課金リスク機能のマニュアル</a>
+<a class="btn primary" href="index.html">290問 過去問道場</a>
+</div>
+
+<h2>進捗</h2>
+<div class="progress"><div id="bar"></div></div><div class="pct" id="pct">0%</div>
+
+<h2>目次</h2>
+<div class="toc">
+<a href="#lab0">Lab 0　課金事故防止・共通準備</a>
+<a href="#lab1">Lab 1　RG / Tag / Lock / RBAC</a>
+<a href="#lab2">Lab 2　Bicep 読解・build・what-if</a>
+<a href="#lab3">Lab 3　VNet / Subnet / NSG / ASG / UDR</a>
+<a href="#lab4">Lab 4　Blob / SAS / Versioning / Lifecycle</a>
+<a href="#lab5">Lab 5　Azure Files / Snapshot / Soft Delete</a>
+<a href="#lab6">Lab 6　AzCopy / Storage Explorer</a>
+<a href="#lab7">Lab 7　無料対象VM / Disk / Redeploy</a>
+<a href="#lab8">Lab 8　ACR / RBAC・ABAC</a>
+<a href="#lab9">Lab 9　App Service Free の基本</a>
+<a href="#lab10">Lab 10　最終整理・模試へ接続</a>
+</div>
+
+<section id="checks">
+<h2 id="lab0"><span class="toplink"><a href="#">↑上へ</a></span>Lab 0　課金事故防止・共通準備</h2>
+<div class="labhead"><span class="badge free">実機</span><b>所要 15〜20分</b><span class="meta">合格に直結: Cost / RG / Tag / Budget</span></div>
+<p><b>目的:</b> 以降のハンズオンを1つのRGへ集約し、無料枠残量と削除対象を見失わない状態を作ります。</p>
+
+<h3>0-1. 無料枠を確認</h3>
+<ol class="steps">
+<li>Azure Portalへサインイン。</li>
+<li>上部検索欄で <b>Cost Management + Billing</b> を検索。</li>
+<li>使用している課金アカウント/サブスクリプションを選択。</li>
+<li><b>Free services</b> を開き、12か月無料の残量と終了日を確認。</li>
+<li>VMを使う予定なら、対象VM SKUがあなたの画面に表示されることを確認。表示されないSKUはこの教材では作りません。</li>
+</ol>
+<div class="expected"><b>期待結果:</b> 「12 months」「Free」「Remaining」等の表示で、対象サービス・残量・終了日を確認できる。</div>
+
+<h3>0-2. 専用リソースグループ</h3>
+<div class="shot"><div class="top">Portal ＞ Resource groups ＞ Create</div><div class="body">
+<div class="field"><span>Subscription</span><span class="value">自分の12か月無料対象サブスクリプション</span></div>
+<div class="field"><span>Resource group</span><span class="value">rg-az104-free-lab</span></div>
+<div class="field"><span>Region</span><span class="value">Japan East など、自分が使うリージョン</span></div>
+</div></div>
+<ol class="steps">
+<li><b>Resource groups</b> → <b>Create</b>。</li>
+<li>名前を <code>rg-az104-free-lab</code> にする。</li>
+<li>作成後、RGの <b>Tags</b> を開く。</li>
+<li><code>Purpose=AZ104</code>、<code>DeleteAfter=今日の日付</code> を追加。</li>
+</ol>
+
+<h3>0-3. Budget</h3>
+<ol class="steps">
+<li><b>Cost Management</b> → <b>Budgets</b> → <b>Add</b>。</li>
+<li>できるだけ低い金額で予算を作り、通知先メールを自分に設定。</li>
+<li>しきい値 50% / 80% / 100% などを設定。</li>
+</ol>
+<div class="cost"><b>重要:</b> Budget は課金を止めません。しきい値超過時に通知するだけです。「自動停止装置」と思わないこと。</div>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 0 完了</b><br>Free services、専用RG、Tag、Budgetを確認した。</span></label>
+<details><summary>理解チェック</summary>
+<p><b>Q:</b> Budgetを100円にすれば100円でAzureが止まる？<br><b>A:</b> いいえ。Budgetは通知/管理用で、リソースや消費を自動停止しません。</p>
+</details>
+
+<h2 id="lab1"><span class="toplink"><a href="#">↑上へ</a></span>Lab 1　Resource Group / Tag / Lock / RBAC</h2>
+<div class="labhead"><span class="badge free">実機</span><b>所要 25分</b><span class="meta">公式: ID & Governance</span></div>
+<p><b>目的:</b> AZ-104で頻出の「分類」「削除保護」「権限」をPortal上で切り分けます。</p>
+
+<h3>1-1. Tag</h3>
+<ol class="steps">
+<li><code>rg-az104-free-lab</code> → <b>Tags</b>。</li>
+<li><code>Department=IT</code> を追加。</li>
+<li>サブスクリプションの <b>Tags</b> 画面から <code>Department=IT</code> で絞り込めることを確認。</li>
+</ol>
+<div class="exam"><b>試験:</b> Tagはメタデータ。Tagだけでは削除や変更を止められません。</div>
+
+<h3>1-2. Resource Lock</h3>
+<ol class="steps">
+<li>RG → <b>Locks</b> → <b>Add</b>。</li>
+<li>Name: <code>lock-delete</code>、Lock type: <b>Delete</b>。</li>
+<li>RG内に任意の無料リソースがあれば削除を試す。なくてもRGの削除ボタンまで進み、ロックが阻止することを確認。</li>
+<li>Lockを削除する。</li>
+</ol>
+<div class="why"><b>CanNotDelete:</b> 読み取り・変更はできるが削除不可。<br><b>ReadOnly:</b> 読み取りだけ。管理プレーンの更新操作も止まり、影響が大きい。</div>
+
+<h3>1-3. RBAC</h3>
+<ol class="steps">
+<li>RG → <b>Access control (IAM)</b> → <b>Role assignments</b>。</li>
+<li><b>Add role assignment</b> を押し、Reader / Contributor / Tag Contributor の説明を読む。</li>
+<li>実際に別ユーザーがいなければ、割り当て確定は不要。<b>Role → Members → Review + assign</b> の流れを確認する。</li>
+<li><b>Check access</b> で自分の現在のアクセスを確認。</li>
+</ol>
+<div class="exam"><b>覚え方:</b> Reader=読むだけ / Contributor=リソース変更 / Owner=変更+アクセス管理 / Tag Contributor=タグ管理に特化。</div>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 1 完了</b><br>Tag・Lock・IAMの違いをPortalで説明できる。</span></label>
+<details><summary>理解チェック</summary>
+<p><b>Q1:</b> VMを削除させたくないが設定変更は許可したい。ReadOnlyとCanNotDeleteのどちら？<br><b>A:</b> CanNotDelete。</p>
+<p><b>Q2:</b> ユーザーにタグだけ変更させたい。Contributorより適したロールは？<br><b>A:</b> Tag Contributor。</p>
+</details>
+
+<h2 id="lab2"><span class="toplink"><a href="#">↑上へ</a></span>Lab 2　Bicep 読解・build・what-if</h2>
+<div class="labhead"><span class="badge free">ローカル中心</span><b>所要 45分</b><span class="meta">公式: ARM/Bicep</span></div>
+<p><b>目的:</b> 「Bicepの単語を知っている」から「既存Bicepを読んで修正できる」へ進めます。</p>
+
+<h3>2-1. 最小Bicep</h3>
+<div class="cmd">param location string = resourceGroup().location
+param prefix string = 'az104'
+
+resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
+  name: '${prefix}-vnet'
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        '10.50.0.0/16'
+      ]
+    }
+    subnets: [
+      {
+        name: 'subnet-app'
+        properties: {
+          addressPrefix: '10.50.1.0/24'
+        }
+      }
+    ]
+  }
+}
+
+output vnetId string = vnet.id</div>
+<ol class="steps">
+<li>Azure Cloud Shell またはローカルAzure CLIを開く。</li>
+<li><code>main.bicep</code> として保存。</li>
+<li><code>az bicep build --file main.bicep</code> を実行。</li>
+<li>生成されるARM JSONを開き、Bicepの <code>param/resource/output</code> がどのように変換されたか確認。</li>
+</ol>
+<div class="cmd">az bicep build --file main.bicep</div>
+
+<h3>2-2. for / if / existing / module を読む</h3>
+<div class="cmd">param names array = [
+  'st01'
+  'st02'
+]
+
+resource dummy 'Microsoft.Storage/storageAccounts@2023-05-01' = [for name in names: if (length(name) > 0) {
+  name: '${uniqueString(resourceGroup().id)}${name}'
+  location: resourceGroup().location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+}]</div>
 <ul>
-<li>VM SKU は <b>あなたの Free services 画面に表示される対象SKU</b>を選ぶ。</li>
-<li>Public IP: None。</li>
-<li>OS/Data disk: 無料枠対象の P6 64GB を意識。</li>
-<li>RDP/SSH のために有料サービスを追加しない。必要な確認は Portal の Run command / Resource view を優先。</li>
-<li>Resize は有料SKUへ変更しない。画面だけ確認し、実操作は <a href="manual-only.html">マニュアル</a>。</li>
-</ul></div>
-<ol>
-<li>VM作成。</li>
-<li>2本目の無料枠対象 Managed Disk を attach。</li>
-<li>Data disk を detach → 再attach。</li>
-<li>VM の Redeploy + reapply 画面を確認。</li>
-<li>Snapshot は無料枠の1GBを超えないよう、空に近いData diskで1つだけ試すか、画面確認のみ。</li>
-<li>終わったら VM、disk、NIC を含めリソース削除。</li>
+<li><code>for</code> = 反復。</li>
+<li><code>if</code> = 条件付きデプロイ。</li>
+<li><code>existing</code> = 新規作成せず既存リソース参照。</li>
+<li><code>module</code> = 別Bicepファイルを再利用。</li>
+</ul>
+<div class="cost"><b>0円方針:</b> buildまではローカル処理です。what-if / deployは対象リソースによって課金が絡むので、無料範囲で使うVNet程度に限定してください。</div>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 2 完了</b><br>param / resource / output / for / if / existing / module を説明できる。</span></label>
+<details><summary>理解チェック</summary>
+<p><b>Q:</b> 既存Storage accountを再作成せず参照するキーワードは？<br><b>A:</b> existing。</p>
+</details>
+
+<h2 id="lab3"><span class="toplink"><a href="#">↑上へ</a></span>Lab 3　VNet / Subnet / NSG / ASG / UDR</h2>
+<div class="labhead"><span class="badge free">実機</span><b>所要 45〜60分</b><span class="meta">公式: Virtual Networking</span></div>
+<p><b>目的:</b> IP設計、NSG、ルート、Peeringの関係を「画面」で覚えます。NVAやVPN Gatewayは作りません。</p>
+
+<h3>3-1. VNet A</h3>
+<div class="shot"><div class="top">Virtual networks ＞ Create</div><div class="body">
+<div class="field"><span>Name</span><span class="value">vnet-az104-a</span></div>
+<div class="field"><span>Address space</span><span class="value">10.10.0.0/16</span></div>
+<div class="field"><span>Subnet</span><span class="value">snet-app / 10.10.1.0/24</span></div>
+</div></div>
+<h3>3-2. VNet B</h3>
+<div class="shot"><div class="top">Virtual networks ＞ Create</div><div class="body">
+<div class="field"><span>Name</span><span class="value">vnet-az104-b</span></div>
+<div class="field"><span>Address space</span><span class="value">10.20.0.0/16</span></div>
+<div class="field"><span>Subnet</span><span class="value">snet-back / 10.20.1.0/24</span></div>
+</div></div>
+<div class="exam"><b>試験:</b> PeeringするVNetのアドレス空間は重複不可。10.10.0.0/16 と 10.10.1.0/24 は重複しています。</div>
+
+<h3>3-3. NSG</h3>
+<ol class="steps">
+<li><b>Network security groups</b> → Create → <code>nsg-az104-app</code>。</li>
+<li>Inbound security rulesを開く。</li>
+<li>TCP 443 Allowルールを作る。Priorityは例として100。</li>
+<li>同じポートのDenyルールをPriority200で作り、「小さいpriorityが先」の意味を確認。</li>
+<li>最終的には不要なルールを削除し、安全な状態に戻す。</li>
+<li>NSG → <b>Subnets</b> → <code>vnet-az104-a/snet-app</code> に関連付け。</li>
 </ol>
-<div class="exam"><b>試験:</b> Resize=VM SKU変更、Redeploy=別ホストへ再配置、Detach/Attach=Data disk移動。Public IPはVMの必須要素ではない。</div>
 
-<h2>Lab 7: Azure Container Registry</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">12か月無料</span><b>Standard ACRを1つ作成</b><br>100GB無料枠を大きく下回る。巨大イメージや大量pullはしない。</span></label>
-<ol>
-<li>ACR作成時に Standard を選択。</li>
-<li>Access control (IAM) で AcrPull / AcrPush の説明を確認。</li>
-<li>Registry permissions mode が ABAC 対応の場合は Repository Reader / Writer 系へロール体系が変わる点を確認。</li>
-<li>Repository 一覧を確認。実イメージは小さいもの1つまで。</li>
+<h3>3-4. ASG</h3>
+<ol class="steps">
+<li><b>Application security groups</b> → Create → <code>asg-web</code>。</li>
+<li>VM/NICがなくても、NSG ruleのSource/DestinationでASGを選べることを確認。</li>
 </ol>
-<div class="exam"><b>試験:</b> 問題文に Registry permissions mode があるか確認。RBAC-only と ABAC 対応モードでロール体系が異なる。</div>
+<div class="exam"><b>試験:</b> ASGはNICの論理グループ。IPアドレスを直接並べずに「Web群」「App群」のようにNSGを記述できます。</div>
 
-<h2>Lab 8: App Service Free tier</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">常時無料枠</span><b>Free tier で Web App の基本作成だけ実施</b><br>HTTPS Only など無料tierで確認できる基本設定を見る。Deployment Slots / Autoscale / VNet Integration / Private Endpoint は有料tier前提なので実機にしない。</span></label>
-<div class="exam"><b>試験:</b> Standard以上が必要な autoscale、Deployment slots、ネットワーク統合等を Free tier の体験と混同しない。</div>
+<h3>3-5. UDR</h3>
+<div class="shot"><div class="top">Route tables ＞ rt-az104 ＞ Routes ＞ Add</div><div class="body">
+<div class="field"><span>Route name</span><span class="value">default-to-nva</span></div>
+<div class="field"><span>Destination</span><span class="value">IP Addresses</span></div>
+<div class="field"><span>Destination IP/CIDR</span><span class="value">0.0.0.0/0</span></div>
+<div class="field"><span>Next hop type</span><span class="value">Virtual appliance</span></div>
+<div class="field"><span>Next hop address</span><span class="value">10.10.1.4（NVAは作らない）</span></div>
+</div></div>
+<p>設定画面を確認したら、通信断を避けるためルートを保存せずに戻るか、保存した場合はすぐ削除します。</p>
 
-<h2>Lab 9: Container Apps（任意）</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">常時無料枠</span><b>小さい Container App を min replicas=0 で作る</b><br>短時間で削除。大量requestや常時replicaは避ける。</span></label>
-<div class="exam"><b>試験:</b> Container Apps の scale rule / event-driven scale / sidecar の概念を問題演習と結び付ける。</div>
+<h3>3-6. Peering</h3>
+<ol class="steps">
+<li>vnet-az104-a → <b>Peerings</b> → Add。</li>
+<li>Remote VNetにvnet-az104-bを指定。</li>
+<li>双方向の「Allow virtual network access」を確認。</li>
+<li>作成後、PeeringsがConnectedになることを確認。</li>
+<li>大量データ転送はしない。理解確認後にPeeringを削除してよい。</li>
+</ol>
+<div class="exam"><b>試験:</b> Peeringは非推移的。A-B、B-Cを作ってもA-Cが自動でつながるわけではありません。</div>
 
-<h2>ここから先は実機にしない</h2>
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 3 完了</b><br>VNet・Subnet・NSG・ASG・UDR・Peeringの役割を説明できる。</span></label>
+<details><summary>理解チェック</summary>
+<p><b>Q1:</b> 特定VM群をNSGの宛先にまとめたい。何を使う？<br><b>A:</b> ASG。</p>
+<p><b>Q2:</b> 全通信をNVAへ。UDRの宛先とNext hopは？<br><b>A:</b> 0.0.0.0/0、Virtual appliance。</p>
+</details>
+
+<h2 id="lab4"><span class="toplink"><a href="#">↑上へ</a></span>Lab 4　Blob / SAS / Versioning / Soft Delete / Lifecycle</h2>
+<div class="labhead"><span class="badge free">12か月無料</span><b>所要 60分</b><span class="meta">公式: Storage</span></div>
+<p><b>目的:</b> StorageをAZ-104で最も出やすい「アクセス制御」と「データ保護」に分けて体験します。</p>
+
+<h3>4-1. Storage account作成</h3>
+<div class="shot"><div class="top">Storage accounts ＞ Create</div><div class="body">
+<div class="field"><span>Resource group</span><span class="value">rg-az104-free-lab</span></div>
+<div class="field"><span>Name</span><span class="value">世界で一意な名前（例: staz104xxxx）</span></div>
+<div class="field"><span>Performance</span><span class="value">Standard</span></div>
+<div class="field"><span>Redundancy</span><span class="value">Locally-redundant storage (LRS)</span></div>
+<div class="field"><span>Hierarchical namespace</span><span class="value">Off（今回）</span></div>
+</div></div>
+<div class="cost"><b>無料枠ガード:</b> Hot LRSの小さいBlobだけを使います。ZRS/GRSや大容量データはこのLabでは不要。</div>
+
+<h3>4-2. Container / Blob</h3>
+<ol class="steps">
+<li>Storage account → <b>Data storage ＞ Containers</b> → <b>+ Container</b>。</li>
+<li>Name: <code>lab</code>、Anonymous access level: <b>Private</b>。</li>
+<li>PCで <code>version1.txt</code> を作り、中身を「v1」にする。</li>
+<li>Upload。</li>
+<li>同名ファイルを「v2」に変えて後で上書きするため、いったん次のVersioningへ。</li>
+</ol>
+
+<h3>4-3. Versioning と Soft Delete</h3>
+<ol class="steps">
+<li>Storage account → <b>Data management ＞ Data protection</b>。</li>
+<li><b>Enable versioning for blobs</b> をON。</li>
+<li><b>Enable soft delete for blobs</b> をON。保持期間は学習用に短めの値を選択。</li>
+<li>保存。</li>
+<li><code>version1.txt</code> の中身を「v2」に変更して同名上書き。</li>
+<li>Blobの <b>Versions</b> から旧版が残っていることを確認。</li>
+<li>Blobを削除し、Deleted blobs表示から復元動作を確認。</li>
+</ol>
+<div class="why"><b>Versioning:</b> 書き換え時の旧版を残す。<br><b>Soft delete:</b> 削除したデータを保持期間内に復元。<br><b>両方ON:</b> 削除時の挙動が少し変わるので、Version一覧も確認する。</div>
+
+<h3>4-4. Lifecycle Management</h3>
+<ol class="steps">
+<li><b>Data management ＞ Lifecycle management</b> → Add rule。</li>
+<li>Rule name: <code>move-to-cool</code>。</li>
+<li>Scope: Base blobs。</li>
+<li>条件: Last modified 30 days ago。</li>
+<li>Action: Move to cool storage。</li>
+<li>設定内容を確認。実際に30日待つ必要はありません。</li>
+</ol>
+<div class="exam"><b>試験:</b> Lifecycleは「自動でtier移動/削除」。VersioningやSoft deleteの代わりではありません。</div>
+
+<h3>4-5. SAS 3種類</h3>
+<div class="box info">
+<b>Service SAS</b>: 1つのStorage service内のリソースへ委任。Stored access policyと関連付け可能。<br>
+<b>Account SAS</b>: 複数Storage serviceやサービスレベル操作まで委任可能。Stored access policy不可。<br>
+<b>User delegation SAS</b>: Microsoft Entra資格情報で署名。Microsoft推奨。Stored access policy不可。
+</div>
+<ol class="steps">
+<li>Container <code>lab</code> を開く。</li>
+<li>PortalでSAS作成画面を開き、権限(Read/Listなど)、Start/Expiry、HTTPS onlyを確認。</li>
+<li>User delegation SASを作る場合、アカウントに必要なRBAC権限があることを確認。</li>
+<li>有効期限を短くし、SAS URLをブラウザで試す。</li>
+<li>学習後、生成したSASは保存せず破棄。</li>
+</ol>
+<div class="exam"><b>重要:</b> Stored access policyと結び付けるのはService SAS。User delegation SAS / Account SASにはStored access policyを使いません。</div>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 4 完了</b><br>Versioning / Soft delete / Lifecycle / 3種類のSASを説明できる。</span></label>
+<details><summary>理解チェック</summary>
+<p><b>Q1:</b> Entraで署名するSASは？<br><b>A:</b> User delegation SAS。</p>
+<p><b>Q2:</b> 発行済みSASの期限をサーバー側ポリシーで変更したい。どの組合せ？<br><b>A:</b> Service SAS + Stored access policy。</p>
+</details>
+
+<h2 id="lab5"><span class="toplink"><a href="#">↑上へ</a></span>Lab 5　Azure Files / Snapshot / Soft Delete</h2>
+<div class="labhead"><span class="badge free">12か月無料</span><b>所要 35分</b><span class="meta">公式: Storage</span></div>
+<h3>5-1. File share</h3>
+<ol class="steps">
+<li>同じStorage account → <b>Data storage ＞ File shares</b>。</li>
+<li><b>+ File share</b>。</li>
+<li>Name: <code>share-lab</code>。</li>
+<li>Tierは無料枠表示と一致する標準/LRS側を選び、極小容量だけ使う。</li>
+<li>数KBのテキストファイルを1個Upload。</li>
+</ol>
+<h3>5-2. Snapshot</h3>
+<ol class="steps">
+<li>File shareを開く。</li>
+<li><b>Snapshots</b> → Add snapshot。</li>
+<li>元ファイルを書き換える。</li>
+<li>Snapshotから旧状態を確認。</li>
+</ol>
+<h3>5-3. Soft Delete</h3>
+<ol class="steps">
+<li>Storage account → File shares → <b>Soft delete</b> 設定を確認。</li>
+<li>保持期間を確認。</li>
+<li>Share削除→Deleted sharesから復元、という流れを確認。実際に試す場合はデータを極小にする。</li>
+</ol>
+<div class="exam"><b>試験:</b> SMBはTCP 445。Share snapshotは共有のポイントインタイムコピー。Soft deleteは削除されたFile shareを保持期間中に復元。</div>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 5 完了</b><br>Azure FilesのShare / Snapshot / Soft deleteを確認した。</span></label>
+
+<h2 id="lab6"><span class="toplink"><a href="#">↑上へ</a></span>Lab 6　AzCopy / Storage Explorer</h2>
+<div class="labhead"><span class="badge free">12か月無料</span><b>所要 30分</b><span class="meta">公式: Storage管理ツール</span></div>
+<h3>6-1. Storage Explorer</h3>
+<ol class="steps">
+<li>Azure Storage Explorerをインストール済みなら起動。未インストールなら公式手順だけ読んでも可。</li>
+<li>Microsoft Entraでサインイン。</li>
+<li>Storage Accounts → Containers → <code>lab</code>。</li>
+<li>BlobをUpload / Download / Properties確認。</li>
+</ol>
+<h3>6-2. AzCopy</h3>
+<p>数KBのファイルだけを使います。</p>
+<div class="cmd">azcopy copy "./sample.txt" "https://&lt;account&gt;.blob.core.windows.net/lab/sample.txt?&lt;SAS&gt;"</div>
+<div class="cmd">azcopy list "https://&lt;account&gt;.blob.core.windows.net/lab?&lt;SAS&gt;"</div>
+<div class="exam"><b>試験:</b> Storage Explorer=GUI管理。AzCopy=Storageとの高速データ転送CLI。用途の違いを覚える。</div>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 6 完了</b><br>Storage ExplorerとAzCopyの役割を使い分けられる。</span></label>
+
+<h2 id="lab7"><span class="toplink"><a href="#">↑上へ</a></span>Lab 7　無料対象VM / Managed Disk / Redeploy</h2>
+<div class="labhead"><span class="badge free">12か月無料</span><b>所要 50〜70分</b><span class="meta">公式: Compute</span></div>
+<div class="box danger"><b>このLabだけは開始前に必ずFree servicesを確認。</b> VM SKUは、あなたのPortalで12か月無料と明示されるものだけを選んでください。2026年9月の公式料金ページでは B2ts v2 / B2pts v2 / B2ats v2 が各750時間/月と案内されていますが、リージョン在庫やアカウント表示を優先します。</div>
+
+<h3>7-1. VM作成</h3>
+<div class="shot"><div class="top">Virtual machines ＞ Create ＞ Azure virtual machine</div><div class="body">
+<div class="field"><span>Resource group</span><span class="value">rg-az104-free-lab</span></div>
+<div class="field"><span>Name</span><span class="value">vm-az104-free</span></div>
+<div class="field"><span>Region</span><span class="value">無料SKUが選べるリージョン</span></div>
+<div class="field"><span>Image</span><span class="value">Ubuntu LTS等（有償OSイメージは避ける）</span></div>
+<div class="field"><span>Size</span><span class="value">Free services画面に出る対象Bシリーズ</span></div>
+<div class="field"><span>Public inbound ports</span><span class="value">None</span></div>
+<div class="field"><span>Public IP</span><span class="value">None</span></div>
+<div class="field"><span>OS disk</span><span class="value">無料枠対象P6 64GBを意識</span></div>
+</div></div>
+<div class="cost"><b>課金回避:</b> Public IP、Bastion、Load Balancer、Premiumな追加機能を付けません。VMサイズを「よく似た別SKU」に変えないでください。</div>
+
+<h3>7-2. Run commandでOSを確認</h3>
+<ol class="steps">
+<li>VM → <b>Operations ＞ Run command</b>。</li>
+<li>LinuxならRunShellScriptを選ぶ。</li>
+<li><code>uname -a</code>、<code>df -h</code> 等の読み取り系コマンドを実行。</li>
+</ol>
+<div class="cmd">uname -a
+df -h
+lsblk</div>
+<p>Public IPを付けずに、PortalからゲストOS情報を確認できることを体験します。</p>
+
+<h3>7-3. Data disk</h3>
+<ol class="steps">
+<li>VM → <b>Disks</b> → <b>Create and attach a new disk</b>。</li>
+<li>無料枠の2本目として使う場合、P6 64GBを超えないようにする。</li>
+<li>保存。</li>
+<li>Run commandで <code>lsblk</code> を再実行し、新しいdiskを確認。</li>
+<li>VM → Disks からData diskをDetach。</li>
+<li>再度Attach。</li>
+</ol>
+<div class="exam"><b>試験:</b> Data diskはOS diskとは別。対応VM/SKUなら停止せずdetachできるケースがあります。設問条件を読む。</div>
+
+<h3>7-4. Redeploy</h3>
+<ol class="steps">
+<li>VM → <b>Help ＞ Redeploy + reapply</b>（Portalの位置は変更されることがあります）。</li>
+<li>説明を読み、「別Azure hostへ移動する」意味を確認。</li>
+<li>実行する場合、短時間で完了後すぐdeallocate。</li>
+</ol>
+<div class="exam"><b>区別:</b> Redeploy=ホスト移動 / Resize=VM SKU変更 / Reimage=OSイメージ再適用 / Move=RG・Subscription・Region移動。</div>
+
+<h3>7-5. Deallocate と削除</h3>
+<ol class="steps">
+<li>学習が終わったら <b>Stop</b> ではなくPortalで <b>Stop (deallocate)</b> 状態を確認。</li>
+<li>最終的にはRGからVM、NIC、Diskを削除。</li>
+<li>OS diskの「Delete with VM」設定にかかわらず、削除後にRG一覧を目視して残骸がないか確認。</li>
+</ol>
+<div class="cleanup"><b>後片付け:</b> VMを消してもdiskやNICが残ることがあります。RGのResources一覧でゼロになるまで確認してください。</div>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 7 完了</b><br>VM作成、Run command、Data disk、Redeploy、Deallocate、削除を確認した。</span></label>
+<details><summary>理解チェック</summary>
+<p><b>Q:</b> VMがホスト障害っぽい。OSやdiskを維持したまま別ホストへ移したい。何を使う？<br><b>A:</b> Redeploy。</p>
+</details>
+
+<h2 id="lab8"><span class="toplink"><a href="#">↑上へ</a></span>Lab 8　Azure Container Registry / RBAC・ABAC</h2>
+<div class="labhead"><span class="badge free">Free services表示がある場合</span><b>所要 30〜40分</b><span class="meta">公式: Containers</span></div>
+<div class="cost"><b>開始条件:</b> Free services画面でACR無料枠が表示されること。表示されない場合は <a href="manual-only.html">マニュアルのみ</a> に切り替えてください。</div>
+<h3>8-1. Registry作成</h3>
+<ol class="steps">
+<li><b>Container registries</b> → Create。</li>
+<li>RG: <code>rg-az104-free-lab</code>。</li>
+<li>Registry name: 世界で一意。</li>
+<li>SKU: Free services画面に明示された対象。</li>
+<li>作成。</li>
+</ol>
+
+<h3>8-2. 権限モード</h3>
+<ol class="steps">
+<li>Registry → <b>Properties</b>。</li>
+<li><b>Role assignment permissions mode</b> を確認。</li>
+<li>RBAC Registry Permissionsなら <b>AcrPull / AcrPush</b> を確認。</li>
+<li>RBAC Registry + ABAC Repository Permissionsなら <b>Container Registry Repository Reader / Writer</b> を確認。</li>
+</ol>
+<div class="exam"><b>重要:</b> ABAC対応registryではlegacyのAcrPull/AcrPush/AcrDeleteを使いません。問題文に権限モードがあれば最優先で読む。</div>
+
+<h3>8-3. IAM</h3>
+<ol class="steps">
+<li>Access control (IAM) → Add role assignment。</li>
+<li>「pullだけ」「push+pull」の最小権限候補を検索。</li>
+<li>実際の割当先がなければ確定せず、ロール説明を読むところまででよい。</li>
+</ol>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 8 完了</b><br>RBAC-onlyとABAC対応ACRのロール体系を説明できる。</span></label>
+
+<h2 id="lab9"><span class="toplink"><a href="#">↑上へ</a></span>Lab 9　App Service Free の基本</h2>
+<div class="labhead"><span class="badge free">Free tierのみ</span><b>所要 30分</b><span class="meta">公式: Compute / App Service</span></div>
+<div class="box warn"><b>境界:</b> Free tierでWeb Appの基本だけ触ります。Deployment slots、Azure Monitor Autoscale、VNet Integration、Private EndpointなどStandard/Premium側の機能は実機にせず <a href="manual-only.html">マニュアル</a>で確認します。</div>
+<h3>9-1. Web App作成</h3>
+<ol class="steps">
+<li><b>App Services</b> → Create → Web App。</li>
+<li>Publish: Code。</li>
+<li>Runtime: 任意の無料で使えるruntime。</li>
+<li>Pricing plan: <b>Free F1</b> が表示される場合のみ選択。</li>
+<li>作成。</li>
+</ol>
+<h3>9-2. 基本設定</h3>
+<ol class="steps">
+<li>Web App → <b>Settings / Configuration</b>。</li>
+<li>HTTPS Only、Minimum TLS versionの設定場所を確認。</li>
+<li>Scale upでFree/Basic/Standard/Premiumの機能差を見る。変更はしない。</li>
+<li>Deployment slotsを開き、「Free tierでは使えない/制限がある」ことを画面上で確認。</li>
+</ol>
+<div class="exam"><b>試験:</b> CPU/MemoryのAzure Monitor AutoscaleはStandard以上。Deployment slotも上位tierが必要。Free F1で「できない機能」を見ること自体が勉強になります。</div>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 9 完了</b><br>App Service FreeとStandard以上の境界を説明できる。</span></label>
+
+<h2 id="lab10"><span class="toplink"><a href="#">↑上へ</a></span>Lab 10　後片付け・模試へ接続</h2>
+<div class="labhead"><span class="badge free">必須</span><b>所要 15分</b><span class="meta">学習定着</span></div>
+<h3>10-1. リソース棚卸し</h3>
+<ol class="steps">
+<li><code>rg-az104-free-lab</code> を開く。</li>
+<li>不要なVM / Disk / NIC / ACR / App Service / Storage / VNet / NSG / Route Tableを確認。</li>
+<li>全部終わったならRGごと削除。</li>
+<li>Cost Management → Cost analysisで当日/今月のCostを確認。</li>
+<li>Free servicesで無料枠残量を再確認。</li>
+</ol>
+<div class="cleanup"><b>終了条件:</b> 「RGを消したから終わり」ではなく、Cost analysisとFree servicesを最後に見るところまでがハンズオンです。</div>
+
+<h3>10-2. 290問道場へ戻る</h3>
+<div class="gate">
+<div><b>① 本番模試</b>50問 / 100分。総合85%以上を目標。</div>
+<div><b>② 弱点20問</b>75%未満の分野を重点復習。</div>
+<div><b>③ 再模試</b>各分野75%以上、総合85%以上を3回連続。</div>
+</div>
+<p>ハンズオンで触った機能は、その日のうちに該当問題を解くと定着しやすくなります。</p>
+
+<label class="check"><input type="checkbox"><span class="txt"><b>Lab 10 完了</b><br>不要リソース削除、Cost確認、模試まで完了。</span></label>
+</section>
+
+<h2>実機にしない機能</h2>
 <div class="box danger">
-<span class="badge no">マニュアルのみ</span>
+<p>次はAZ-104には重要ですが、この教材では課金リスクを避けて <b>操作マニュアルのみ</b> にします。</p>
 <ul>
 <li>Private Endpoint</li>
 <li>Standard Load Balancer の実通信</li>
-<li>App Service Standard/Premium での slot / autoscale / VNet Integration</li>
-<li>Azure Backup / Backup vault / Recovery Services vault で実際に保護</li>
-<li>Azure Site Recovery のレプリケーション</li>
-<li>Bastion / NAT Gateway / Application Gateway</li>
-<li>VPN Gateway（無料対象が表示されても、関連Public IP等の付随課金を個別確認できない限りこの教材ではマニュアル扱い）</li>
+<li>Azure Bastion / NAT Gateway / VPN Gateway / Application Gateway</li>
+<li>App Service Standard/Premium のDeployment slots / Autoscale / VNet Integration</li>
+<li>Recovery Services vaultで実VM Backup</li>
+<li>Azure Backup vaultで実Disk Backup</li>
+<li>Azure Site Recoveryのレプリケーション・本番Failover</li>
 </ul>
-<a class="btn" href="manual-only.html">課金リスク項目のマニュアルへ</a>
+<a class="btn" href="manual-only.html">課金リスク機能の詳細マニュアルへ</a>
 </div>
 
-<h2>毎回の終了処理</h2>
-<label class="check"><input type="checkbox"><span class="txt"><span class="badge free">必須</span><b>rg-az104-free-lab のリソースを確認して不要なものを削除</b><br>特に VM / Disk / ACR / Storage account / App Service を残しっぱなしにしない。Free services と Cost analysis を最後に確認。</span></label>
-
-</div>
-<div class="actions"><a class="btn primary" href="index.html">過去問道場へ戻る</a><a class="btn" href="exam-guide.html">受験直前チェック</a><a class="btn" href="https://azure.microsoft.com/ja-jp/pricing/free-services/" target="_blank" rel="noopener">Microsoft 無料サービス一覧</a></div>
+<div class="actions"><a class="btn primary" href="index.html">290問 過去問道場へ</a><a class="btn" href="exam-guide.html">受験直前チェックへ</a><a class="btn" href="https://azure.microsoft.com/ja-jp/pricing/free-services/" target="_blank" rel="noopener">Microsoft無料サービス一覧</a></div>
 </main>
 <script>
-const K='az104_free12_labs_v1',boxes=[...document.querySelectorAll('#checks input[type=checkbox]')];let s=[];try{s=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){}
-function draw(){let n=0;boxes.forEach((b,i)=>{b.checked=!!s[i];b.closest('.check').classList.toggle('done',b.checked);if(b.checked)n++});const p=Math.round(n/boxes.length*100);document.getElementById('bar').style.width=p+'%';document.getElementById('pct').textContent=n+'/'+boxes.length+' 完了 ('+p+'%)'}
+const K='az104_free12_labs_v2',boxes=[...document.querySelectorAll('#checks input[type=checkbox]')];let s=[];try{s=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){}
+function draw(){let n=0;boxes.forEach((b,i)=>{b.checked=!!s[i];b.closest('.check').classList.toggle('done',b.checked);if(b.checked)n++});const p=boxes.length?Math.round(n/boxes.length*100):0;document.getElementById('bar').style.width=p+'%';document.getElementById('pct').textContent=n+'/'+boxes.length+' 完了 ('+p+'%)'}
 boxes.forEach((b,i)=>b.addEventListener('change',()=>{s[i]=b.checked;localStorage.setItem(K,JSON.stringify(s));draw()}));draw();
 </script>
 </body>

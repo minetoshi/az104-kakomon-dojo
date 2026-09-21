@@ -86,6 +86,8 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
     <button type="button" id="mockEntryBtn">模試を開始</button>
   </div>
 </div>
+<button type="button" class="start continue" id="modeResumeBtn" style="display:none">▶ 続きから</button>
+<div class="resume-note" id="modeResumeInfo" style="display:none"></div>
 </section>
 <section id="setup">
 <button type="button" class="mode-back" id="modeBackBtn">← モード選択へ</button>
@@ -185,18 +187,20 @@ function resumeTitle(r){
   if(s==='all')return '全366問';if(s==='past')return '過去問100問';if(s==='3')return '類似問題100問';if(s==='4')return '公式範囲補強160問';if(s==='5')return 'Learn製品補強6問';return '第'+s+'セット';
 }
 function updateResumeButton(){
-  const r=readResume(),b=$('resumeBtn'),info=$('resumeInfo');if(!b||!info)return;
-  if(!r){b.style.display='none';info.style.display='none';return}
+  const r=readResume(),targets=[[ $('resumeBtn'),$('resumeInfo') ],[ $('modeResumeBtn'),$('modeResumeInfo') ]];
+  if(!r){targets.forEach(([b,info])=>{if(b)b.style.display='none';if(info)info.style.display='none'});return}
   const p=Math.max(0,Math.min(Number(r.pos)||0,r.session.length-1));
-  b.style.display='block';info.style.display='block';
-  if(r.legacy){
-    const first=QUESTIONS.find(q=>q.uid===r.session[0].uid);
-    b.textContent='▶ 続きから'+(first?'（'+labelSet(first)+' から）':'');
-    info.textContent='これまでの回答履歴から、次の未回答問題を自動で選びました';
-  }else{
-    b.textContent='▶ 続きから（'+(p+1)+' / '+r.session.length+'問）';
-    info.textContent='前回: '+resumeTitle(r)+' ・ '+new Date(r.at||Date.now()).toLocaleString('ja-JP');
-  }
+  targets.forEach(([b,info])=>{
+    if(!b||!info)return;b.style.display='block';info.style.display='block';
+    if(r.legacy){
+      const first=QUESTIONS.find(q=>q.uid===r.session[0].uid);
+      b.textContent='▶ 続きから'+(first?'（'+labelSet(first)+' から）':'');
+      info.textContent='これまでの回答履歴から、次の未回答問題を自動で選びました';
+    }else{
+      b.textContent='▶ 続きから（'+(p+1)+' / '+r.session.length+'問）';
+      info.textContent='前回: '+resumeTitle(r)+' ・ '+new Date(r.at||Date.now()).toLocaleString('ja-JP');
+    }
+  });
 }
 function clearResume(){localStorage.removeItem(RESUME_KEY);updateResumeButton()}
 function saveResume(){
@@ -338,8 +342,8 @@ function updateFlagButton(){if(!$('flagBtn')||!session.length)return;$('flagBtn'
 function toggleFlag(){const q=session[pos];const h=history(q);h.flag=!h.flag;state[q.uid]=h;save();updateFlagButton();renderIndex();renderDashboard();saveResume()}
 function render(){
   const q=session[pos];selected=new Set(sessionSelections[q.uid]||[]);judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=q._order.slice();
-  if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent=chapterLabel(q);$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
-  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat;$('qno').textContent='問題 '+q.id+'/'+(q.set===3?100:q.set===4?160:q.set===5?6:50);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
+  if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
+  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+q.id+'/'+(q.set===3?100:q.set===4?160:q.set===5?6:50);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
   $('qtext').textContent=q.q;$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
   currentMap.forEach((orig,visual)=>{
     const lab=document.createElement('label');lab.className='ans';lab.dataset.orig=orig;
@@ -358,6 +362,7 @@ function render(){
 }
 function updateSel(){document.querySelectorAll('.ans').forEach(el=>el.classList.toggle('sel',selected.has(Number(el.dataset.orig))));$('judgeBtn').disabled=selected.size===0}
 function showFeedback(q,ok){
+  if(!examMode){$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat}
   const ans=q.a.slice().sort((a,b)=>a-b),sel=sessionSelections[q.uid]||[];
   document.querySelectorAll('.ans').forEach(el=>{const i=Number(el.dataset.orig);el.classList.remove('sel');if(ans.includes(i))el.classList.add('correct');else if(sel.includes(i))el.classList.add('wrong')});
   $('judge').style.display='block';$('judge').className='judge '+(ok?'ok':'ng');$('jhead').textContent=ok?'○ 正解':'× 不正解';$('correctText').textContent=ans.map(i=>q.o[i]).join(' / ');
@@ -424,7 +429,7 @@ function init(){
   if(QUESTIONS.length!==366){const e=$('error');e.style.display='block';e.textContent='問題データの読み込みに失敗しました。現在 '+QUESTIONS.length+' 問です。期待値は366問です。GitHub Pages またはリポジトリ一式を同じフォルダで開いてください。'}
   document.querySelectorAll('#setChips .chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedSet=b.dataset.set;renderChapterChips();renderCats()}));
   document.querySelectorAll('input[name=mode],#unanswered').forEach(x=>x.addEventListener('change',refreshCount));$('category').addEventListener('change',refreshCount);
-  $('studyEntryBtn').addEventListener('click',enterStudyMode);$('mockEntryBtn').addEventListener('click',enterMockMode);$('modeBackBtn').addEventListener('click',showModeSelect);$('resumeBtn').addEventListener('click',resumeStudy);$('startBtn').addEventListener('click',()=>{sessionKind='normal';start()});$('smartBtn').addEventListener('click',startSmart);$('dueBtn').addEventListener('click',startDue);$('flaggedBtn').addEventListener('click',startFlagged);$('unansweredBtn').addEventListener('click',startUnanswered);
+  $('studyEntryBtn').addEventListener('click',enterStudyMode);$('mockEntryBtn').addEventListener('click',enterMockMode);$('modeBackBtn').addEventListener('click',showModeSelect);$('modeResumeBtn').addEventListener('click',resumeStudy);$('resumeBtn').addEventListener('click',resumeStudy);$('startBtn').addEventListener('click',()=>{sessionKind='normal';start()});$('smartBtn').addEventListener('click',startSmart);$('dueBtn').addEventListener('click',startDue);$('flaggedBtn').addEventListener('click',startFlagged);$('unansweredBtn').addEventListener('click',startUnanswered);
   $('judgeBtn').addEventListener('click',judge);$('flagBtn').addEventListener('click',toggleFlag);
   $('prevBtn').addEventListener('click',()=>{saveCurrentSelection();if(pos>0){pos--;render();window.scrollTo(0,0)}});
   $('nextBtn').addEventListener('click',()=>{saveCurrentSelection();if(pos===session.length-1)finish();else{pos++;render();window.scrollTo(0,0)}});

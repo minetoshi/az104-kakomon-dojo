@@ -175,6 +175,7 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 現行の最終監査:
 - `audit/2026-09-21-independent-gap-audit.md`
 - `audit/2026-09-21-post-gap-345-audit.md`
+- `audit/2026-09-21-external-crosscheck-355-audit.md`
 
 **現時点では公式82スキル細目すべてに、その中心判断を直接問う問題が少なくとも1問あります。** ただし Microsoft 公式が明記する通り related topics が出題される可能性はあるため、未知シナリオへの耐性は公式 Practice Assessment とハンズオンでも確認します。
 
@@ -235,3 +236,17 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 - Budget は通知用であり自動停止ではないことを明記
 
 12か月無料枠の対象・数量は Microsoft 側で変更される可能性があるため、教材内の数値より Azure Portal の Free services と Microsoft公式無料サービス一覧を優先します。
+
+
+## 2026-09-21 外部模試・公式Labクロスチェック（355問）
+
+345問到達後、Microsoft公式Labに加えて、公開範囲で確認できる正規のAZ-104練習問題（Tutorials Dojo、Whizlabs、MeasureUp demoの公開情報）をクロスチェックしました。外部問題文はコピーせず、別教材で問われている判断軸を抽出し、Microsoft Learnの現行仕様で再検証しています。
+
+追加10問（cov-q146〜cov-q155）:
+- Microsoft Entra group naming policy / custom domain verification / group-based licensing
+- ARM template dependsOn
+- Azure File Sync
+- Application Gateway WAF / dedicated subnet
+- VPN Gateway の Local network gateway / BGP
+
+詳細は `audit/2026-09-21-external-crosscheck-355-audit.md` を参照してください。

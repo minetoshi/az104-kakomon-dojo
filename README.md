@@ -176,6 +176,7 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 - `audit/2026-09-21-independent-gap-audit.md`
 - `audit/2026-09-21-post-gap-345-audit.md`
 - `audit/2026-09-21-external-crosscheck-355-audit.md`
+- `audit/2026-09-21-post-gap-fill-audit.md` ← 現行360問の最終監査
 
 **現時点では公式82スキル細目すべてに、その中心判断を直接問う問題が少なくとも1問あります。** ただし Microsoft 公式が明記する通り related topics が出題される可能性はあるため、未知シナリオへの耐性は公式 Practice Assessment とハンズオンでも確認します。
 

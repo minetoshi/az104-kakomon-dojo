@@ -227,7 +227,7 @@ function bookChapterOf(q){
   if(cat==='App Service'||cat==='コンテナー'||/App Service|Container Apps|Container Instances|Container Registry|\bACR\b/i.test(t))return 9;
   if(cat==='バックアップ'||cat==='バックアップ/DR'||/Recovery Services|Azure Backup|Site Recovery|MARS|バックアップ ポリシー|復元ポイント|フェールオーバー|re-protect/i.test(t))return 10;
   if(cat.startsWith('ストレージ'))return 5;
-  if(cat==='コンピュート')return 4;
+  if(cat.startsWith('コンピュート'))return 4;
   if(cat.startsWith('監視')){
     if(/Network Watcher|IP フロー|IP flow|パケット キャプチャ|packet capture|Connection Monitor|接続モニター/i.test(t))return 8;
     if(/Cost Management|予算|Budget|Advisor|コスト/i.test(t))return 3;

@@ -235,8 +235,8 @@ function bookChapterOf(q){
     return 11;
   }
   if(cat.startsWith('ネットワーク')){
-    if(/Load Balancer|Application Gateway|Network Watcher|IP フロー|IP flow|パケット キャプチャ|packet capture|Connection Monitor|接続モニター|NAT Gateway/i.test(t))return 8;
-    if(/ピアリング|Peering|ルート テーブル|Route Table|\bUDR\b|VPN|Virtual network gateway|ネットワーク ゲートウェイ|Private Endpoint|Private Link|サービス エンドポイント|Service Endpoint/i.test(t))return 7;
+    if(/Load Balancer|Application Gateway|Azure Firewall|Network Watcher|IP フロー|IP flow|パケット キャプチャ|packet capture|Connection Monitor|接続モニター|NAT Gateway/i.test(t))return 8;
+    if(/ピアリング|Peering|ルート テーブル|Route Table|\bUDR\b|VPN|ExpressRoute|Virtual network gateway|ネットワーク ゲートウェイ|Private Endpoint|Private Link|サービス エンドポイント|Service Endpoint/i.test(t))return 7;
     return 6;
   }
   if(cat==='ID/ガバナンス'){
@@ -379,9 +379,9 @@ function startTimer(sec){
 function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}$('timer')&&($('timer').textContent='')}
 function updateTimer(){const left=Math.max(0,Math.ceil((timerDeadline-Date.now())/1000));const m=Math.floor(left/60),s=left%60;$('timer').textContent='残り '+m+':'+String(s).padStart(2,'0');if(left<=0){stopTimer();alert('100分が経過したため模試を終了します。');finishMock()}}
 function renderDashboard(){
-  const hist=QUESTIONS.map(q=>({q,h:history(q)}));const answered=hist.filter(x=>x.h.tries>0);const tries=answered.reduce((s,x)=>s+x.h.tries,0),correct=answered.reduce((s,x)=>s+x.h.correct,0);
+  const hist=QUESTIONS.map(q=>({q,h:history(q)}));const officialHist=hist.filter(x=>x.q.set!==5);const answered=hist.filter(x=>x.h.tries>0);const tries=answered.reduce((s,x)=>s+x.h.tries,0),correct=answered.reduce((s,x)=>s+x.h.correct,0);
   $('dashAnswered').textContent=answered.length+'/'+QUESTIONS.length;$('dashRate').textContent=tries?Math.round(correct/tries*100)+'%':'-';$('dashDue').textContent=answered.filter(x=>x.h.due&&x.h.due<=Date.now()).length;$('dashFlags').textContent=hist.filter(x=>x.h.flag).length;
-  let rows='';OFFICIAL_DOMAINS.forEach(d=>{const a=hist.filter(x=>domainOf(x.q)===d&&x.h.tries);const t=a.reduce((s,x)=>s+x.h.tries,0),c=a.reduce((s,x)=>s+x.h.correct,0),rate=t?Math.round(c/t*100):null;let cls=rate===null?'':rate<75?'weak':rate>=85?'goodtxt':'';let verdict=rate===null?'未着手':rate<75?'要復習':rate>=85?'安定':'補強';rows+='<tr><td>'+d+'</td><td>'+a.length+'</td><td class="'+cls+'">'+(rate===null?'-':rate+'%')+'</td><td class="'+cls+'">'+verdict+'</td></tr>'});$('domainStats').innerHTML=rows;
+  let rows='';OFFICIAL_DOMAINS.forEach(d=>{const a=officialHist.filter(x=>domainOf(x.q)===d&&x.h.tries);const t=a.reduce((s,x)=>s+x.h.tries,0),c=a.reduce((s,x)=>s+x.h.correct,0),rate=t?Math.round(c/t*100):null;let cls=rate===null?'':rate<75?'weak':rate>=85?'goodtxt':'';let verdict=rate===null?'未着手':rate<75?'要復習':rate>=85?'安定':'補強';rows+='<tr><td>'+d+'</td><td>'+a.length+'</td><td class="'+cls+'">'+(rate===null?'-':rate+'%')+'</td><td class="'+cls+'">'+verdict+'</td></tr>'});$('domainStats').innerHTML=rows;
   if(mockHistory.length){const last=mockHistory[mockHistory.length-1];let streak=0;for(let i=mockHistory.length-1;i>=0;i--){const h=mockHistory[i];const mins=Object.values(h.domains||{}).filter(x=>x.total).map(x=>x.correct/x.total*100);if(h.rate>=85&&mins.length&&Math.min(...mins)>=75)streak++;else break}$('readiness').innerHTML='<b>最新模試 '+last.rate+'%</b> ／ 仕上がり目安の連続達成 '+streak+'回。'+(streak>=3?'<span class="goodtxt"> 受験前の知識目安を達成しています。</span>':' 3回連続を目標にしてください。');$('mockHistory').textContent='直近: '+mockHistory.slice(-5).reverse().map(x=>new Date(x.at).toLocaleDateString('ja-JP')+' '+x.rate+'%').join(' / ')}
   else{$('readiness').innerHTML='<b>まず本番模試を1回</b>：現在地を測り、75%未満の分野を優先して復習します。';$('mockHistory').textContent='模試履歴はまだありません。'}
 }

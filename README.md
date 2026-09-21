@@ -7,16 +7,17 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
   - 第1セット: 50問
   - 第2セット: 50問
 - 類似問題: 100問
-- 公式範囲補強: 155問
-- **合計: 355問**
+- 公式範囲補強: 160問
+- Learn製品補強: 6問
+- **合計: 366問**
 
-類似問題は過去問と同じ論点を別シナリオ・別数値・別の問い方で確認できるようにしています。公式範囲補強155問は、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドを基準に、最初の90問で公式範囲と深さを補強し、さらに「参考書なしで問題から学ぶ」前提の独立ギャップ監査で見つかった28項目の薄さを、cov-q091〜cov-q145の55問に加え、外部クロスチェックで cov-q146〜cov-q155 の10問で追加補強したものです。
+類似問題は過去問と同じ論点を別シナリオ・別数値・別の問い方で確認できるようにしています。公式範囲補強160問は、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドを基準に、公式82スキル細目の不足と薄さを補強したものです。さらに Learn製品補強6問を別セットで追加し、AZ-104 の公式 Learning Path に掲載される周辺製品も問題から直接学べるようにしています。
 
 ## 過去問道場
-`index.html` に355問対応のページを実装しています。
+`index.html` に366問対応のページを実装しています。
 
 主な機能:
-- 全355問 / 過去問100問 / 第1セット / 第2セット / 類似問題100問 / 公式範囲補強155問の切り替え
+- 全366問 / 過去問100問 / 第1セット / 第2セット / 類似問題100問 / 公式範囲補強160問 / Learn製品補強6問の切り替え
 - 番号順 / ランダム / 間違えた問題のみ
 - カテゴリ絞り込み
 - 10問 / 20問 / 50問 / 100問 / 対象すべて
@@ -31,21 +32,22 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 - iPhone 対応
 
 ## 問題データ
-過去問は `questions/set-01/` と `questions/set-02/`、類似問題は `questions/similar/`、公式範囲補強は `questions/coverage/` に、ページから直接読み込む JavaScript 形式で保存しています。
+過去問は `questions/set-01/` と `questions/set-02/`、類似問題は `questions/similar/`、公式範囲補強は `questions/coverage/`、Learn製品補強は `questions/learn-products/` に、ページから直接読み込む JavaScript 形式で保存しています。
 
 元データ確認用として JSON も `questions/` 配下に保存しています。
 
 ## 品質チェック
-- 読み込み対象: **355問**
+- 読み込み対象: **366問**
 - 第1セット: 50問
 - 第2セット: 50問
 - 類似問題: 100問
-- 公式範囲補強: 155問
+- 公式範囲補強: 160問
+- Learn製品補強: 6問
 - UID 重複なし
 - 正答インデックス異常なし
 - 複数選択問題の正答数チェック済み
-- 公式範囲補強155問は全選択肢に明示的な個別解説あり
-- 公式範囲補強155問は全問に Microsoft Learn リンクあり
+- 公式範囲補強160問 + Learn製品補強6問は全選択肢に明示的な個別解説あり
+- 公式範囲補強160問 + Learn製品補強6問は全問に Microsoft Learn リンクあり
 - `index.html` の JavaScript 構文チェック済み
 
 ## 方針
@@ -56,7 +58,7 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 
 
 ## 解説の構成
-回答後は全355問で、次の順に学習できるようにしています。
+回答後は全366問で、次の順に学習できるようにしています。
 
 1. **判断ポイント**: 問題文のどの条件が決め手か
 2. **正解理由**: なぜその選択肢が要件を満たすか
@@ -256,3 +258,23 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 ## 2026-09-21 最終深さ補強（360問）
 
 355問版を厳格再監査し、VM作成・Encryption at host・Site Recovery replication policy の異なる判断軸を5問追加しました。`questions/coverage/q156-160.js` を参照してください。cov-q146〜q155 も教材仕様に合わせて `kind: "coverage"` に統一しています。
+
+
+## 2026-09-21 Microsoft Learn 製品カバレッジ（366問）
+
+公式試験範囲360問とは別に、AZ-104 の Microsoft Learn Learning Path に製品・サービスとして登場するものを再監査し、既存問題で直接学べていなかった6製品を `Learn製品補強` として追加しました。
+
+追加6問:
+- Azure Cloud Shell
+- Microsoft Entra Domain Services
+- Azure Kubernetes Service (AKS)
+- Azure ExpressRoute
+- Azure Firewall
+- Azure Virtual Desktop
+
+既存問題で Azure CLI、ACI、ACR、VM、VNet、Entra ID、Cost Management、RBAC、ARM、Blob Storage、Azure Files、Storage Explorer、VMSS、Application Gateway、Bastion、Azure DNS、Load Balancer、VPN Gateway、Azure Backup、Azure Monitor、Azure Site Recovery などは直接カバー済みです。
+
+Learn製品補強は周辺知識の学習用で、**本番模試50問からは除外**しています。公式82スキル細目の監査結果は360問版の評価を維持します。
+
+詳細:
+- `audit/2026-09-21-learn-product-coverage-366.md`

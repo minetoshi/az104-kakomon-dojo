@@ -193,8 +193,8 @@ function resumeTitle(r){
   if(r.kind==='flagged')return '要復習フラグ';
   if(r.kind==='unanswered')return '未回答トレーニング';
   if(r.kind==='wrong')return '今回の間違い';
-  if((r.kind||'').startsWith('route-')){const id=Number(r.kind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);return st?'おすすめ '+st.title:'おすすめ学習'}
   if(r.kind==='route-mix')return '全範囲ミックス';
+  if((r.kind||'').startsWith('route-')){const id=Number(r.kind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);return st?'おすすめ '+st.title:'おすすめ学習'}
   const s=r.selectedSet||'all';
   if(s==='all')return '全366問';if(s==='past')return '過去問100問';if(s==='3')return '類似問題100問';if(s==='4')return '公式範囲補強160問';if(s==='5')return 'Learn製品補強6問';return '第'+s+'セット';
 }
@@ -353,7 +353,7 @@ function renderChapterChips(){
 function renderCats(){const cats=uniq(QUESTIONS.filter(inSelectedSet).filter(inSelectedChapter).map(q=>q.cat));$('category').innerHTML='<option value="all">すべて</option>'+cats.map(c=>'<option>'+c+'</option>').join('');refreshCount()}
 function makeOrder(q,forceShuffle=false){const order=q.o.map((_,i)=>i);if(forceShuffle||$('shuffleOptions').checked)shuffle(order);return order}
 function buildSession(){let a=filtered().slice(),mode=document.querySelector('input[name=mode]:checked').value;if(mode==='random')shuffle(a);else a.sort((x,y)=>x.set-y.set||x.id-y.id);const n=$('count').value;if(n!=='all')a=a.slice(0,Number(n));return a.map(q=>({...q,_order:makeOrder(q)}))}
-function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(sessionKind==='route-mix')return 'おすすめ ⑦ 全範囲ミックス';if(sessionKind.startsWith('route-')){const id=Number(sessionKind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);if(st)return 'おすすめ ⑦'.replace('⑦',String(id))+ ' '+st.title}if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全366問';if(selectedSet==='past')return '過去問100問';if(selectedSet==='3')return '類似問題100問';if(selectedSet==='4')return '公式範囲補強160問';if(selectedSet==='5')return 'Learn製品補強6問';return '第'+selectedSet+'セット'}
+function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(sessionKind==='route-mix')return 'おすすめ ⑦ 全範囲ミックス';if(sessionKind.startsWith('route-')){const id=Number(sessionKind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);if(st)return 'おすすめ '+id+' '+st.title}if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全366問';if(selectedSet==='past')return '過去問100問';if(selectedSet==='3')return '類似問題100問';if(selectedSet==='4')return '公式範囲補強160問';if(selectedSet==='5')return 'Learn製品補強6問';return '第'+selectedSet+'セット'}
 function showModeSelect(){
   stopTimer();examMode=false;$('quiz').style.display='none';$('result').style.display='none';$('setup').style.display='none';$('modeSelect').style.display='block';window.scrollTo(0,0)
 }

@@ -7,16 +7,16 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
   - 第1セット: 50問
   - 第2セット: 50問
 - 類似問題: 100問
-- 公式範囲補強: 90問
-- **合計: 290問**
+- 公式範囲補強: 145問
+- **合計: 345問**
 
-類似問題は過去問と同じ論点を別シナリオ・別数値・別の問い方で確認できるようにしています。公式範囲補強90問は、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドと既存200問を突き合わせ、まず不足項目を50問で埋め、その後の深さ監査で薄かった論点をさらに40問追加したものです。
+類似問題は過去問と同じ論点を別シナリオ・別数値・別の問い方で確認できるようにしています。公式範囲補強145問は、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドを基準に、最初の90問で公式範囲と深さを補強し、さらに「参考書なしで問題から学ぶ」前提の独立ギャップ監査で見つかった28項目の薄さを、cov-q091〜cov-q145の55問で追加補強したものです。
 
 ## 過去問道場
-`index.html` に290問対応のページを実装しています。
+`index.html` に345問対応のページを実装しています。
 
 主な機能:
-- 全290問 / 過去問100問 / 第1セット / 第2セット / 類似問題100問 / 公式範囲補強90問の切り替え
+- 全345問 / 過去問100問 / 第1セット / 第2セット / 類似問題100問 / 公式範囲補強145問の切り替え
 - 番号順 / ランダム / 間違えた問題のみ
 - カテゴリ絞り込み
 - 10問 / 20問 / 50問 / 100問 / 対象すべて
@@ -36,16 +36,16 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 元データ確認用として JSON も `questions/` 配下に保存しています。
 
 ## 品質チェック
-- 読み込み対象: **290問**
+- 読み込み対象: **345問**
 - 第1セット: 50問
 - 第2セット: 50問
 - 類似問題: 100問
-- 公式範囲補強: 90問
+- 公式範囲補強: 145問
 - UID 重複なし
 - 正答インデックス異常なし
 - 複数選択問題の正答数チェック済み
-- 公式範囲補強90問は全選択肢に明示的な個別解説あり
-- 公式範囲補強90問は全問に Microsoft Learn リンクあり
+- 公式範囲補強145問は全選択肢に明示的な個別解説あり
+- 公式範囲補強145問は全問に Microsoft Learn リンクあり
 - `index.html` の JavaScript 構文チェック済み
 
 ## 方針
@@ -56,7 +56,7 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 
 
 ## 解説の構成
-回答後は全290問で、次の順に学習できるようにしています。
+回答後は全345問で、次の順に学習できるようにしています。
 
 1. **判断ポイント**: 問題文のどの条件が決め手か
 2. **正解理由**: なぜその選択肢が要件を満たすか
@@ -148,6 +148,37 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 詳細は `audit/2026-09-20-final-290-current-spec-audit.md` を参照してください。
 
 
+## 2026-09-21 問題学習前提の独立ギャップ監査と追加55問
+
+「公式スキル名に関連する問題がある」だけでは、参考書なしで問題から学ぶには不十分と判断し、2026年4月17日版の公式82スキル細目を再監査しました。
+
+290問時点の再評価:
+- 十分: 54 / 82
+- 薄い: 25 / 82
+- 不足: 3 / 82
+
+特に不足していたのは **VM作成そのもの / VNet・Subnet作成・構成 / Site Recoveryの初期構成** でした。また Storage冗長性、ACI/Container Apps provisioning、Azure Monitor Metrics、Backup/Restore、SSPR実設定なども薄いと判定しました。
+
+そこで **cov-q091〜cov-q145 の55問** を追加し、以下を直接補強しました。
+- Entra user作成 / SSPR / subscription管理
+- StorageV2 / Secure transfer / ZRS・RA-GRS・GZRS / Files quota / container public access・soft delete / Azure Files SMB RBAC
+- VM作成 / SSH / Public IPなし / Availability Zone / Encryption at host / resize / managed disk / snapshot
+- ACI restart・size・secureValue / Container Apps environment・ingress・revision・minReplicas
+- App Service plan / apex custom DNS / custom backup
+- VNet/Subnet CIDR / overlap / delegation / custom DNS / Bastion SKU / Service Endpoint / Private Endpoint DNS / NVA IP forwarding
+- Azure Monitor metric aggregation / dimension
+- Backup vault / Recovery Services vault作成 / backup policy / new VM restore / file recovery
+- Site Recovery enable replication / network mapping / recovery plan
+
+さらに Microsoft公式 Practice Assessment、MicrosoftLearning公式AZ-104 Labs、公開されている無料模試をクロスチェックし、外部問題本文はコピーせず、論点確認だけに利用しています。
+
+現行の最終監査:
+- `audit/2026-09-21-independent-gap-audit.md`
+- `audit/2026-09-21-post-gap-345-audit.md`
+
+**現時点では公式82スキル細目すべてに、その中心判断を直接問う問題が少なくとも1問あります。** ただし Microsoft 公式が明記する通り related topics が出題される可能性はあるため、未知シナリオへの耐性は公式 Practice Assessment とハンズオンでも確認します。
+
+
 ## 合格率向上モード
 過去問道場に、通常の問題演習だけでなく本番対策用の学習エンジンを実装しています。
 
@@ -196,9 +227,9 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
   - Azure Files / snapshot / soft delete
   - AzCopy / Storage Explorer
   - 無料対象 VM + Managed Disks
-  - Azure Container Registry Standard
-  - App Service Free tier の基本操作
-  - Container Apps の常時無料枠を使った任意演習
+  - Azure Container Registry（Portal の Free services で対象が確認できる場合のみ）
+  - App Service Free tier（対象/利用可能性を確認して基本操作）
+  - それ以外のコンテナー/ネットワーク有料機能は、無料条件を個別確認してから任意演習
 - 無料枠外または付随課金が読みにくい機能は `manual-only.html` に残す
 - 毎回 Azure Portal の `Cost Management + Billing > Free services` で対象SKU・残量・有効期限を確認する
 - Budget は通知用であり自動停止ではないことを明記

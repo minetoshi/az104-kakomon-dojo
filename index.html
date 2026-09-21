@@ -239,7 +239,7 @@ function render(){
   $('progress').textContent=examMode?'本番模試 / 全'+session.length+'問':labelSet(q)+' / 全'+session.length+'問';
   updateFlagButton();
   if(judged)showFeedback(q,runResult[q.uid]);
-  renderIndex()
+  renderIndex();saveResume()
 }
 function updateSel(){document.querySelectorAll('.ans').forEach(el=>el.classList.toggle('sel',selected.has(Number(el.dataset.orig))));$('judgeBtn').disabled=selected.size===0}
 function showFeedback(q,ok){

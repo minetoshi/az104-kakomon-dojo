@@ -48,23 +48,28 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 <script src="questions/coverage/q61-70.js"></script>
 <script src="questions/coverage/q71-80.js"></script>
 <script src="questions/coverage/q81-90.js"></script>
+<script src="questions/coverage/q91-100.js"></script>
+<script src="questions/coverage/q101-110.js"></script>
+<script src="questions/coverage/q111-120.js"></script>
+<script src="questions/coverage/q121-130.js"></script>
+<script src="questions/coverage/q131-140.js"></script>
 <script src="learn-map.js"></script>
 <script src="explanation-helper.js"></script>
 <script src="audit-map.js"></script>
 </head>
 <body>
-<header><div class="wrap head"><div class="logo">AZ-104 過去問道場</div><div class="sp"></div><div class="pill">過去問100 + 類似100 + 公式補強90</div></div></header>
+<header><div class="wrap head"><div class="logo">AZ-104 過去問道場</div><div class="sp"></div><div class="pill">過去問100 + 類似100 + 公式補強140</div></div></header>
 <main class="wrap">
 <div id="error"></div>
 <section id="setup">
-<h1>AZ-104 過去問道場</h1><p class="sub">過去問100問 + 類似問題100問 + 公式範囲補強90問・合計290問</p>
-<p class="intro">過去問は元の問題番号順を維持し、同じ論点を別シナリオで問う類似問題100問に加え、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドで不足していた公式スキル項目に加え、Bicep・TLS・Insights・Site Recovery など深さが不足していた論点まで補う90問を追加しています。回答後は正解・全選択肢の解説と Microsoft Learn 公式ページを表示します。</p>
+<h1>AZ-104 過去問道場</h1><p class="sub">過去問100問 + 類似問題100問 + 公式範囲補強140問・合計340問</p>
+<p class="intro">過去問は元の問題番号順を維持し、同じ論点を別シナリオで問う類似問題100問に加え、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドを再監査し、Bicep・TLS・Insights・Site Recovery に加えて、VM作成・VNet/Subnet・Storage冗長性・コンテナー構成・Backup/Restore など問題学習で薄かった論点まで補う140問を追加しています。回答後は正解・全選択肢の解説と Microsoft Learn 公式ページを表示します。</p>
 <div class="panel">
-<div class="block"><div class="title">問題セット</div><div class="choices-inline" id="setChips"><button type="button" class="chip active" data-set="all">全290問</button><button type="button" class="chip" data-set="past">過去問100問</button><button type="button" class="chip" data-set="1">第1セット（50問）</button><button type="button" class="chip" data-set="2">第2セット（50問）</button><button type="button" class="chip" data-set="3">類似問題（100問）</button><button type="button" class="chip" data-set="4">公式範囲補強（90問）</button></div></div>
-<div class="block"><div class="title">黒本の章から選ぶ</div><div class="chapter-chips" id="chapterChips"></div><div class="chapter-note">手元の『徹底攻略 Microsoft Azure Administrator教科書［AZ-104］対応』（2022年版）の11章に、現在の290問を論点ベースで対応付けています。古い章名はそのまま表示し、問題内容は2026年仕様を優先しています。</div></div>
+<div class="block"><div class="title">問題セット</div><div class="choices-inline" id="setChips"><button type="button" class="chip active" data-set="all">全340問</button><button type="button" class="chip" data-set="past">過去問100問</button><button type="button" class="chip" data-set="1">第1セット（50問）</button><button type="button" class="chip" data-set="2">第2セット（50問）</button><button type="button" class="chip" data-set="3">類似問題（100問）</button><button type="button" class="chip" data-set="4">公式範囲補強（140問）</button></div></div>
+<div class="block"><div class="title">黒本の章から選ぶ</div><div class="chapter-chips" id="chapterChips"></div><div class="chapter-note">手元の『徹底攻略 Microsoft Azure Administrator教科書［AZ-104］対応』（2022年版）の11章に、現在の340問を論点ベースで対応付けています。古い章名はそのまま表示し、問題内容は2026年仕様を優先しています。</div></div>
 <div class="block"><div class="title">出題方法</div><label class="option"><input type="radio" name="mode" value="order" checked>番号順</label><label class="option"><input type="radio" name="mode" value="random">ランダム</label><label class="option"><input type="radio" name="mode" value="wrong">間違えた問題のみ</label></div>
 <div class="block"><div class="title">カテゴリ</div><select id="category"><option value="all">すべて</option></select></div>
-<div class="block"><div class="title">出題数</div><select id="count"><option value="all">対象をすべて</option><option value="10">10問</option><option value="20">20問</option><option value="50">50問</option><option value="100">100問</option><option value="250">250問</option><option value="290">290問</option></select></div>
+<div class="block"><div class="title">出題数</div><select id="count"><option value="all">対象をすべて</option><option value="10">10問</option><option value="20">20問</option><option value="50">50問</option><option value="100">100問</option><option value="250">250問</option><option value="290">290問</option><option value="340">340問</option></select></div>
 <div class="block"><label class="option"><input type="checkbox" id="shuffleOptions">選択肢の順番をシャッフルする</label><label class="option"><input type="checkbox" id="unanswered">未回答のみ</label></div>
 <button type="button" class="start continue" id="resumeBtn" style="display:none">▶ 続きから</button><div class="resume-note" id="resumeInfo" style="display:none"></div><button type="button" class="start" id="startBtn">最初から問題をはじめる</button><div class="note" id="available"></div>
 </div>
@@ -150,7 +155,7 @@ function resumeTitle(r){
   if(r.kind==='unanswered')return '未回答トレーニング';
   if(r.kind==='wrong')return '今回の間違い';
   const s=r.selectedSet||'all';
-  if(s==='all')return '全290問';if(s==='past')return '過去問100問';if(s==='3')return '類似問題100問';if(s==='4')return '公式範囲補強90問';return '第'+s+'セット';
+  if(s==='all')return '全340問';if(s==='past')return '過去問100問';if(s==='3')return '類似問題100問';if(s==='4')return '公式範囲補強140問';return '第'+s+'セット';
 }
 function updateResumeButton(){
   const r=readResume(),b=$('resumeBtn'),info=$('resumeInfo');if(!b||!info)return;
@@ -252,7 +257,7 @@ function renderChapterChips(){
 function renderCats(){const cats=uniq(QUESTIONS.filter(inSelectedSet).filter(inSelectedChapter).map(q=>q.cat));$('category').innerHTML='<option value="all">すべて</option>'+cats.map(c=>'<option>'+c+'</option>').join('');refreshCount()}
 function makeOrder(q,forceShuffle=false){const order=q.o.map((_,i)=>i);if(forceShuffle||$('shuffleOptions').checked)shuffle(order);return order}
 function buildSession(){let a=filtered().slice(),mode=document.querySelector('input[name=mode]:checked').value;if(mode==='random')shuffle(a);else a.sort((x,y)=>x.set-y.set||x.id-y.id);const n=$('count').value;if(n!=='all')a=a.slice(0,Number(n));return a.map(q=>({...q,_order:makeOrder(q)}))}
-function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全290問';if(selectedSet==='past')return '過去問100問';if(selectedSet==='3')return '類似問題100問';if(selectedSet==='4')return '公式範囲補強90問';return '第'+selectedSet+'セット'}
+function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全340問';if(selectedSet==='past')return '過去問100問';if(selectedSet==='3')return '類似問題100問';if(selectedSet==='4')return '公式範囲補強140問';return '第'+selectedSet+'セット'}
 function start(custom=null,kind='normal'){
   stopTimer();sessionKind=kind;examMode=kind==='mock';mockFinalized=false;
   session=custom||buildSession();if(!session.length){alert('対象となる問題がありません。条件を変更してください。');return}
@@ -295,7 +300,7 @@ function toggleFlag(){const q=session[pos];const h=history(q);h.flag=!h.flag;sta
 function render(){
   const q=session[pos];selected=new Set(sessionSelections[q.uid]||[]);judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=q._order.slice();
   if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent=chapterLabel(q);$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
-  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':'第'+q.set+'セット';$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat;$('qno').textContent='問題 '+q.id+'/'+(q.set===3?100:q.set===4?90:50);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
+  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':'第'+q.set+'セット';$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat;$('qno').textContent='問題 '+q.id+'/'+(q.set===3?100:q.set===4?140:50);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
   $('qtext').textContent=q.q;$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
   currentMap.forEach((orig,visual)=>{
     const lab=document.createElement('label');lab.className='ans';lab.dataset.orig=orig;
@@ -377,7 +382,7 @@ function renderDashboard(){
   else{$('readiness').innerHTML='<b>まず本番模試を1回</b>：現在地を測り、75%未満の分野を優先して復習します。';$('mockHistory').textContent='模試履歴はまだありません。'}
 }
 function init(){
-  if(QUESTIONS.length!==290){const e=$('error');e.style.display='block';e.textContent='問題データの読み込みに失敗しました。現在 '+QUESTIONS.length+' 問です。期待値は290問です。GitHub Pages またはリポジトリ一式を同じフォルダで開いてください。'}
+  if(QUESTIONS.length!==340){const e=$('error');e.style.display='block';e.textContent='問題データの読み込みに失敗しました。現在 '+QUESTIONS.length+' 問です。期待値は340問です。GitHub Pages またはリポジトリ一式を同じフォルダで開いてください。'}
   document.querySelectorAll('#setChips .chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedSet=b.dataset.set;renderChapterChips();renderCats()}));
   document.querySelectorAll('input[name=mode],#unanswered').forEach(x=>x.addEventListener('change',refreshCount));$('category').addEventListener('change',refreshCount);
   $('resumeBtn').addEventListener('click',resumeStudy);$('startBtn').addEventListener('click',()=>{sessionKind='normal';start()});$('mockBtn').addEventListener('click',startMock);$('smartBtn').addEventListener('click',startSmart);$('dueBtn').addEventListener('click',startDue);$('flaggedBtn').addEventListener('click',startFlagged);$('unansweredBtn').addEventListener('click',startUnanswered);

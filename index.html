@@ -112,7 +112,22 @@ let sessionKind='normal',examMode=false,mockFinalized=false,timerId=null,timerDe
 const $=id=>document.getElementById(id);
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function saveMockHistory(){localStorage.setItem(MOCK_KEY,JSON.stringify(mockHistory.slice(-20)))}
-function readResume(){try{const r=JSON.parse(localStorage.getItem(RESUME_KEY)||'null');return r&&Array.isArray(r.session)&&r.session.length?r:null}catch(e){return null}}
+function readResume(){try{const r=JSON.parse(localStorage.getItem(RESUME_KEY)||'null');if(r&&Array.isArray(r.session)&&r.session.length)return r}catch(e){}return buildLegacyResume()}
+function buildLegacyResume(){
+  const answered=QUESTIONS.filter(q=>history(q).tries>0);
+  if(!answered.length)return null;
+  const latest=answered.slice().sort((a,b)=>(history(b).lastAt||0)-(history(a).lastAt||0))[0];
+  const ordered=QUESTIONS.slice().sort((a,b)=>a.set-b.set||a.id-b.id);
+  let idx=ordered.findIndex(q=>q.uid===latest.uid);if(idx<0)idx=0;
+  let next=idx+1;
+  while(next<ordered.length&&history(ordered[next]).tries>0)next++;
+  if(next>=ordered.length){
+    next=ordered.findIndex(q=>!history(q).tries);
+    if(next<0)return null;
+  }
+  const session=ordered.slice(next).map(q=>({uid:q.uid,order:q.o.map((_,i)=>i)}));
+  return {v:0,legacy:true,at:history(latest).lastAt||Date.now(),kind:'normal',selectedSet:'all',pos:0,session,runResult:{},sessionSelections:{},elapsedSec:0,remainingSec:null,legacyFrom:latest.uid};
+}
 function resumeTitle(r){
   if(r.kind==='mock')return '本番模試 50問';
   if(r.kind==='smart')return 'おすすめ弱点';
@@ -128,8 +143,14 @@ function updateResumeButton(){
   if(!r){b.style.display='none';info.style.display='none';return}
   const p=Math.max(0,Math.min(Number(r.pos)||0,r.session.length-1));
   b.style.display='block';info.style.display='block';
-  b.textContent='▶ 続きから（'+(p+1)+' / '+r.session.length+'問）';
-  info.textContent='前回: '+resumeTitle(r)+' ・ '+new Date(r.at||Date.now()).toLocaleString('ja-JP');
+  if(r.legacy){
+    const first=QUESTIONS.find(q=>q.uid===r.session[0].uid);
+    b.textContent='▶ 続きから'+(first?'（'+labelSet(first)+' から）':'');
+    info.textContent='これまでの回答履歴から、次の未回答問題を自動で選びました';
+  }else{
+    b.textContent='▶ 続きから（'+(p+1)+' / '+r.session.length+'問）';
+    info.textContent='前回: '+resumeTitle(r)+' ・ '+new Date(r.at||Date.now()).toLocaleString('ja-JP');
+  }
 }
 function clearResume(){localStorage.removeItem(RESUME_KEY);updateResumeButton()}
 function saveResume(){

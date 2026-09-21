@@ -303,7 +303,7 @@ function toggleFlag(){const q=session[pos];const h=history(q);h.flag=!h.flag;sta
 function render(){
   const q=session[pos];selected=new Set(sessionSelections[q.uid]||[]);judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=q._order.slice();
   if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent=chapterLabel(q);$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
-  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':'第'+q.set+'セット';$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat;$('qno').textContent='問題 '+q.id+'/'+(q.set===3?100:q.set===4?155:50);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
+  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':'第'+q.set+'セット';$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat;$('qno').textContent='問題 '+q.id+'/'+(q.set===3?100:q.set===4?160:50);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
   $('qtext').textContent=q.q;$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
   currentMap.forEach((orig,visual)=>{
     const lab=document.createElement('label');lab.className='ans';lab.dataset.orig=orig;
@@ -385,7 +385,7 @@ function renderDashboard(){
   else{$('readiness').innerHTML='<b>まず本番模試を1回</b>：現在地を測り、75%未満の分野を優先して復習します。';$('mockHistory').textContent='模試履歴はまだありません。'}
 }
 function init(){
-  if(QUESTIONS.length!==355){const e=$('error');e.style.display='block';e.textContent='問題データの読み込みに失敗しました。現在 '+QUESTIONS.length+' 問です。期待値は355問です。GitHub Pages またはリポジトリ一式を同じフォルダで開いてください。'}
+  if(QUESTIONS.length!==360){const e=$('error');e.style.display='block';e.textContent='問題データの読み込みに失敗しました。現在 '+QUESTIONS.length+' 問です。期待値は360問です。GitHub Pages またはリポジトリ一式を同じフォルダで開いてください。'}
   document.querySelectorAll('#setChips .chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedSet=b.dataset.set;renderChapterChips();renderCats()}));
   document.querySelectorAll('input[name=mode],#unanswered').forEach(x=>x.addEventListener('change',refreshCount));$('category').addEventListener('change',refreshCount);
   $('resumeBtn').addEventListener('click',resumeStudy);$('startBtn').addEventListener('click',()=>{sessionKind='normal';start()});$('mockBtn').addEventListener('click',startMock);$('smartBtn').addEventListener('click',startSmart);$('dueBtn').addEventListener('click',startDue);$('flaggedBtn').addEventListener('click',startFlagged);$('unansweredBtn').addEventListener('click',startUnanswered);

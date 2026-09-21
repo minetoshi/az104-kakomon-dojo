@@ -16,7 +16,7 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 .answers{display:grid;gap:9px;background:#f4f4f4;border-radius:5px;padding:9px}.ans{display:grid;grid-template-columns:42px 1fr;background:#fff;border:1px solid transparent;border-radius:4px;overflow:hidden;min-height:50px}.ans:hover{border-color:#aaa}.ans input{position:absolute;opacity:0}.letter{display:flex;align-items:center;justify-content:center;background:#5a5a5a;color:#fff;font-weight:900}.atext{display:flex;align-items:center;padding:10px 12px}.ans.sel{outline:2px solid #7ba0c8}.ans.correct{background:#eef9ee;border-color:#75b675}.ans.correct .letter{background:var(--green)}.ans.wrong{background:#fff0f0;border-color:#dc8d8d}.ans.wrong .letter{background:var(--red)}
 .actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:16px 0}.primary{border:0;border-radius:4px;background:#4d79a8;color:white;font-weight:900;padding:10px 20px;min-width:150px}.primary:disabled{background:#bbb}.secondary{border:1px solid #aaa;border-radius:4px;background:white;padding:9px 16px;font-weight:700}
 .judge{display:none;border:1px solid #ddd;margin-top:15px}.jhead{padding:12px 14px;border-bottom:1px solid #ddd;font-weight:900;font-size:20px}.judge.ok .jhead{color:var(--green)}.judge.ng .jhead{color:var(--red)}.jbody{padding:14px}.bar{border-left:5px solid #d79200;padding:6px 9px;background:#fafafa;font-weight:900;margin-top:14px}.deep{display:grid;gap:8px;margin-top:10px}.deep a{display:block;border:1px solid #bcd1e6;background:#f5f9fd;border-radius:5px;padding:9px 11px;text-decoration:none;font-weight:700}.caution{border-left:4px solid #c47f00;background:#fff8e7;padding:8px 10px;margin-top:12px;font-size:13px}.oreview{display:grid;gap:8px;margin-top:10px}.orow{border:1px solid #ddd;border-radius:5px;padding:9px 10px;background:#fff}.orow.ok{border-color:#9fcda9;background:#f4fbf5}.orow.ng{border-color:#e1b0b0;background:#fff7f7}.otop{display:flex;gap:8px;align-items:center;font-weight:800;margin-bottom:3px}.otag{display:inline-block;min-width:48px;text-align:center;border-radius:999px;padding:2px 7px;font-size:11px;color:#fff}.otag.ok{background:var(--green)}.otag.ng{background:var(--red)}
-.progress{text-align:center;color:#777;font-size:13px}.drawer{display:none;border:1px solid #ddd;padding:10px;margin-top:10px}.drawer.open{display:block}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}.idx{border:1px solid #ccc;background:#fff;border-radius:3px;padding:6px 2px;font-size:11px}.idx.good{background:#e9f7ea;border-color:#83b887}.idx.bad{background:#fff0f0;border-color:#d79191}.idx.answered{background:#eef5fc;border-color:#8aa6c2}.idx.mark{box-shadow:inset 0 0 0 2px #d79200}.idx.cur{outline:2px solid #4d79a8}.resultbox{border:1px solid #ddd;padding:18px;border-radius:5px;margin-top:20px}.studybox{max-width:900px;margin:22px auto 0;border:1px solid #ddd;border-radius:6px;padding:16px;background:#fcfcfc}.studybox h2{margin:0 0 8px;font-size:20px}.quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.quick button{border:1px solid #8aa6c2;background:#fff;border-radius:5px;padding:9px 12px;font-weight:800}.quick button.exam{background:#eef5fc;border-color:#4d79a8;color:#315f8d}.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.stat{border:1px solid #ddd;border-radius:5px;padding:9px;text-align:center;background:#fff}.stat b{display:block;font-size:20px}.domain-table td:first-child{text-align:left;font-weight:700}.weak{color:#b23c2f;font-weight:800}.goodtxt{color:#27833b;font-weight:800}.timer{font-variant-numeric:tabular-nums;font-weight:900;color:#8a5a00}.flagged{background:#fff4d9!important;border-color:#d79200!important}.readiness{margin:14px 0;padding:12px;border-radius:5px;background:#f5f7fa}.history-list{font-size:13px;color:#555}.exam-note{font-size:12px;color:#666;margin-top:10px}.hidden-in-exam{display:none!important}@media(max-width:700px){.statgrid{grid-template-columns:repeat(2,1fr)}}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:9px;text-align:center}th{background:#f5f5f5}footer{border-top:1px solid #ddd;text-align:center;color:#888;font-size:12px;padding:22px;margin-top:50px}
+.progress{text-align:center;color:#777;font-size:13px}.drawer{display:none;border:1px solid #ddd;padding:10px;margin-top:10px}.drawer.open{display:block}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}.idx{border:1px solid #ccc;background:#fff;border-radius:3px;padding:6px 2px;font-size:11px}.idx.good{background:#e9f7ea;border-color:#83b887}.idx.bad{background:#fff0f0;border-color:#d79191}.idx.answered{background:#eef5fc;border-color:#8aa6c2}.idx.mark{box-shadow:inset 0 0 0 2px #d79200}.idx.cur{outline:2px solid #4d79a8}.resultbox{border:1px solid #ddd;padding:18px;border-radius:5px;margin-top:20px}.study-route-box{max-width:900px;margin:22px auto 0;border:1px solid #c9d8cc;border-radius:8px;padding:16px;background:#fbfefb}.study-route-box h2{margin:0 0 5px;font-size:22px}.study-route-note{font-size:13px;color:#5c685f;margin-bottom:12px}.route-list{display:grid;gap:9px}.route-step{display:grid;grid-template-columns:48px 1fr auto;gap:11px;align-items:center;border:1px solid #d8dfd9;border-radius:7px;padding:11px;background:#fff}.route-step.current{border:2px solid #27833b;background:#f3faf4}.route-step.done{background:#f7fbf7}.route-no{width:38px;height:38px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:#eef1ef;font-weight:900}.route-step.current .route-no{background:#27833b;color:#fff}.route-main b{display:block}.route-hint{font-size:12px;color:#66706a}.route-stat{font-size:12px;color:#555;margin-top:3px}.route-badge{display:inline-block;font-size:11px;font-weight:900;border-radius:999px;padding:2px 7px;margin-left:6px;background:#eef5fc;color:#315f8d}.route-badge.next{background:#e9f7ea;color:#246b34}.route-badge.done{background:#edf7ef;color:#246b34}.route-progress{height:5px;background:#ecefec;border-radius:999px;overflow:hidden;margin-top:6px}.route-progress span{display:block;height:100%;background:#739a7a}.route-action{border:1px solid #5c8a65;background:#fff;color:#276236;border-radius:5px;padding:8px 11px;font-weight:800;white-space:nowrap}.route-action:disabled{border-color:#bbb;color:#888;background:#f3f3f3;cursor:not-allowed}.route-final{border-style:dashed}.free-study-title{max-width:900px;margin:25px auto -8px;font-size:18px;font-weight:900}@media(max-width:700px){.route-step{grid-template-columns:42px 1fr}.route-action{grid-column:1/-1;width:100%}}.studybox{max-width:900px;margin:22px auto 0;border:1px solid #ddd;border-radius:6px;padding:16px;background:#fcfcfc}.studybox h2{margin:0 0 8px;font-size:20px}.quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.quick button{border:1px solid #8aa6c2;background:#fff;border-radius:5px;padding:9px 12px;font-weight:800}.quick button.exam{background:#eef5fc;border-color:#4d79a8;color:#315f8d}.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.stat{border:1px solid #ddd;border-radius:5px;padding:9px;text-align:center;background:#fff}.stat b{display:block;font-size:20px}.domain-table td:first-child{text-align:left;font-weight:700}.weak{color:#b23c2f;font-weight:800}.goodtxt{color:#27833b;font-weight:800}.timer{font-variant-numeric:tabular-nums;font-weight:900;color:#8a5a00}.flagged{background:#fff4d9!important;border-color:#d79200!important}.readiness{margin:14px 0;padding:12px;border-radius:5px;background:#f5f7fa}.history-list{font-size:13px;color:#555}.exam-note{font-size:12px;color:#666;margin-top:10px}.hidden-in-exam{display:none!important}@media(max-width:700px){.statgrid{grid-template-columns:repeat(2,1fr)}}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:9px;text-align:center}th{background:#f5f5f5}footer{border-top:1px solid #ddd;text-align:center;color:#888;font-size:12px;padding:22px;margin-top:50px}
 #error{display:none;max-width:860px;margin:20px auto;border:1px solid #d99;background:#fff3f3;padding:12px;color:#8a2222}
 @media(max-width:700px){main{padding:10px 10px 45px}.qtext{font-size:16.5px}.answers{padding:7px}.ans{grid-template-columns:38px 1fr}.grid{grid-template-columns:repeat(6,1fr)}.top .right{width:100%;margin-left:0}}
 </style>
@@ -94,6 +94,8 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 <h1>勉強する</h1><p class="sub">全366問で全範囲を学習</p>
 <div class="study-banner">全範囲を学習対象にしています。<small>公式82スキル細目 + Microsoft Learn に登場する関連製品まで含め、問題を解きながら覚える構成です。初期設定はランダム出題・選択肢シャッフルです。</small></div>
 <p class="intro">過去問は元の問題番号順を維持し、同じ論点を別シナリオで問う類似問題100問に加え、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドを再監査し、Bicep・TLS・Insights・Site Recovery に加えて、VM作成・VNet/Subnet・Storage冗長性・コンテナー構成・Backup/Restore など問題学習で薄かった論点まで補う160問を追加しています。さらに、AZ-104 の公式 Microsoft Learn 学習パスに製品として掲載される周辺サービスのうち、既存問題で直接学べていなかった Cloud Shell、Entra Domain Services、AKS、ExpressRoute、Azure Firewall、Azure Virtual Desktop も Learn製品補強として追加しています。回答後は正解・全選択肢の解説と Microsoft Learn 公式ページを表示します。</p>
+<div class="study-route-box"><h2>おすすめ学習ルート</h2><div class="study-route-note">上から順番に進めるのがおすすめです。各分野は未回答を優先して1回20問。全問を一度解いて通算正答率80%以上になると「完了」です。</div><div id="studyRoute" class="route-list"></div></div>
+<div class="free-study-title">自由に範囲を選ぶ</div>
 <div class="panel">
 <div class="block"><div class="title">問題セット</div><div class="choices-inline" id="setChips"><button type="button" class="chip active" data-set="all">全366問</button><button type="button" class="chip" data-set="past">過去問100問</button><button type="button" class="chip" data-set="1">第1セット（50問）</button><button type="button" class="chip" data-set="2">第2セット（50問）</button><button type="button" class="chip" data-set="3">類似問題（100問）</button><button type="button" class="chip" data-set="4">公式範囲補強（160問）</button><button type="button" class="chip" data-set="5">Learn製品補強（6問）</button></div></div>
 <div class="block"><div class="title">黒本の章から選ぶ</div><div class="chapter-chips" id="chapterChips"></div><div class="chapter-note">手元の『徹底攻略 Microsoft Azure Administrator教科書［AZ-104］対応』（2022年版）の11章に、現在の366問を論点ベースで対応付けています。古い章名はそのまま表示し、問題内容は2026年仕様を優先しています。</div></div>
@@ -140,6 +142,14 @@ const MOCK_KEY='az104_kakomon_mock_history_v1';
 const RESUME_KEY='az104_kakomon_resume_v1';
 const OFFICIAL_DOMAINS=['ID/ガバナンス','ストレージ','コンピュート','ネットワーク','監視/バックアップ'];
 const MOCK_QUOTA={'ID/ガバナンス':12,'ストレージ':9,'コンピュート':12,'ネットワーク':10,'監視/バックアップ':7};
+const STUDY_STAGES=[
+  {id:1,title:'ID・ガバナンス',hint:'Entra ID / RBAC / Policy / 管理グループ / Lock / Tag / Cost'},
+  {id:2,title:'ストレージ',hint:'Storage Account / Blob / Files / SAS / 冗長性 / AzCopy'},
+  {id:3,title:'VM・Compute',hint:'VM / Disk / 可用性 / VMSS / ARM / Bicep / Encryption'},
+  {id:4,title:'App Service・コンテナー',hint:'App Service / ACR / ACI / Container Apps / AKS'},
+  {id:5,title:'ネットワーク',hint:'VNet / NSG / UDR / DNS / LB / App Gateway / VPN / Firewall'},
+  {id:6,title:'Monitor・Backup・DR',hint:'Azure Monitor / Logs / Alerts / Network Watcher / Backup / Site Recovery'}
+];
 const BOOK_CHAPTERS=[
   {id:1,title:'Azureの概要と管理ツール',hint:'ARM / Bicep / デプロイ'},
   {id:2,title:'Azure Active Directory',hint:'現 Microsoft Entra ID'},
@@ -183,6 +193,8 @@ function resumeTitle(r){
   if(r.kind==='flagged')return '要復習フラグ';
   if(r.kind==='unanswered')return '未回答トレーニング';
   if(r.kind==='wrong')return '今回の間違い';
+  if((r.kind||'').startsWith('route-')){const id=Number(r.kind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);return st?'おすすめ '+st.title:'おすすめ学習'}
+  if(r.kind==='route-mix')return '全範囲ミックス';
   const s=r.selectedSet||'all';
   if(s==='all')return '全366問';if(s==='past')return '過去問100問';if(s==='3')return '類似問題100問';if(s==='4')return '公式範囲補強160問';if(s==='5')return 'Learn製品補強6問';return '第'+s+'セット';
 }
@@ -241,6 +253,59 @@ function domainOf(q){
   if(c.startsWith('ネットワーク'))return 'ネットワーク';
   return '監視/バックアップ';
 }
+function studyStageId(q){
+  const c=q.cat||'';
+  if(c.startsWith('ID/')||c==='監視/コスト')return 1;
+  if(c.startsWith('ストレージ'))return 2;
+  if(c==='App Service'||c.startsWith('コンテナー'))return 4;
+  if(c.startsWith('コンピュート'))return 3;
+  if(c.startsWith('ネットワーク'))return 5;
+  return 6;
+}
+function stageQuestions(id){return QUESTIONS.filter(q=>studyStageId(q)===id)}
+function stageStats(id){
+  const qs=stageQuestions(id),answered=qs.filter(q=>history(q).tries>0);
+  const tries=answered.reduce((s,q)=>s+history(q).tries,0),correct=answered.reduce((s,q)=>s+history(q).correct,0);
+  const rate=tries?Math.round(correct/tries*100):null;
+  return {qs,answered:answered.length,total:qs.length,tries,correct,rate,done:answered.length===qs.length&&rate!==null&&rate>=80};
+}
+function renderStudyRoute(){
+  const box=$('studyRoute');if(!box)return;
+  const stats=STUDY_STAGES.map(st=>({st,s:stageStats(st.id)}));
+  const next=stats.find(x=>!x.s.done);
+  box.innerHTML='';
+  stats.forEach(({st,s})=>{
+    const row=document.createElement('div');row.className='route-step'+(s.done?' done':'')+(next&&next.st.id===st.id?' current':'');
+    const no=document.createElement('div');no.className='route-no';no.textContent=st.id;
+    const main=document.createElement('div');main.className='route-main';
+    const title=document.createElement('b');title.textContent=st.title;
+    if(s.done){const badge=document.createElement('span');badge.className='route-badge done';badge.textContent='完了';title.appendChild(badge)}
+    else if(next&&next.st.id===st.id){const badge=document.createElement('span');badge.className='route-badge next';badge.textContent='次にやる';title.appendChild(badge)}
+    const hint=document.createElement('div');hint.className='route-hint';hint.textContent=st.hint;
+    const stat=document.createElement('div');stat.className='route-stat';stat.textContent='回答済み '+s.answered+'/'+s.total+'問 ・ 通算正答率 '+(s.rate===null?'-':s.rate+'%');
+    const prog=document.createElement('div');prog.className='route-progress';const bar=document.createElement('span');bar.style.width=(s.total?Math.round(s.answered/s.total*100):0)+'%';prog.appendChild(bar);
+    main.appendChild(title);main.appendChild(hint);main.appendChild(stat);main.appendChild(prog);
+    const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent=s.done?'20問復習する':s.answered?'続きを20問':'この分野を20問';btn.onclick=()=>startStudyStage(st.id);
+    row.appendChild(no);row.appendChild(main);row.appendChild(btn);box.appendChild(row);
+  });
+  const allDone=stats.every(x=>x.s.done),answered=QUESTIONS.filter(q=>history(q).tries>0),tries=answered.reduce((s,q)=>s+history(q).tries,0),correct=answered.reduce((s,q)=>s+history(q).correct,0),rate=tries?Math.round(correct/tries*100):null;
+  const row=document.createElement('div');row.className='route-step route-final'+(allDone?' current':'');
+  const no=document.createElement('div');no.className='route-no';no.textContent='7';
+  const main=document.createElement('div');main.className='route-main';const title=document.createElement('b');title.textContent='全範囲ミックス';
+  if(allDone){const badge=document.createElement('span');badge.className='route-badge next';badge.textContent='仕上げ';title.appendChild(badge)}
+  const hint=document.createElement('div');hint.className='route-hint';hint.textContent='全366問から分野を混ぜて30問。カテゴリの切り替え判断を鍛えます。';
+  const stat=document.createElement('div');stat.className='route-stat';stat.textContent=allDone?'全6ステップ完了 ・ 全体通算正答率 '+(rate===null?'-':rate+'%'):'前の6ステップを完了するとおすすめの仕上げ段階です';
+  main.appendChild(title);main.appendChild(hint);main.appendChild(stat);
+  const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent='全範囲30問';btn.disabled=!allDone;btn.onclick=startStudyMix;
+  row.appendChild(no);row.appendChild(main);row.appendChild(btn);box.appendChild(row);
+}
+function startStudyStage(id){
+  const st=STUDY_STAGES.find(x=>x.id===id),qs=stageQuestions(id),unanswered=qs.filter(q=>!history(q).tries);
+  const pool=unanswered.length?sample(unanswered,20):qs.slice().sort((a,b)=>smartScore(b)-smartScore(a)).slice(0,20);
+  if(!pool.length)return;
+  start(pool.map(q=>({...q,_order:makeOrder(q,true)})),'route-'+id);
+}
+function startStudyMix(){start(sample(QUESTIONS,30).map(q=>({...q,_order:makeOrder(q,true)})),'route-mix')}
 function updateReview(q,ok){
   const h=history(q);h.tries++;if(ok)h.correct++;h.last=ok;h.lastAt=Date.now();
   if(ok){h.streak=(h.streak||0)+1;const days=[1,3,7,14,30][Math.min(h.streak-1,4)];h.due=Date.now()+days*86400000}
@@ -288,7 +353,7 @@ function renderChapterChips(){
 function renderCats(){const cats=uniq(QUESTIONS.filter(inSelectedSet).filter(inSelectedChapter).map(q=>q.cat));$('category').innerHTML='<option value="all">すべて</option>'+cats.map(c=>'<option>'+c+'</option>').join('');refreshCount()}
 function makeOrder(q,forceShuffle=false){const order=q.o.map((_,i)=>i);if(forceShuffle||$('shuffleOptions').checked)shuffle(order);return order}
 function buildSession(){let a=filtered().slice(),mode=document.querySelector('input[name=mode]:checked').value;if(mode==='random')shuffle(a);else a.sort((x,y)=>x.set-y.set||x.id-y.id);const n=$('count').value;if(n!=='all')a=a.slice(0,Number(n));return a.map(q=>({...q,_order:makeOrder(q)}))}
-function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全366問';if(selectedSet==='past')return '過去問100問';if(selectedSet==='3')return '類似問題100問';if(selectedSet==='4')return '公式範囲補強160問';if(selectedSet==='5')return 'Learn製品補強6問';return '第'+selectedSet+'セット'}
+function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(sessionKind==='route-mix')return 'おすすめ ⑦ 全範囲ミックス';if(sessionKind.startsWith('route-')){const id=Number(sessionKind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);if(st)return 'おすすめ ⑦'.replace('⑦',String(id))+ ' '+st.title}if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全366問';if(selectedSet==='past')return '過去問100問';if(selectedSet==='3')return '類似問題100問';if(selectedSet==='4')return '公式範囲補強160問';if(selectedSet==='5')return 'Learn製品補強6問';return '第'+selectedSet+'セット'}
 function showModeSelect(){
   stopTimer();examMode=false;$('quiz').style.display='none';$('result').style.display='none';$('setup').style.display='none';$('modeSelect').style.display='block';window.scrollTo(0,0)
 }
@@ -419,6 +484,7 @@ function startTimer(sec){
 function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}$('timer')&&($('timer').textContent='')}
 function updateTimer(){const left=Math.max(0,Math.ceil((timerDeadline-Date.now())/1000));const m=Math.floor(left/60),s=left%60;$('timer').textContent='残り '+m+':'+String(s).padStart(2,'0');if(left<=0){stopTimer();alert('100分が経過したため模試を終了します。');finishMock()}}
 function renderDashboard(){
+  renderStudyRoute();
   const hist=QUESTIONS.map(q=>({q,h:history(q)}));const officialHist=hist.filter(x=>x.q.set!==5);const answered=hist.filter(x=>x.h.tries>0);const tries=answered.reduce((s,x)=>s+x.h.tries,0),correct=answered.reduce((s,x)=>s+x.h.correct,0);
   $('dashAnswered').textContent=answered.length+'/'+QUESTIONS.length;$('dashRate').textContent=tries?Math.round(correct/tries*100)+'%':'-';$('dashDue').textContent=answered.filter(x=>x.h.due&&x.h.due<=Date.now()).length;$('dashFlags').textContent=hist.filter(x=>x.h.flag).length;
   let rows='';OFFICIAL_DOMAINS.forEach(d=>{const a=officialHist.filter(x=>domainOf(x.q)===d&&x.h.tries);const t=a.reduce((s,x)=>s+x.h.tries,0),c=a.reduce((s,x)=>s+x.h.correct,0),rate=t?Math.round(c/t*100):null;let cls=rate===null?'':rate<75?'weak':rate>=85?'goodtxt':'';let verdict=rate===null?'未着手':rate<75?'要復習':rate>=85?'安定':'補強';rows+='<tr><td>'+d+'</td><td>'+a.length+'</td><td class="'+cls+'">'+(rate===null?'-':rate+'%')+'</td><td class="'+cls+'">'+verdict+'</td></tr>'});$('domainStats').innerHTML=rows;

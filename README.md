@@ -250,3 +250,8 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 - VPN Gateway の Local network gateway / BGP
 
 詳細は `audit/2026-09-21-external-crosscheck-355-audit.md` を参照してください。
+
+
+## 2026-09-21 最終深さ補強（360問）
+
+355問版を厳格再監査し、VM作成・Encryption at host・Site Recovery replication policy の異なる判断軸を5問追加しました。`questions/coverage/q156-160.js` を参照してください。cov-q146〜q155 も教材仕様に合わせて `kind: "coverage"` に統一しています。

@@ -15,6 +15,7 @@
 .minis{border:1px solid #cfd8e3;background:#f8fbff;border-radius:7px;padding:12px;margin:12px 0}.minis h4{margin:0 0 8px}.miniq{margin:8px 0}.miniq summary{font-weight:800}.answer{margin-top:7px;padding:8px 10px;background:#eef7f0;border-left:4px solid #4f9b5d}
 @media(max-width:760px){.screenmock .layout{grid-template-columns:1fr}.screenmock .nav{border-right:0;border-bottom:1px solid #ddd}.screenmock .row{grid-template-columns:1fr}}
 </style>
+<script src="inventory.js"></script>
 </head>
 <body>
 <header><div class="wrap head"><a href="exam-guide.html">← 受験直前チェック</a><div class="sp"></div><span class="pill">12か月無料対象向け・完全版</span></div></header>
@@ -40,7 +41,7 @@
 <div class="actions">
 <a class="btn" href="https://azure.microsoft.com/ja-jp/pricing/free-services/" target="_blank" rel="noopener">Microsoft 無料サービス一覧</a>
 <a class="btn" href="manual-only.html">課金リスク機能のマニュアル</a>
-<a class="btn primary" href="index.html">366問 過去問道場</a>
+<a class="btn primary" href="index.html"><span data-az104-total>366</span>問 過去問道場</a>
 </div>
 
 <h2>進捗</h2>
@@ -539,7 +540,7 @@ lsblk</div>
 </ol>
 <div class="cleanup"><b>終了条件:</b> 「RGを消したから終わり」ではなく、Cost analysisとFree servicesを最後に見るところまでがハンズオンです。</div>
 
-<h3>10-2. 366問道場へ戻る</h3>
+<h3>10-2. <span data-az104-total>366</span>問道場へ戻る</h3>
 <div class="gate">
 <div><b>① 本番模試</b>50問 / 100分。総合85%以上を目標。</div>
 <div><b>② 弱点20問</b>75%未満の分野を重点復習。</div>
@@ -568,7 +569,7 @@ lsblk</div>
 <a class="btn" href="manual-only.html">課金リスク機能の詳細マニュアルへ</a>
 </div>
 
-<div class="actions"><a class="btn primary" href="index.html">366問 過去問道場へ</a><a class="btn" href="exam-guide.html">受験直前チェックへ</a><a class="btn" href="https://azure.microsoft.com/ja-jp/pricing/free-services/" target="_blank" rel="noopener">Microsoft無料サービス一覧</a></div>
+<div class="actions"><a class="btn primary" href="index.html"><span data-az104-total>366</span>問 過去問道場へ</a><a class="btn" href="exam-guide.html">受験直前チェックへ</a><a class="btn" href="https://azure.microsoft.com/ja-jp/pricing/free-services/" target="_blank" rel="noopener">Microsoft無料サービス一覧</a></div>
 </main>
 <script>
 const K='az104_free12_labs_v2',boxes=[...document.querySelectorAll('#checks input[type=checkbox]')];let s=[];try{s=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){}

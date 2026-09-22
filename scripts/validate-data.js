@@ -233,6 +233,13 @@ assert(html.includes("questionSignature(q)"),"resume question signature missing"
 assert(html.includes("sig:questionSignature(q)"),"resume payload does not persist question signature");
 assert(html.includes("stale.forEach(uid=>{delete runResult[uid];delete sessionSelections[uid]})"),"stale resume answers are not invalidated");
 assert(html.includes("questionSetCount(q)"),"question screen denominator is still hard-coded");
+assert(html.includes("const KEY='az104_kakomon_dojo_v5_250'"),"learning-history localStorage key changed");
+assert(html.includes("const MOCK_KEY='az104_kakomon_mock_history_v1'"),"mock-history localStorage key changed");
+assert(html.includes("const RESUME_KEY='az104_kakomon_resume_v1'"),"resume localStorage key changed");
+assert(html.includes("Math.min(100*60,saved)"),"resumed mock timer is not clamped to 100 minutes");
+assert(html.includes("const raw=state[q.uid]&&typeof state[q.uid]==='object'"),"learning history values are not normalized defensively");
+assert(html.includes('<script src="ui-logic.js"></script>'),"index does not load ui-logic.js");
+assert(!html.includes("cats.map(c=>'<option>'+c+'</option>')"),"category values are still injected with innerHTML");
 assert(html.includes("q.set!==3&&q.set!==5"),"mock pool no longer excludes similar/Learn-product sets");
 assert(html.includes("['legacy-practice','practice-nuance'].includes(a.status)")||html.includes('["legacy-practice","practice-nuance"].includes(a.status)'),"mock pool no longer excludes legacy/practice-nuance questions");
 const setMarkers=[...html.matchAll(/data-az104-set="([^"]+)"/g)].map(m=>m[1]);

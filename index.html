@@ -199,7 +199,7 @@ function buildLegacyResume(){
   const pending=ordered.filter(q=>!history(q).tries);if(!pending.length)return null;
   const latest=answered.slice().sort((a,b)=>(history(b).lastAt||0)-(history(a).lastAt||0))[0],latestIdx=ordered.findIndex(q=>q.uid===latest.uid);
   const after=pending.filter(q=>ordered.findIndex(x=>x.uid===q.uid)>latestIdx),before=pending.filter(q=>ordered.findIndex(x=>x.uid===q.uid)<=latestIdx);
-  const session=[...after,...before].map(q=>({uid:q.uid,order:naturalOrder(q),sig:questionSignature(q)}));
+  const session=[...after,...before].slice(0,20).map(q=>({uid:q.uid,order:naturalOrder(q),sig:questionSignature(q)}));
   return {v:2,legacy:true,at:history(latest).lastAt||Date.now(),kind:'normal',selectedSet:'all',pos:0,session,runResult:{},sessionSelections:{},elapsedSec:0,remainingSec:null,legacyFrom:latest.uid};
 }
 function resumeTitle(r){
@@ -222,8 +222,8 @@ function updateResumeButton(){
     if(!b||!info)return;b.style.display='block';info.style.display='block';
     if(r.legacy){
       const first=QUESTIONS.find(q=>q.uid===r.session[0].uid);
-      b.textContent='▶ 続きから'+(first?'（'+labelSet(first)+' から）':'');
-      info.textContent='これまでの回答履歴から、次の未回答問題を自動で選びました';
+      b.textContent='▶ 次の未回答'+r.session.length+'問';
+      info.textContent='中断セッションではなく、これまでの回答履歴から次の未回答問題を選びました';
     }else{
       b.textContent='▶ 続きから（'+(p+1)+' / '+r.session.length+'問）';
       const d=new Date(r.at||Date.now());info.textContent='前回: '+resumeTitle(r)+' ・ '+(Number.isNaN(d.getTime())?'日時不明':d.toLocaleString('ja-JP'));

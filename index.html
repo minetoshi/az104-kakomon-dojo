@@ -260,17 +260,24 @@ function resumeStudy(){
   render();saveResume();window.scrollTo(0,0)
 }
 function history(q){
-  const raw=state[q.uid]&&typeof state[q.uid]==='object'&&!Array.isArray(state[q.uid])?state[q.uid]:{};
-  const tries=Number.isFinite(Number(raw.tries))?Math.max(0,Math.floor(Number(raw.tries))):0;
-  const correct=Number.isFinite(Number(raw.correct))?Math.max(0,Math.min(tries,Math.floor(Number(raw.correct)))):0;
+  const raw=state[q.uid]&&typeof state[q.uid]==='object'&&!Array.isArray(state[q.uid])?state[q.uid]:{},sig=questionSignature(q);
+  const stale=typeof raw.sig==='string'&&raw.sig!==sig,src=stale?{}:raw;
+  const tries=Number.isFinite(Number(src.tries))?Math.max(0,Math.floor(Number(src.tries))):0;
+  const correct=Number.isFinite(Number(src.correct))?Math.max(0,Math.min(tries,Math.floor(Number(src.correct)))):0;
   return {
     tries,correct,
-    last:raw.last===true?true:raw.last===false?false:null,
-    streak:Number.isFinite(Number(raw.streak))?Math.max(0,Math.floor(Number(raw.streak))):0,
-    due:Number.isFinite(Number(raw.due))?Math.max(0,Number(raw.due)):0,
+    last:src.last===true?true:src.last===false?false:null,
+    streak:Number.isFinite(Number(src.streak))?Math.max(0,Math.floor(Number(src.streak))):0,
+    due:Number.isFinite(Number(src.due))?Math.max(0,Number(src.due)):0,
     flag:raw.flag===true,
-    lastAt:Number.isFinite(Number(raw.lastAt))?Math.max(0,Number(raw.lastAt)):0
+    lastAt:Number.isFinite(Number(src.lastAt))?Math.max(0,Number(src.lastAt)):0,
+    sig
   }
+}
+function migrateHistorySignatures(){
+  let changed=false;
+  QUESTIONS.forEach(q=>{const raw=state[q.uid];if(raw&&typeof raw==='object'&&!Array.isArray(raw)&&typeof raw.sig!=='string'){raw.sig=questionSignature(q);changed=true}});
+  if(changed)save()
 }
 function uniq(a){return [...new Set(a)]}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -601,6 +608,7 @@ function renderDashboard(){
 }
 function init(){
   const inventoryErrors=validateInventory();if(inventoryErrors.length){const e=$('error');e.style.display='block';e.textContent='問題件数の整合性エラーがあります: '+inventoryErrors.join(' / ')}
+  migrateHistorySignatures();
   document.querySelectorAll('#setChips .chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedSet=b.dataset.set;renderChapterChips();renderCats()}));
   document.querySelectorAll('input[name=mode],#unanswered').forEach(x=>x.addEventListener('change',refreshCount));$('category').addEventListener('change',refreshCount);
   $('studyEntryBtn').addEventListener('click',enterStudyMode);$('mockEntryBtn').addEventListener('click',enterMockMode);$('modeBackBtn').addEventListener('click',showModeSelect);$('modeResumeBtn').addEventListener('click',resumeStudy);$('resumeBtn').addEventListener('click',resumeStudy);$('startBtn').addEventListener('click',()=>{sessionKind='normal';start()});$('smartBtn').addEventListener('click',startSmart);$('dueBtn').addEventListener('click',startDue);$('flaggedBtn').addEventListener('click',startFlagged);$('unansweredBtn').addEventListener('click',startUnanswered);

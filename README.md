@@ -155,7 +155,7 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 追加40問も、全選択肢に個別解説と Microsoft Learn 公式リンクを持たせています。
 
 
-## 2026-09-20 290問 Current-Spec 最終監査
+## 【履歴：290問時点】2026-09-20 Current-Spec 最終監査
 全290問について構造整合性を再チェックし、Azure の仕様変更影響が大きい論点を Microsoft Learn で再確認しました。
 
 今回の修正:
@@ -264,7 +264,7 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 12か月無料枠の対象・数量は Microsoft 側で変更される可能性があるため、教材内の数値より Azure Portal の Free services と Microsoft公式無料サービス一覧を優先します。
 
 
-## 2026-09-21 外部模試・公式Labクロスチェック（355問）
+## 【履歴：355問時点】2026-09-21 外部模試・公式Labクロスチェック
 
 345問到達後、Microsoft公式Labに加えて、公開範囲で確認できる正規のAZ-104練習問題（Tutorials Dojo、Whizlabs、MeasureUp demoの公開情報）をクロスチェックしました。外部問題文はコピーせず、別教材で問われている判断軸を抽出し、Microsoft Learnの現行仕様で再検証しています。
 
@@ -278,14 +278,14 @@ Microsoft Learn「試験 AZ-104 の学習ガイド」の **2026年4月17日現�
 詳細は `audit/2026-09-21-external-crosscheck-355-audit.md` を参照してください。
 
 
-## 2026-09-21 最終深さ補強（360問）
+## 【履歴：360問時点】2026-09-21 最終深さ補強
 
 355問版を厳格再監査し、VM作成・Encryption at host・Site Recovery replication policy の異なる判断軸を5問追加しました。`questions/coverage/q156-160.js` を参照してください。cov-q146〜q155 も教材仕様に合わせて `kind: "coverage"` に統一しています。
 
 
 ## 2026-09-21 Microsoft Learn 製品カバレッジ（366問）
 
-公式試験範囲360問とは別に、AZ-104 の Microsoft Learn Learning Path に製品・サービスとして登場するものを再監査し、既存問題で直接学べていなかった6製品を `Learn製品補強` として追加しました。
+現行366問のうち Learn製品補強6問を除く360問版を土台として、AZ-104 の Microsoft Learn Learning Path に製品・サービスとして登場するものを再監査し、既存問題で直接学べていなかった6製品を `Learn製品補強` として追加しました。
 
 追加6問:
 - Azure Cloud Shell

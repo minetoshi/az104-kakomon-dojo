@@ -66,7 +66,7 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 <script src="audit-map.js"></script>
 </head>
 <body>
-<header><div class="wrap head"><div class="logo">AZ-104 過去問道場</div><div class="sp"></div><div class="pill">過去問100 + 類似100 + 公式補強160 + Learn製品6</div></div></header>
+<header><div class="wrap head"><div class="logo">AZ-104 過去問道場</div><div class="sp"></div><div class="pill">過去問<span data-az104-set="past">100</span> + 類似<span data-az104-set="similar">100</span> + 公式補強<span data-az104-set="coverage">160</span> + Learn製品<span data-az104-set="learnProducts">6</span></div></div></header>
 <main class="wrap">
 <div id="error"></div>
 <section id="modeSelect">
@@ -94,11 +94,11 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 <button type="button" class="mode-back" id="modeBackBtn">← モード選択へ</button>
 <h1>勉強する</h1><p class="sub">全<span data-az104-total>366</span>問で全範囲を学習</p>
 <div class="study-banner">全範囲を学習対象にしています。<small>公式82スキル細目 + Microsoft Learn に登場する関連製品まで含め、問題を解きながら覚える構成です。初期設定はランダム出題・選択肢シャッフルです。</small></div>
-<p class="intro">過去問は元の問題番号順を維持し、同じ論点を別シナリオで問う類似問題100問に加え、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドを再監査し、Bicep・TLS・Insights・Site Recovery に加えて、VM作成・VNet/Subnet・Storage冗長性・コンテナー構成・Backup/Restore など問題学習で薄かった論点まで補う160問を追加しています。さらに、AZ-104 の公式 Microsoft Learn 学習パスに製品として掲載される周辺サービスのうち、既存問題で直接学べていなかった Cloud Shell、Entra Domain Services、AKS、ExpressRoute、Azure Firewall、Azure Virtual Desktop も Learn製品補強として追加しています。回答後は正解・全選択肢の解説と Microsoft Learn 公式ページを表示します。</p>
+<p class="intro">過去問は元の問題番号順を維持し、同じ論点を別シナリオで問う類似問題<span data-az104-set="similar">100</span>問に加え、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドを再監査し、Bicep・TLS・Insights・Site Recovery に加えて、VM作成・VNet/Subnet・Storage冗長性・コンテナー構成・Backup/Restore など問題学習で薄かった論点まで補う<span data-az104-set="coverage">160</span>問を追加しています。さらに、AZ-104 の公式 Microsoft Learn 学習パスに製品として掲載される周辺サービスのうち、既存問題で直接学べていなかった Cloud Shell、Entra Domain Services、AKS、ExpressRoute、Azure Firewall、Azure Virtual Desktop も Learn製品補強として追加しています。回答後は正解・全選択肢の解説と Microsoft Learn 公式ページを表示します。</p>
 <div class="study-route-box"><h2>おすすめ学習ルート</h2><div class="study-route-note">上から順番に進めるのがおすすめです。各分野は未回答を優先して1回20問。全問を一度解いて通算正答率80%以上になると「完了」です。</div><div id="studyRoute" class="route-list"></div></div>
 <div class="free-study-title">自由に範囲を選ぶ</div>
 <div class="panel">
-<div class="block"><div class="title">問題セット</div><div class="choices-inline" id="setChips"><button type="button" class="chip active" data-set="all">全366問</button><button type="button" class="chip" data-set="past">過去問100問</button><button type="button" class="chip" data-set="1">第1セット（50問）</button><button type="button" class="chip" data-set="2">第2セット（50問）</button><button type="button" class="chip" data-set="3">類似問題（100問）</button><button type="button" class="chip" data-set="4">公式範囲補強（160問）</button><button type="button" class="chip" data-set="5">Learn製品補強（6問）</button></div></div>
+<div class="block"><div class="title">問題セット</div><div class="choices-inline" id="setChips"><button type="button" class="chip active" data-set="all">全<span data-az104-total>366</span>問</button><button type="button" class="chip" data-set="past">過去問<span data-az104-set="past">100</span>問</button><button type="button" class="chip" data-set="1">第1セット（<span data-az104-set="set1">50</span>問）</button><button type="button" class="chip" data-set="2">第2セット（<span data-az104-set="set2">50</span>問）</button><button type="button" class="chip" data-set="3">類似問題（<span data-az104-set="similar">100</span>問）</button><button type="button" class="chip" data-set="4">公式範囲補強（<span data-az104-set="coverage">160</span>問）</button><button type="button" class="chip" data-set="5">Learn製品補強（<span data-az104-set="learnProducts">6</span>問）</button></div></div>
 <div class="block"><div class="title">黒本の章から選ぶ</div><div class="chapter-chips" id="chapterChips"></div><div class="chapter-note">手元の『徹底攻略 Microsoft Azure Administrator教科書［AZ-104］対応』（2022年版）の11章へ論点ベースで対応付けています。章ボタンの件数は、上で選んだ問題セット（全問／過去問／類似／公式補強／Learn製品）に応じて自動再集計されます。全問選択時は<span data-az104-total>366</span>問です。古い章名はそのまま表示し、問題内容は2026年仕様を優先しています。</div><div class="count-audit" id="inventoryStatus"></div></div>
 <div class="block"><div class="title">出題方法</div><label class="option"><input type="radio" name="mode" value="order" checked>番号順</label><label class="option"><input type="radio" name="mode" value="random">ランダム</label><label class="option"><input type="radio" name="mode" value="wrong">間違えた問題のみ</label></div>
 <div class="block"><div class="title">カテゴリ</div><select id="category"><option value="all">すべて</option></select></div>
@@ -198,7 +198,7 @@ function resumeTitle(r){
   if(r.kind==='route-mix')return '全範囲ミックス';
   if((r.kind||'').startsWith('route-')){const id=Number(r.kind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);return st?'おすすめ '+st.title:'おすすめ学習'}
   const s=r.selectedSet||'all';
-  if(s==='all')return '全366問';if(s==='past')return '過去問100問';if(s==='3')return '類似問題100問';if(s==='4')return '公式範囲補強160問';if(s==='5')return 'Learn製品補強6問';return '第'+s+'セット';
+  if(s==='all')return '全'+setCountValue('all')+'問';if(s==='past')return '過去問'+setCountValue('past')+'問';if(s==='3')return '類似問題'+setCountValue(3)+'問';if(s==='4')return '公式範囲補強'+setCountValue(4)+'問';if(s==='5')return 'Learn製品補強'+setCountValue(5)+'問';return '第'+s+'セット';
 }
 function updateResumeButton(){
   const r=readResume(),targets=[[ $('resumeBtn'),$('resumeInfo') ],[ $('modeResumeBtn'),$('modeResumeInfo') ]];
@@ -247,6 +247,13 @@ function uniq(a){return [...new Set(a)]}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function sample(a,n){const x=shuffle(a.slice());return x.slice(0,Math.min(n,x.length))}
 function equalSet(a,b){return a.length===b.length&&a.every(x=>b.includes(x))}
+function setCountValue(set){
+  if(set==='all')return Number(INVENTORY.total)||QUESTIONS.length;
+  if(set==='past')return Number(INVENTORY.sets&&INVENTORY.sets.past)||QUESTIONS.filter(q=>q.set===1||q.set===2).length;
+  const map={1:'set1',2:'set2',3:'similar',4:'coverage',5:'learnProducts'},key=map[Number(set)];
+  return key&&INVENTORY.sets?Number(INVENTORY.sets[key])||QUESTIONS.filter(q=>q.set===Number(set)).length:QUESTIONS.filter(q=>q.set===Number(set)).length;
+}
+function questionSetCount(q){return setCountValue(q.set)}
 function naturalOrder(q){return q.o.map((_,i)=>i)}
 function validOrder(q,order){const natural=naturalOrder(q);return Array.isArray(order)&&order.length===natural.length&&new Set(order).size===natural.length&&order.every(i=>Number.isInteger(i)&&natural.includes(i))}
 function normalizeOrder(q,order){return validOrder(q,order)?order.slice():naturalOrder(q)}
@@ -300,7 +307,7 @@ function renderStudyRoute(){
   const no=document.createElement('div');no.className='route-no';no.textContent='7';
   const main=document.createElement('div');main.className='route-main';const title=document.createElement('b');title.textContent='全範囲ミックス';
   if(allDone){const badge=document.createElement('span');badge.className='route-badge next';badge.textContent='仕上げ';title.appendChild(badge)}
-  const hint=document.createElement('div');hint.className='route-hint';hint.textContent='全366問から分野を混ぜて30問。カテゴリの切り替え判断を鍛えます。';
+  const hint=document.createElement('div');hint.className='route-hint';hint.textContent='全'+setCountValue('all')+'問から分野を混ぜて30問。カテゴリの切り替え判断を鍛えます。';
   const stat=document.createElement('div');stat.className='route-stat';stat.textContent=allDone?'全6ステップ完了 ・ 全体通算正答率 '+(rate===null?'-':rate+'%'):'前の6ステップを完了するとおすすめの仕上げ段階です';
   main.appendChild(title);main.appendChild(hint);main.appendChild(stat);
   const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent='全範囲30問';btn.disabled=!allDone;btn.onclick=startStudyMix;
@@ -397,7 +404,7 @@ function renderChapterChips(){
 function renderCats(){const cats=uniq(QUESTIONS.filter(inSelectedSet).filter(inSelectedChapter).map(q=>q.cat));$('category').innerHTML='<option value="all">すべて</option>'+cats.map(c=>'<option>'+c+'</option>').join('');refreshCount()}
 function makeOrder(q,forceShuffle=false){const order=q.o.map((_,i)=>i);if(forceShuffle||$('shuffleOptions').checked)shuffle(order);return order}
 function buildSession(){let a=filtered().slice(),mode=document.querySelector('input[name=mode]:checked').value;if(mode==='random')shuffle(a);else a.sort((x,y)=>x.set-y.set||x.id-y.id);const n=$('count').value;if(n!=='all')a=a.slice(0,Number(n));return a.map(q=>({...q,_order:makeOrder(q)}))}
-function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(sessionKind==='route-mix')return 'おすすめ ⑦ 全範囲ミックス';if(sessionKind.startsWith('route-')){const id=Number(sessionKind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);if(st)return 'おすすめ '+id+' '+st.title}if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全366問';if(selectedSet==='past')return '過去問100問';if(selectedSet==='3')return '類似問題100問';if(selectedSet==='4')return '公式範囲補強160問';if(selectedSet==='5')return 'Learn製品補強6問';return '第'+selectedSet+'セット'}
+function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(sessionKind==='route-mix')return 'おすすめ ⑦ 全範囲ミックス';if(sessionKind.startsWith('route-')){const id=Number(sessionKind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);if(st)return 'おすすめ '+id+' '+st.title}if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全'+setCountValue('all')+'問';if(selectedSet==='past')return '過去問'+setCountValue('past')+'問';if(selectedSet==='3')return '類似問題'+setCountValue(3)+'問';if(selectedSet==='4')return '公式範囲補強'+setCountValue(4)+'問';if(selectedSet==='5')return 'Learn製品補強'+setCountValue(5)+'問';return '第'+selectedSet+'セット'}
 function showModeSelect(){
   stopTimer();examMode=false;$('quiz').style.display='none';$('result').style.display='none';$('setup').style.display='none';$('modeSelect').style.display='block';window.scrollTo(0,0)
 }
@@ -452,7 +459,7 @@ function toggleFlag(){const q=session[pos];const h=history(q);h.flag=!h.flag;sta
 function render(){
   const q=session[pos];selected=new Set((sessionSelections[q.uid]||[]).filter(i=>Number.isInteger(i)&&i>=0&&i<q.o.length));judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=normalizeOrder(q,q._order);q._order=currentMap.slice();
   if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
-  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+q.id+'/'+(q.set===3?100:q.set===4?160:q.set===5?6:50);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
+  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+q.id+'/'+questionSetCount(q);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
   $('qtext').textContent=q.q;$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
   currentMap.forEach((orig,visual)=>{
     const lab=document.createElement('label');lab.className='ans';lab.dataset.orig=orig;

@@ -165,8 +165,8 @@ const BOOK_CHAPTERS=[
   {id:10,title:'データ保護',hint:'Backup / Recovery Services / Site Recovery'},
   {id:11,title:'監視',hint:'Azure Monitor / Log Analytics / Alert'}
 ];
-let state={};try{state=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){state={}}
-let mockHistory=[];try{mockHistory=JSON.parse(localStorage.getItem(MOCK_KEY)||'[]')}catch(e){mockHistory=[]}
+let state={};try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');state=x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(e){state={}}
+let mockHistory=[];try{const x=JSON.parse(localStorage.getItem(MOCK_KEY)||'[]');mockHistory=Array.isArray(x)?x:[]}catch(e){mockHistory=[]}
 let selectedSet='all',selectedChapter='all',session=[],pos=0,selected=new Set(),judged=false,currentMap=[],runResult={},sessionSelections={};
 let sessionKind='normal',examMode=false,mockFinalized=false,timerId=null,timerDeadline=0,sessionStartedAt=0;
 const $=id=>document.getElementById(id);
@@ -231,7 +231,7 @@ function saveResume(){
 function resumeStudy(){
   const r=readResume();if(!r){alert('続きから再開できる学習履歴がありません。');updateResumeButton();return}
   const byUid=new Map(QUESTIONS.map(q=>[q.uid,q])),restored=[];
-  r.session.forEach(x=>{const q=byUid.get(x.uid);if(!q)return;const natural=q.o.map((_,i)=>i),ord=Array.isArray(x.order)&&x.order.length===natural.length&&x.order.every(i=>natural.includes(i))?x.order.slice():natural;restored.push({...q,_order:ord})});
+  r.session.forEach(x=>{const q=byUid.get(x.uid);if(!q)return;restored.push({...q,_order:normalizeOrder(q,x.order)})});
   if(!restored.length){clearResume();alert('前回の問題データを復元できませんでした。');return}
   stopTimer();sessionKind=r.kind||'normal';examMode=sessionKind==='mock';mockFinalized=false;selectedSet=r.selectedSet||'all';selectedChapter=r.selectedChapter||'all';session=restored;
   pos=Math.max(0,Math.min(Number(r.pos)||0,session.length-1));runResult=r.runResult&&typeof r.runResult==='object'?r.runResult:{};sessionSelections=r.sessionSelections&&typeof r.sessionSelections==='object'?r.sessionSelections:{};
@@ -239,7 +239,7 @@ function resumeStudy(){
   document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.set===selectedSet));renderChapterChips();renderCats();
   $('modeSelect').style.display='none';$('setup').style.display='none';$('result').style.display='none';$('quiz').style.display='block';$('sessionTitle').textContent=sessionName();
   $('judgeBtn').textContent=examMode?'回答を保存':'回答を確認';$('timer').textContent='';
-  if(examMode)startTimer(Math.max(1,Number(r.remainingSec)||100*60));
+  if(examMode){const saved=Number(r.remainingSec);startTimer(Number.isFinite(saved)?Math.max(1,saved):100*60)}
   render();saveResume();window.scrollTo(0,0)
 }
 function history(q){return Object.assign({tries:0,correct:0,last:null,streak:0,due:0,flag:false,lastAt:0},state[q.uid]||{})}
@@ -247,6 +247,11 @@ function uniq(a){return [...new Set(a)]}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function sample(a,n){const x=shuffle(a.slice());return x.slice(0,Math.min(n,x.length))}
 function equalSet(a,b){return a.length===b.length&&a.every(x=>b.includes(x))}
+function naturalOrder(q){return q.o.map((_,i)=>i)}
+function validOrder(q,order){const natural=naturalOrder(q);return Array.isArray(order)&&order.length===natural.length&&new Set(order).size===natural.length&&order.every(i=>Number.isInteger(i)&&natural.includes(i))}
+function normalizeOrder(q,order){return validOrder(q,order)?order.slice():naturalOrder(q)}
+function displayedLetter(orig){const visual=currentMap.indexOf(orig);return visual>=0?String.fromCharCode(65+visual):'?'}
+function rankBySmartScore(qs){return qs.map(q=>({q,score:smartScore(q)})).sort((a,b)=>b.score-a.score).map(x=>x.q)}
 function domainOf(q){
   const c=q.cat||'';
   if(c.startsWith('ID/')||c==='監視/コスト')return 'ID/ガバナンス';
@@ -302,10 +307,13 @@ function renderStudyRoute(){
   row.appendChild(no);row.appendChild(main);row.appendChild(btn);box.appendChild(row);
 }
 function startStudyStage(id){
-  const st=STUDY_STAGES.find(x=>x.id===id),qs=stageQuestions(id),unanswered=qs.filter(q=>!history(q).tries);
-  const pool=unanswered.length?sample(unanswered,20):qs.slice().sort((a,b)=>smartScore(b)-smartScore(a)).slice(0,20);
-  if(!pool.length)return;
-  start(pool.map(q=>({...q,_order:makeOrder(q,true)})),'route-'+id);
+  const qs=stageQuestions(id),unanswered=qs.filter(q=>!history(q).tries),chosen=sample(unanswered,Math.min(20,unanswered.length));
+  if(chosen.length<20){
+    const used=new Set(chosen.map(q=>q.uid));
+    rankBySmartScore(qs.filter(q=>!used.has(q.uid))).slice(0,20-chosen.length).forEach(q=>chosen.push(q));
+  }
+  if(!chosen.length)return;
+  start(chosen.map(q=>({...q,_order:makeOrder(q,true)})),'route-'+id);
 }
 function startStudyMix(){start(sample(QUESTIONS,30).map(q=>({...q,_order:makeOrder(q,true)})),'route-mix')}
 function updateReview(q,ok){
@@ -404,7 +412,7 @@ function enterStudyMode(){
 function enterMockMode(){ $('modeSelect').style.display='none'; startMock() }
 function start(custom=null,kind='normal'){
   stopTimer();sessionKind=kind;examMode=kind==='mock';mockFinalized=false;
-  session=custom||buildSession();if(!session.length){alert('対象となる問題がありません。条件を変更してください。');return}
+  session=(custom||buildSession()).map(q=>({...q,_order:normalizeOrder(q,q._order)}));if(!session.length){alert('対象となる問題がありません。条件を変更してください。');return}
   pos=0;runResult={};sessionSelections={};sessionStartedAt=Date.now();
   $('setup').style.display='none';$('result').style.display='none';$('quiz').style.display='block';$('sessionTitle').textContent=sessionName();
   $('judgeBtn').textContent=examMode?'回答を保存':'回答を確認';
@@ -433,7 +441,7 @@ function smartScore(q){
   if(h.tries===0)s+=250;else s+=(1-h.correct/h.tries)*300;
   return s;
 }
-function startSmart(){const a=QUESTIONS.slice().sort((a,b)=>smartScore(b)-smartScore(a)).slice(0,20).map(q=>({...q,_order:makeOrder(q,true)}));start(a,'smart')}
+function startSmart(){const a=rankBySmartScore(QUESTIONS).slice(0,20).map(q=>({...q,_order:makeOrder(q,true)}));start(a,'smart')}
 function startDue(){const a=QUESTIONS.filter(q=>history(q).tries&&history(q).due&&history(q).due<=Date.now());if(!a.length){alert('今日が復習期限の問題はありません。');return}start(sample(a,Math.min(30,a.length)).map(q=>({...q,_order:makeOrder(q,true)})),'due')}
 function startFlagged(){const a=QUESTIONS.filter(q=>history(q).flag);if(!a.length){alert('要復習フラグの問題はありません。');return}start(a.map(q=>({...q,_order:makeOrder(q,true)})),'flagged')}
 function startUnanswered(){const a=QUESTIONS.filter(q=>!history(q).tries);if(!a.length){alert('未回答問題はありません。');return}start(sample(a,20).map(q=>({...q,_order:makeOrder(q,true)})),'unanswered')}
@@ -442,7 +450,7 @@ function currentFlag(){const q=session[pos];return q?history(q).flag:false}
 function updateFlagButton(){if(!$('flagBtn')||!session.length)return;$('flagBtn').classList.toggle('flagged',currentFlag());$('flagBtn').textContent=currentFlag()?'★ 要復習中':'☆ 要復習'}
 function toggleFlag(){const q=session[pos];const h=history(q);h.flag=!h.flag;state[q.uid]=h;save();updateFlagButton();renderIndex();renderDashboard();saveResume()}
 function render(){
-  const q=session[pos];selected=new Set(sessionSelections[q.uid]||[]);judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=q._order.slice();
+  const q=session[pos];selected=new Set((sessionSelections[q.uid]||[]).filter(i=>Number.isInteger(i)&&i>=0&&i<q.o.length));judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=normalizeOrder(q,q._order);q._order=currentMap.slice();
   if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
   else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+q.id+'/'+(q.set===3?100:q.set===4?160:q.set===5?6:50);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
   $('qtext').textContent=q.q;$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
@@ -466,10 +474,11 @@ function showFeedback(q,ok){
   if(!examMode){$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat}
   const ans=q.a.slice().sort((a,b)=>a-b),sel=sessionSelections[q.uid]||[];
   document.querySelectorAll('.ans').forEach(el=>{const i=Number(el.dataset.orig);el.classList.remove('sel');if(ans.includes(i))el.classList.add('correct');else if(sel.includes(i))el.classList.add('wrong')});
-  $('judge').style.display='block';$('judge').className='judge '+(ok?'ok':'ng');$('jhead').textContent=ok?'○ 正解':'× 不正解';$('correctText').textContent=ans.map(i=>q.o[i]).join(' / ');
+  $('judge').style.display='block';$('judge').className='judge '+(ok?'ok':'ng');$('jhead').textContent=ok?'○ 正解':'× 不正解';$('correctText').textContent=currentMap.filter(i=>ans.includes(i)).map(i=>displayedLetter(i)+'. '+q.o[i]).join(' / ');
   const detail=(window.AZ104_EXPLAIN&&window.AZ104_EXPLAIN.build)?window.AZ104_EXPLAIN.build(q):{decision:'設問の要件を整理し、最も直接的に満たす選択肢を選びます。',correctReason:q.e,options:[],tip:'正解サービスの役割と、他サービスとの違いをセットで覚えます。'};
   $('decisionPoint').textContent=detail.decision;$('explain').textContent=detail.correctReason;$('examTip').textContent=detail.tip;
-  const ob=$('optionReview');ob.innerHTML='';detail.options.forEach(x=>{const row=document.createElement('div');row.className='orow '+(x.ok?'ok':'ng');const top=document.createElement('div');top.className='otop';const tag=document.createElement('span');tag.className='otag '+(x.ok?'ok':'ng');tag.textContent=x.ok?'正解':'不正解';const name=document.createElement('span');name.textContent=String.fromCharCode(65+x.index)+'. '+q.o[x.index];top.appendChild(tag);top.appendChild(name);const p=document.createElement('div');p.textContent=x.text;row.appendChild(top);row.appendChild(p);ob.appendChild(row)});
+  const optionDetails=new Map((detail.options||[]).map(x=>[x.index,x]));
+  const ob=$('optionReview');ob.innerHTML='';currentMap.forEach((orig,visual)=>{const x=optionDetails.get(orig)||{index:orig,ok:ans.includes(orig),text:(q.ox&&q.ox[orig])||''};const row=document.createElement('div');row.className='orow '+(x.ok?'ok':'ng');const top=document.createElement('div');top.className='otop';const tag=document.createElement('span');tag.className='otag '+(x.ok?'ok':'ng');tag.textContent=x.ok?'正解':'不正解';const name=document.createElement('span');name.textContent=String.fromCharCode(65+visual)+'. '+q.o[orig];top.appendChild(tag);top.appendChild(name);const p=document.createElement('div');p.textContent=x.text||'この選択肢の役割を正解選択肢と比較して確認します。';row.appendChild(top);row.appendChild(p);ob.appendChild(row)});
   const box=$('learnLinks');box.innerHTML='';const ls=(q.learn&&q.learn.length)?q.learn:(LEARN_MAP[q.uid]||[]);ls.forEach(x=>{const a=document.createElement('a');a.href=x.url;a.target='_blank';a.rel='noopener';a.textContent=x.title+' ↗';box.appendChild(a)});if(!ls.length)box.textContent='関連リンクは準備中です。';
   const cau=$('caution');const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):null;if(audit&&audit.note){cau.style.display='block';cau.textContent='監査メモ: '+audit.note}else{cau.style.display='none';cau.textContent=''}
   if(audit&&audit.extra&&audit.extra.length){audit.extra.forEach(x=>{if(!ls.some(y=>y.url===x.url)){const a=document.createElement('a');a.href=x.url;a.target='_blank';a.rel='noopener';a.textContent=x.title+' ↗';box.appendChild(a)}})}
@@ -487,15 +496,20 @@ function domainBreakdown(){
   const out={};OFFICIAL_DOMAINS.forEach(d=>out[d]={total:0,correct:0});
   session.forEach(q=>{const d=domainOf(q);out[d].total++;if(runResult[q.uid]===true)out[d].correct++});return out
 }
-function resultDomainHtml(b){
+function resultDomainHtml(b,onlyPresent=false){
   let html='<table style="margin-top:14px"><tr><th>公式分野</th><th>正解</th><th>出題</th><th>正答率</th></tr>';
-  OFFICIAL_DOMAINS.forEach(d=>{const x=b[d],r=x.total?Math.round(x.correct/x.total*100):0;html+='<tr><td style="text-align:left">'+d+'</td><td>'+x.correct+'</td><td>'+x.total+'</td><td>'+r+'%</td></tr>'});return html+'</table>'
+  OFFICIAL_DOMAINS.forEach(d=>{const x=b[d];if(onlyPresent&&!x.total)return;const r=x.total?Math.round(x.correct/x.total*100):0;html+='<tr><td style="text-align:left">'+d+'</td><td>'+x.correct+'</td><td>'+x.total+'</td><td>'+r+'%</td></tr>'});return html+'</table>'
 }
 function readinessText(rate,b){
   const domainRates=OFFICIAL_DOMAINS.filter(d=>b[d].total).map(d=>b[d].correct/b[d].total*100);const min=domainRates.length?Math.min(...domainRates):0;
   if(rate>=85&&min>=75)return '<b class="goodtxt">道場内の仕上がり目安クリア</b>：総合85%以上かつ各分野75%以上です。この状態を3回連続で再現できれば、知識面はかなり安定しています。';
   if(rate>=75)return '<b>あと一段</b>：総合は悪くありません。75%未満の分野と今回の誤答を優先して復習してください。';
   return '<b class="weak">弱点復習を優先</b>：今回の誤答→Learn→おすすめ弱点20問の順で固めてから再模試がおすすめです。'
+}
+function studyResultText(rate){
+  if(rate>=85)return '<b class="goodtxt">今回の学習は良好です</b>：正答率'+rate+'%。この結果だけで模試の仕上がり判定は行わず、学習ルートの進捗と本番模試で確認してください。';
+  if(rate>=75)return '<b>今回の学習はあと一段</b>：正答率'+rate+'%。誤答の選択肢解説を確認してから次へ進むのがおすすめです。';
+  return '<b class="weak">今回の誤答を優先して復習</b>：正答率'+rate+'%。解説→Learn→弱点復習の順で固めてください。'
 }
 function finishMock(){
   if(mockFinalized)return;mockFinalized=true;stopTimer();saveCurrentSelection();runResult={};
@@ -510,7 +524,7 @@ function finish(){
 }
 function showResult(correct,rate,b,isMock){
   $('quiz').style.display='none';$('result').style.display='block';$('rTotal').textContent=session.length;$('rCorrect').textContent=correct;$('rRate').textContent=rate+'%';
-  $('resultReadiness').innerHTML=readinessText(rate,b);$('resultDomains').innerHTML=resultDomainHtml(b);
+  $('resultReadiness').innerHTML=isMock?readinessText(rate,b):studyResultText(rate);$('resultDomains').innerHTML=resultDomainHtml(b,!isMock);
   $('resultNote').textContent=isMock?'本試験はスケールスコア700以上で合格です。模試の正答率85%はこの道場独自の保守的な仕上がり目安で、実際の合格点換算ではありません。':'間違えた問題は「今回の間違いだけ」で解説を確認し、間隔反復の復習期限にも自動登録されます。';$('backSetup').textContent=isMock?'モード選択へ戻る':'学習設定へ戻る';
   window.scrollTo(0,0)
 }
@@ -538,7 +552,7 @@ function init(){
   $('indexToggle').addEventListener('click',()=>$('drawer').classList.toggle('open'));
   $('quitBtn').addEventListener('click',()=>{const wasExam=examMode;if(wasExam&&!confirm('模試を途中終了しますか？「続きから」で再開できます。'))return;saveCurrentSelection();saveResume();stopTimer();$('quiz').style.display='none';examMode=false;if(wasExam){$('setup').style.display='none';$('modeSelect').style.display='block'}else{$('modeSelect').style.display='none';$('setup').style.display='block';renderDashboard();updateResumeButton()}window.scrollTo(0,0)});
   $('backSetup').addEventListener('click',()=>{const wasMock=sessionKind==='mock';$('result').style.display='none';examMode=false;if(wasMock){$('setup').style.display='none';$('modeSelect').style.display='block'}else{$('modeSelect').style.display='none';$('setup').style.display='block';renderDashboard()}window.scrollTo(0,0)});
-  $('retryWrong').addEventListener('click',()=>{const wrong=session.filter(q=>runResult[q.uid]===false).map(q=>({...q,_order:q.o.map((_,i)=>i)}));if(!wrong.length){alert('今回の間違いはありません。');return}examMode=false;start(wrong,'wrong')});
+  $('retryWrong').addEventListener('click',()=>{const wrong=session.filter(q=>runResult[q.uid]===false).map(q=>({...q,_order:normalizeOrder(q,q._order)}));if(!wrong.length){alert('今回の間違いはありません。');return}examMode=false;start(wrong,'wrong')});
   renderChapterChips();renderCats();renderDashboard();updateResumeButton()
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&session.length&&$('quiz')&&$('quiz').style.display!=='none')saveResume()});

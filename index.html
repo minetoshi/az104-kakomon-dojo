@@ -174,19 +174,13 @@ function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function saveMockHistory(){localStorage.setItem(MOCK_KEY,JSON.stringify(mockHistory.slice(-20)))}
 function readResume(){try{const r=JSON.parse(localStorage.getItem(RESUME_KEY)||'null');if(r&&Array.isArray(r.session)&&r.session.length)return r}catch(e){}return buildLegacyResume()}
 function buildLegacyResume(){
-  const answered=QUESTIONS.filter(q=>history(q).tries>0);
+  const answered=QUESTIONS.filter(q=>history(q).tries>0),ordered=QUESTIONS.slice().sort((a,b)=>a.set-b.set||a.id-b.id);
   if(!answered.length)return null;
-  const latest=answered.slice().sort((a,b)=>(history(b).lastAt||0)-(history(a).lastAt||0))[0];
-  const ordered=QUESTIONS.slice().sort((a,b)=>a.set-b.set||a.id-b.id);
-  let idx=ordered.findIndex(q=>q.uid===latest.uid);if(idx<0)idx=0;
-  let next=idx+1;
-  while(next<ordered.length&&history(ordered[next]).tries>0)next++;
-  if(next>=ordered.length){
-    next=ordered.findIndex(q=>!history(q).tries);
-    if(next<0)return null;
-  }
-  const session=ordered.slice(next).map(q=>({uid:q.uid,order:q.o.map((_,i)=>i)}));
-  return {v:0,legacy:true,at:history(latest).lastAt||Date.now(),kind:'normal',selectedSet:'all',pos:0,session,runResult:{},sessionSelections:{},elapsedSec:0,remainingSec:null,legacyFrom:latest.uid};
+  const pending=ordered.filter(q=>!history(q).tries);if(!pending.length)return null;
+  const latest=answered.slice().sort((a,b)=>(history(b).lastAt||0)-(history(a).lastAt||0))[0],latestIdx=ordered.findIndex(q=>q.uid===latest.uid);
+  const after=pending.filter(q=>ordered.findIndex(x=>x.uid===q.uid)>latestIdx),before=pending.filter(q=>ordered.findIndex(x=>x.uid===q.uid)<=latestIdx);
+  const session=[...after,...before].map(q=>({uid:q.uid,order:naturalOrder(q),sig:questionSignature(q)}));
+  return {v:2,legacy:true,at:history(latest).lastAt||Date.now(),kind:'normal',selectedSet:'all',pos:0,session,runResult:{},sessionSelections:{},elapsedSec:0,remainingSec:null,legacyFrom:latest.uid};
 }
 function resumeTitle(r){
   if(r.kind==='mock')return '本番模試 50問';
@@ -221,20 +215,21 @@ function saveResume(){
   if(!session.length||mockFinalized)return;
   const remaining=examMode&&timerDeadline?Math.max(0,Math.ceil((timerDeadline-Date.now())/1000)):null;
   const elapsed=Math.max(0,Math.round((Date.now()-sessionStartedAt)/1000));
-  const payload={v:1,at:Date.now(),kind:sessionKind,selectedSet,pos,
+  const payload={v:2,at:Date.now(),kind:sessionKind,selectedSet,pos,
     selectedChapter,
-    session:session.map(q=>({uid:q.uid,order:Array.isArray(q._order)?q._order.slice():q.o.map((_,i)=>i)})),
+    session:session.map(q=>({uid:q.uid,order:normalizeOrder(q,q._order),sig:questionSignature(q)})),
     runResult,sessionSelections,elapsedSec:elapsed,remainingSec:remaining};
   try{localStorage.setItem(RESUME_KEY,JSON.stringify(payload))}catch(e){}
   updateResumeButton();
 }
 function resumeStudy(){
   const r=readResume();if(!r){alert('続きから再開できる学習履歴がありません。');updateResumeButton();return}
-  const byUid=new Map(QUESTIONS.map(q=>[q.uid,q])),restored=[];
-  r.session.forEach(x=>{const q=byUid.get(x.uid);if(!q)return;restored.push({...q,_order:normalizeOrder(q,x.order)})});
+  const byUid=new Map(QUESTIONS.map(q=>[q.uid,q])),restored=[],stale=new Set();
+  r.session.forEach(x=>{const q=byUid.get(x.uid);if(!q)return;const same=typeof x.sig==='string'&&x.sig===questionSignature(q);if(!same)stale.add(q.uid);restored.push({...q,_order:same?normalizeOrder(q,x.order):naturalOrder(q)})});
   if(!restored.length){clearResume();alert('前回の問題データを復元できませんでした。');return}
   stopTimer();sessionKind=r.kind||'normal';examMode=sessionKind==='mock';mockFinalized=false;selectedSet=r.selectedSet||'all';selectedChapter=r.selectedChapter||'all';session=restored;
-  pos=Math.max(0,Math.min(Number(r.pos)||0,session.length-1));runResult=r.runResult&&typeof r.runResult==='object'?r.runResult:{};sessionSelections=r.sessionSelections&&typeof r.sessionSelections==='object'?r.sessionSelections:{};
+  pos=(Number(r.v)||0)>=2?Math.max(0,Math.min(Number(r.pos)||0,session.length-1)):0;runResult=r.runResult&&typeof r.runResult==='object'&&!Array.isArray(r.runResult)?{...r.runResult}:{};sessionSelections=r.sessionSelections&&typeof r.sessionSelections==='object'&&!Array.isArray(r.sessionSelections)?{...r.sessionSelections}:{};
+  stale.forEach(uid=>{delete runResult[uid];delete sessionSelections[uid]});
   sessionStartedAt=Date.now()-Math.max(0,Number(r.elapsedSec)||0)*1000;
   document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.set===selectedSet));renderChapterChips();renderCats();
   $('modeSelect').style.display='none';$('setup').style.display='none';$('result').style.display='none';$('quiz').style.display='block';$('sessionTitle').textContent=sessionName();
@@ -254,6 +249,11 @@ function setCountValue(set){
   return key&&INVENTORY.sets?Number(INVENTORY.sets[key])||QUESTIONS.filter(q=>q.set===Number(set)).length:QUESTIONS.filter(q=>q.set===Number(set)).length;
 }
 function questionSetCount(q){return setCountValue(q.set)}
+function questionSignature(q){
+  const s=JSON.stringify([q.q,q.o,q.a,q.multi===true]);let h=2166136261;
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
+  return (h>>>0).toString(36)
+}
 function naturalOrder(q){return q.o.map((_,i)=>i)}
 function validOrder(q,order){const natural=naturalOrder(q);return Array.isArray(order)&&order.length===natural.length&&new Set(order).size===natural.length&&order.every(i=>Number.isInteger(i)&&natural.includes(i))}
 function normalizeOrder(q,order){return validOrder(q,order)?order.slice():naturalOrder(q)}

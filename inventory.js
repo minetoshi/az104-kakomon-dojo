@@ -51,6 +51,10 @@ window.AZ104_INVENTORY={
       const id=Number(el.getAttribute("data-az104-stage"));
       if(inv.studyStages[id])el.textContent=String(inv.studyStages[id].count);
     });
+    document.querySelectorAll("[data-az104-set]").forEach(el=>{
+      const key=el.getAttribute("data-az104-set");
+      if(inv.sets&&Object.prototype.hasOwnProperty.call(inv.sets,key))el.textContent=String(inv.sets[key]);
+    });
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",applyInventory);
   else applyInventory();

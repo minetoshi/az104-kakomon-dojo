@@ -35,6 +35,7 @@ runFile("explanation-helper.js");
 runFile("question-normalizer.js");
 runFile("audit-map.js");
 runFile("inventory.js");
+runFile("ui-logic.js");
 
 const qs=window.AZ104_QUESTIONS||[];
 const inv=window.AZ104_INVENTORY||{};
@@ -208,9 +209,22 @@ const inline=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map
 inline.forEach((code,i)=>{try{new Function(code)}catch(e){errors.push("inline script syntax #"+i+": "+e.message)}});
 
 assert(!html.includes("String.fromCharCode(65+x.index)"),"feedback still labels original option index instead of visual order");
-assert(html.includes("currentMap.forEach((orig,visual)=>"),"feedback does not iterate visual option order");
-assert(html.includes("currentMap.filter(i=>ans.includes(i)).map(i=>displayedLetter(i)+'. '+q.o[i])"),"correct-answer text is not mapped to visual letters");
-assert(html.includes("new Set(order).size===natural.length"),"resume/order validation does not reject duplicate option indexes");
+assert(html.includes("UI_LOGIC.correctAnswerText(q,currentMap)"),"feedback correct-answer text does not use shuffle-safe UI logic");
+assert(html.includes("UI_LOGIC.feedbackRows(q,detail,currentMap)"),"feedback option rows do not use shuffle-safe UI logic");
+assert(typeof window.AZ104_UI_LOGIC==="object","ui-logic.js failed to load");
+const fixtureQ={o:["Action Group","Application Security Group","Availability Set","Management Group"],a:[0],ox:["action","asg","availability","management"]};
+const fixtureDetail={options:[
+  {index:0,ok:true,text:"action"},
+  {index:1,ok:false,text:"asg"},
+  {index:2,ok:false,text:"availability"},
+  {index:3,ok:false,text:"management"}
+]};
+const fixtureOrder=[2,1,0,3];
+const fixtureRows=window.AZ104_UI_LOGIC.feedbackRows(fixtureQ,fixtureDetail,fixtureOrder);
+assert(fixtureRows.map(x=>x.letter+"."+x.option).join("|")==="A.Availability Set|B.Application Security Group|C.Action Group|D.Management Group","shuffle regression: visual labels do not match displayed options");
+assert(window.AZ104_UI_LOGIC.correctAnswerText(fixtureQ,fixtureOrder)==="C. Action Group","shuffle regression: correct answer letter must be C after shuffle");
+assert(window.AZ104_UI_LOGIC.validOrder(fixtureQ,[0,0,1,2])===false,"duplicate option indexes must be rejected");
+assert(window.AZ104_UI_LOGIC.normalizeOrder(fixtureQ,[0,0,1,2]).join(",")==="0,1,2,3","invalid order must fall back to natural order");
 assert(!html.includes("Number(r.remainingSec)||100*60"),"zero remaining mock time can reset to 100 minutes");
 assert(html.includes("isMock?readinessText(rate,b):studyResultText(rate)"),"study result still uses mock readiness verdict");
 assert(html.includes("rankBySmartScore(QUESTIONS)"),"smart ranking still uses unstable comparator scoring");

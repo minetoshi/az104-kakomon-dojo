@@ -21,6 +21,7 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 @media(max-width:700px){main{padding:10px 10px 45px}.qtext{font-size:16.5px}.answers{padding:7px}.ans{grid-template-columns:38px 1fr}.grid{grid-template-columns:repeat(6,1fr)}.top .right{width:100%;margin-left:0}}
 </style>
 <script src="inventory.js"></script>
+<script src="ui-logic.js"></script>
 <script>window.AZ104_QUESTIONS=[];</script>
 <script src="questions/set-01/q01-10.js"></script>
 <script src="questions/set-01/q11-20.js"></script>
@@ -254,10 +255,10 @@ function questionSignature(q){
   for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
   return (h>>>0).toString(36)
 }
-function naturalOrder(q){return q.o.map((_,i)=>i)}
-function validOrder(q,order){const natural=naturalOrder(q);return Array.isArray(order)&&order.length===natural.length&&new Set(order).size===natural.length&&order.every(i=>Number.isInteger(i)&&natural.includes(i))}
-function normalizeOrder(q,order){return validOrder(q,order)?order.slice():naturalOrder(q)}
-function displayedLetter(orig){const visual=currentMap.indexOf(orig);return visual>=0?String.fromCharCode(65+visual):'?'}
+const UI_LOGIC=window.AZ104_UI_LOGIC;
+function naturalOrder(q){return UI_LOGIC.naturalOrder(q)}
+function validOrder(q,order){return UI_LOGIC.validOrder(q,order)}
+function normalizeOrder(q,order){return UI_LOGIC.normalizeOrder(q,order)}
 function rankBySmartScore(qs){return qs.map(q=>({q,score:smartScore(q)})).sort((a,b)=>b.score-a.score).map(x=>x.q)}
 function domainOf(q){
   const c=q.cat||'';
@@ -481,11 +482,10 @@ function showFeedback(q,ok){
   if(!examMode){$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat}
   const ans=q.a.slice().sort((a,b)=>a-b),sel=sessionSelections[q.uid]||[];
   document.querySelectorAll('.ans').forEach(el=>{const i=Number(el.dataset.orig);el.classList.remove('sel');if(ans.includes(i))el.classList.add('correct');else if(sel.includes(i))el.classList.add('wrong')});
-  $('judge').style.display='block';$('judge').className='judge '+(ok?'ok':'ng');$('jhead').textContent=ok?'○ 正解':'× 不正解';$('correctText').textContent=currentMap.filter(i=>ans.includes(i)).map(i=>displayedLetter(i)+'. '+q.o[i]).join(' / ');
+  $('judge').style.display='block';$('judge').className='judge '+(ok?'ok':'ng');$('jhead').textContent=ok?'○ 正解':'× 不正解';$('correctText').textContent=UI_LOGIC.correctAnswerText(q,currentMap);
   const detail=(window.AZ104_EXPLAIN&&window.AZ104_EXPLAIN.build)?window.AZ104_EXPLAIN.build(q):{decision:'設問の要件を整理し、最も直接的に満たす選択肢を選びます。',correctReason:q.e,options:[],tip:'正解サービスの役割と、他サービスとの違いをセットで覚えます。'};
   $('decisionPoint').textContent=detail.decision;$('explain').textContent=detail.correctReason;$('examTip').textContent=detail.tip;
-  const optionDetails=new Map((detail.options||[]).map(x=>[x.index,x]));
-  const ob=$('optionReview');ob.innerHTML='';currentMap.forEach((orig,visual)=>{const x=optionDetails.get(orig)||{index:orig,ok:ans.includes(orig),text:(q.ox&&q.ox[orig])||''};const row=document.createElement('div');row.className='orow '+(x.ok?'ok':'ng');const top=document.createElement('div');top.className='otop';const tag=document.createElement('span');tag.className='otag '+(x.ok?'ok':'ng');tag.textContent=x.ok?'正解':'不正解';const name=document.createElement('span');name.textContent=String.fromCharCode(65+visual)+'. '+q.o[orig];top.appendChild(tag);top.appendChild(name);const p=document.createElement('div');p.textContent=x.text||'この選択肢の役割を正解選択肢と比較して確認します。';row.appendChild(top);row.appendChild(p);ob.appendChild(row)});
+  const ob=$('optionReview');ob.innerHTML='';UI_LOGIC.feedbackRows(q,detail,currentMap).forEach(x=>{const row=document.createElement('div');row.className='orow '+(x.ok?'ok':'ng');const top=document.createElement('div');top.className='otop';const tag=document.createElement('span');tag.className='otag '+(x.ok?'ok':'ng');tag.textContent=x.ok?'正解':'不正解';const name=document.createElement('span');name.textContent=x.letter+'. '+x.option;top.appendChild(tag);top.appendChild(name);const p=document.createElement('div');p.textContent=x.text;row.appendChild(top);row.appendChild(p);ob.appendChild(row)});
   const box=$('learnLinks');box.innerHTML='';const ls=(q.learn&&q.learn.length)?q.learn:(LEARN_MAP[q.uid]||[]);ls.forEach(x=>{const a=document.createElement('a');a.href=x.url;a.target='_blank';a.rel='noopener';a.textContent=x.title+' ↗';box.appendChild(a)});if(!ls.length)box.textContent='関連リンクは準備中です。';
   const cau=$('caution');const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):null;if(audit&&audit.note){cau.style.display='block';cau.textContent='監査メモ: '+audit.note}else{cau.style.display='none';cau.textContent=''}
   if(audit&&audit.extra&&audit.extra.length){audit.extra.forEach(x=>{if(!ls.some(y=>y.url===x.url)){const a=document.createElement('a');a.href=x.url;a.target='_blank';a.rel='noopener';a.textContent=x.title+' ↗';box.appendChild(a)}})}

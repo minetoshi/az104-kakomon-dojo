@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Validate question data and UI invariants
+        run: node scripts/validate-data.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

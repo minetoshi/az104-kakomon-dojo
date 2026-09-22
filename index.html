@@ -523,7 +523,7 @@ function render(){
   updateSel();$('judge').style.display='none';$('judge').className='judge';
   $('judgeBtn').disabled=selected.size===0;$('judgeBtn').textContent=examMode?(selected.size?'回答を保存':'回答を保存'):'回答を確認';
   $('prevBtn').disabled=pos===0;$('nextBtn').textContent=pos===session.length-1?(examMode?'模試を終了':'結果を見る'):'次へ';
-  $('progress').textContent=examMode?'本番模試 / 全'+session.length+'問':labelSet(q)+' / 全'+session.length+'問';
+  $('progress').textContent=examMode?'本番模試 / '+(pos+1)+' / '+session.length+'問':sessionName()+' / '+(pos+1)+' / '+session.length+'問';
   updateFlagButton();
   if(judged)showFeedback(q,runResult[q.uid]);
   renderIndex();saveResume()
@@ -551,7 +551,7 @@ function judge(){
 }
 function saveCurrentSelection(){if(!session.length)return;const q=session[pos];sessionSelections[q.uid]=[...selected];saveResume()}
 function renderIndex(){
-  const box=$('indexGrid');box.innerHTML='';session.forEach((q,i)=>{const b=document.createElement('button');b.type='button';let cls='idx'+(i===pos?' cur':'');if(examMode){if(sessionSelections[q.uid]&&sessionSelections[q.uid].length)cls+=' answered';if(history(q).flag)cls+=' mark';b.textContent=String(i+1)}else{cls+=(runResult[q.uid]===true?' good':runResult[q.uid]===false?' bad':'');if(history(q).flag)cls+=' mark';b.textContent=(q.set===3?'類':q.set===4?'補':q.set===5?'学':'S'+q.set+'-')+String(q.id).padStart(q.set===3?3:2,'0')}b.className=cls;b.onclick=()=>{saveCurrentSelection();pos=i;render();window.scrollTo(0,0)};box.appendChild(b)})
+  const box=$('indexGrid');box.innerHTML='';session.forEach((q,i)=>{const b=document.createElement('button');b.type='button';let cls='idx'+(i===pos?' cur':'');if(examMode){if(Array.isArray(sessionSelections[q.uid])&&sessionSelections[q.uid].length)cls+=' answered';if(history(q).flag)cls+=' mark';b.textContent=String(i+1)}else{cls+=(runResult[q.uid]===true?' good':runResult[q.uid]===false?' bad':'');if(history(q).flag)cls+=' mark';b.textContent=(q.set===3?'類':q.set===4?'補':q.set===5?'学':'S'+q.set+'-')+String(q.id).padStart(q.set===3?3:2,'0')}b.className=cls;b.onclick=()=>{saveCurrentSelection();pos=i;render();window.scrollTo(0,0)};box.appendChild(b)})
 }
 function domainBreakdown(){
   const out={};OFFICIAL_DOMAINS.forEach(d=>out[d]={total:0,correct:0});

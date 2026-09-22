@@ -248,7 +248,19 @@ function resumeStudy(){
   if(examMode){const saved=Number(r.remainingSec);startTimer(Number.isFinite(saved)?Math.max(1,Math.min(100*60,saved)):100*60)}
   render();saveResume();window.scrollTo(0,0)
 }
-function history(q){return Object.assign({tries:0,correct:0,last:null,streak:0,due:0,flag:false,lastAt:0},state[q.uid]||{})}
+function history(q){
+  const raw=state[q.uid]&&typeof state[q.uid]==='object'&&!Array.isArray(state[q.uid])?state[q.uid]:{};
+  const tries=Number.isFinite(Number(raw.tries))?Math.max(0,Math.floor(Number(raw.tries))):0;
+  const correct=Number.isFinite(Number(raw.correct))?Math.max(0,Math.min(tries,Math.floor(Number(raw.correct)))):0;
+  return {
+    tries,correct,
+    last:raw.last===true?true:raw.last===false?false:null,
+    streak:Number.isFinite(Number(raw.streak))?Math.max(0,Math.floor(Number(raw.streak))):0,
+    due:Number.isFinite(Number(raw.due))?Math.max(0,Number(raw.due)):0,
+    flag:raw.flag===true,
+    lastAt:Number.isFinite(Number(raw.lastAt))?Math.max(0,Number(raw.lastAt)):0
+  }
+}
 function uniq(a){return [...new Set(a)]}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function sample(a,n){const x=shuffle(a.slice());return x.slice(0,Math.min(n,x.length))}

@@ -167,7 +167,17 @@ const BOOK_CHAPTERS=[
   {id:11,title:'監視',hint:'Azure Monitor / Log Analytics / Alert'}
 ];
 let state={};try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');state=x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(e){state={}}
-let mockHistory=[];try{const x=JSON.parse(localStorage.getItem(MOCK_KEY)||'[]');mockHistory=Array.isArray(x)?x:[]}catch(e){mockHistory=[]}
+let mockHistory=[];try{
+  const x=JSON.parse(localStorage.getItem(MOCK_KEY)||'[]');
+  mockHistory=Array.isArray(x)?x.filter(v=>v&&typeof v==='object').map(v=>({
+    at:typeof v.at==='string'?v.at:new Date().toISOString(),
+    rate:Number.isFinite(Number(v.rate))?Math.max(0,Math.min(100,Number(v.rate))):0,
+    correct:Number.isFinite(Number(v.correct))?Math.max(0,Number(v.correct)):0,
+    total:Number.isFinite(Number(v.total))?Math.max(0,Number(v.total)):0,
+    domains:v.domains&&typeof v.domains==='object'&&!Array.isArray(v.domains)?v.domains:{},
+    elapsedSec:Number.isFinite(Number(v.elapsedSec))?Math.max(0,Number(v.elapsedSec)):0
+  })):[]
+}catch(e){mockHistory=[]}
 let selectedSet='all',selectedChapter='all',session=[],pos=0,selected=new Set(),judged=false,currentMap=[],runResult={},sessionSelections={};
 let sessionKind='normal',examMode=false,mockFinalized=false,timerId=null,timerDeadline=0,sessionStartedAt=0;
 const $=id=>document.getElementById(id);
@@ -228,14 +238,14 @@ function resumeStudy(){
   const byUid=new Map(QUESTIONS.map(q=>[q.uid,q])),restored=[],stale=new Set();
   r.session.forEach(x=>{const q=byUid.get(x.uid);if(!q)return;const same=typeof x.sig==='string'&&x.sig===questionSignature(q);if(!same)stale.add(q.uid);restored.push({...q,_order:same?normalizeOrder(q,x.order):naturalOrder(q)})});
   if(!restored.length){clearResume();alert('前回の問題データを復元できませんでした。');return}
-  stopTimer();sessionKind=r.kind||'normal';examMode=sessionKind==='mock';mockFinalized=false;selectedSet=r.selectedSet||'all';selectedChapter=r.selectedChapter||'all';session=restored;
-  pos=(Number(r.v)||0)>=2?Math.max(0,Math.min(Number(r.pos)||0,session.length-1)):0;runResult=r.runResult&&typeof r.runResult==='object'&&!Array.isArray(r.runResult)?{...r.runResult}:{};sessionSelections=r.sessionSelections&&typeof r.sessionSelections==='object'&&!Array.isArray(r.sessionSelections)?{...r.sessionSelections}:{};
+  stopTimer();sessionKind=typeof r.kind==='string'?r.kind:'normal';examMode=sessionKind==='mock';mockFinalized=false;selectedSet=safeSelectedSet(r.selectedSet);selectedChapter=safeSelectedChapter(r.selectedChapter);session=restored;
+  pos=(Number(r.v)||0)>=2?Math.max(0,Math.min(Number.isFinite(Number(r.pos))?Number(r.pos):0,session.length-1)):0;runResult=r.runResult&&typeof r.runResult==='object'&&!Array.isArray(r.runResult)?{...r.runResult}:{};sessionSelections=r.sessionSelections&&typeof r.sessionSelections==='object'&&!Array.isArray(r.sessionSelections)?{...r.sessionSelections}:{};
   stale.forEach(uid=>{delete runResult[uid];delete sessionSelections[uid]});
-  sessionStartedAt=Date.now()-Math.max(0,Number(r.elapsedSec)||0)*1000;
+  const oldElapsed=Number(r.elapsedSec);sessionStartedAt=Date.now()-(Number.isFinite(oldElapsed)?Math.max(0,Math.min(oldElapsed,24*60*60)):0)*1000;
   document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.set===selectedSet));renderChapterChips();renderCats();
   $('modeSelect').style.display='none';$('setup').style.display='none';$('result').style.display='none';$('quiz').style.display='block';$('sessionTitle').textContent=sessionName();
   $('judgeBtn').textContent=examMode?'回答を保存':'回答を確認';$('timer').textContent='';
-  if(examMode){const saved=Number(r.remainingSec);startTimer(Number.isFinite(saved)?Math.max(1,saved):100*60)}
+  if(examMode){const saved=Number(r.remainingSec);startTimer(Number.isFinite(saved)?Math.max(1,Math.min(100*60,saved)):100*60)}
   render();saveResume();window.scrollTo(0,0)
 }
 function history(q){return Object.assign({tries:0,correct:0,last:null,streak:0,due:0,flag:false,lastAt:0},state[q.uid]||{})}
@@ -250,6 +260,8 @@ function setCountValue(set){
   return key&&INVENTORY.sets?Number(INVENTORY.sets[key])||QUESTIONS.filter(q=>q.set===Number(set)).length:QUESTIONS.filter(q=>q.set===Number(set)).length;
 }
 function questionSetCount(q){return setCountValue(q.set)}
+function safeSelectedSet(v){const s=String(v==null?'all':v);return ['all','past','1','2','3','4','5'].includes(s)?s:'all'}
+function safeSelectedChapter(v){const s=String(v==null?'all':v);return s==='all'||BOOK_CHAPTERS.some(ch=>String(ch.id)===s)?s:'all'}
 function questionSignature(q){
   const s=JSON.stringify([q.q,q.o,q.a,q.multi===true]);let h=2166136261;
   for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
@@ -396,13 +408,22 @@ function inSelectedChapter(q){return selectedChapter==='all'||bookChapterOf(q)==
 function filtered(){let a=QUESTIONS.filter(inSelectedSet).filter(inSelectedChapter);const c=$('category').value;if(c!=='all')a=a.filter(q=>q.cat===c);if($('unanswered').checked)a=a.filter(q=>!history(q).tries);const m=document.querySelector('input[name=mode]:checked').value;if(m==='wrong')a=a.filter(q=>history(q).last===false);return a}
 function refreshCount(){$('available').textContent='対象: '+filtered().length+'問'}
 function renderChapterChips(){
-  const box=$('chapterChips');if(!box)return;box.innerHTML='';
+  const box=$('chapterChips');if(!box)return;box.textContent='';
   const base=QUESTIONS.filter(inSelectedSet);
-  const all=document.createElement('button');all.type='button';all.className='chapter-chip'+(selectedChapter==='all'?' active':'');all.dataset.chapter='all';all.innerHTML='<b>すべての章</b><small>'+base.length+'問</small>';box.appendChild(all);
-  BOOK_CHAPTERS.forEach(ch=>{const n=base.filter(q=>bookChapterOf(q)===ch.id).length;const b=document.createElement('button');b.type='button';b.className='chapter-chip'+(String(ch.id)===String(selectedChapter)?' active':'');b.dataset.chapter=String(ch.id);b.innerHTML='<b>第'+ch.id+'章　'+ch.title+'</b><small>'+ch.hint+' ・ '+n+'問</small>';box.appendChild(b)});
-  box.querySelectorAll('.chapter-chip').forEach(b=>b.addEventListener('click',()=>{selectedChapter=b.dataset.chapter;renderChapterChips();renderCats()}));
+  const makeChip=(chapter,title,hint,count,active)=>{
+    const b=document.createElement('button');b.type='button';b.className='chapter-chip'+(active?' active':'');b.dataset.chapter=chapter;
+    const strong=document.createElement('b');strong.textContent=title;const small=document.createElement('small');small.textContent=hint+' ・ '+count+'問';
+    b.appendChild(strong);b.appendChild(small);return b;
+  };
+  box.appendChild(makeChip('all','すべての章','全章',base.length,selectedChapter==='all'));
+  BOOK_CHAPTERS.forEach(ch=>{const n=base.filter(q=>bookChapterOf(q)===ch.id).length;box.appendChild(makeChip(String(ch.id),'第'+ch.id+'章　'+ch.title,ch.hint,n,String(ch.id)===String(selectedChapter)))});
+  box.querySelectorAll('.chapter-chip').forEach(b=>b.addEventListener('click',()=>{selectedChapter=safeSelectedChapter(b.dataset.chapter);renderChapterChips();renderCats()}));
 }
-function renderCats(){const cats=uniq(QUESTIONS.filter(inSelectedSet).filter(inSelectedChapter).map(q=>q.cat));$('category').innerHTML='<option value="all">すべて</option>'+cats.map(c=>'<option>'+c+'</option>').join('');refreshCount()}
+function renderCats(){
+  const cats=uniq(QUESTIONS.filter(inSelectedSet).filter(inSelectedChapter).map(q=>q.cat)),sel=$('category');sel.textContent='';
+  const all=document.createElement('option');all.value='all';all.textContent='すべて';sel.appendChild(all);
+  cats.forEach(cat=>{const o=document.createElement('option');o.value=cat;o.textContent=cat;sel.appendChild(o)});refreshCount()
+}
 function makeOrder(q,forceShuffle=false){const order=q.o.map((_,i)=>i);if(forceShuffle||$('shuffleOptions').checked)shuffle(order);return order}
 function buildSession(){let a=filtered().slice(),mode=document.querySelector('input[name=mode]:checked').value;if(mode==='random')shuffle(a);else a.sort((x,y)=>x.set-y.set||x.id-y.id);const n=$('count').value;if(n!=='all')a=a.slice(0,Number(n));return a.map(q=>({...q,_order:makeOrder(q)}))}
 function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(sessionKind==='route-mix')return 'おすすめ ⑦ 全範囲ミックス';if(sessionKind.startsWith('route-')){const id=Number(sessionKind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);if(st)return 'おすすめ '+id+' '+st.title}if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全'+setCountValue('all')+'問';if(selectedSet==='past')return '過去問'+setCountValue('past')+'問';if(selectedSet==='3')return '類似問題'+setCountValue(3)+'問';if(selectedSet==='4')return '公式範囲補強'+setCountValue(4)+'問';if(selectedSet==='5')return 'Learn製品補強'+setCountValue(5)+'問';return '第'+selectedSet+'セット'}
@@ -545,8 +566,12 @@ function renderDashboard(){
   const hist=QUESTIONS.map(q=>({q,h:history(q)}));const officialHist=hist.filter(x=>x.q.set!==5);const answered=hist.filter(x=>x.h.tries>0);const tries=answered.reduce((s,x)=>s+x.h.tries,0),correct=answered.reduce((s,x)=>s+x.h.correct,0);
   $('dashAnswered').textContent=answered.length+'/'+QUESTIONS.length;$('dashRate').textContent=tries?Math.round(correct/tries*100)+'%':'-';$('dashDue').textContent=answered.filter(x=>x.h.due&&x.h.due<=Date.now()).length;$('dashFlags').textContent=hist.filter(x=>x.h.flag).length;
   let rows='';OFFICIAL_DOMAINS.forEach(d=>{const a=officialHist.filter(x=>domainOf(x.q)===d&&x.h.tries);const t=a.reduce((s,x)=>s+x.h.tries,0),c=a.reduce((s,x)=>s+x.h.correct,0),rate=t?Math.round(c/t*100):null;let cls=rate===null?'':rate<75?'weak':rate>=85?'goodtxt':'';let verdict=rate===null?'未着手':rate<75?'要復習':rate>=85?'安定':'補強';rows+='<tr><td>'+d+'</td><td>'+a.length+'</td><td class="'+cls+'">'+(rate===null?'-':rate+'%')+'</td><td class="'+cls+'">'+verdict+'</td></tr>'});$('domainStats').innerHTML=rows;
-  if(mockHistory.length){const last=mockHistory[mockHistory.length-1];let streak=0;for(let i=mockHistory.length-1;i>=0;i--){const h=mockHistory[i];const mins=Object.values(h.domains||{}).filter(x=>x.total).map(x=>x.correct/x.total*100);if(h.rate>=85&&mins.length&&Math.min(...mins)>=75)streak++;else break}$('readiness').innerHTML='<b>最新模試 '+last.rate+'%</b> ／ 仕上がり目安の連続達成 '+streak+'回。'+(streak>=3?'<span class="goodtxt"> 受験前の知識目安を達成しています。</span>':' 3回連続を目標にしてください。');$('mockHistory').textContent='直近: '+mockHistory.slice(-5).reverse().map(x=>new Date(x.at).toLocaleDateString('ja-JP')+' '+x.rate+'%').join(' / ')}
-  else{$('readiness').innerHTML='<b>まず本番模試を1回</b>：現在地を測り、75%未満の分野を優先して復習します。';$('mockHistory').textContent='模試履歴はまだありません。'}
+  if(mockHistory.length){
+    const last=mockHistory[mockHistory.length-1];let streak=0;for(let i=mockHistory.length-1;i>=0;i--){const h=mockHistory[i];const mins=Object.values(h.domains||{}).filter(x=>x&&Number(x.total)>0).map(x=>Number(x.correct||0)/Number(x.total)*100);if(Number(h.rate)>=85&&mins.length&&Math.min(...mins)>=75)streak++;else break}
+    const ready=$('readiness');ready.textContent='';const b=document.createElement('b');b.textContent='最新模試 '+last.rate+'%';ready.appendChild(b);ready.appendChild(document.createTextNode(' ／ 仕上がり目安の連続達成 '+streak+'回。'));
+    if(streak>=3){const s=document.createElement('span');s.className='goodtxt';s.textContent=' 受験前の知識目安を達成しています。';ready.appendChild(s)}else ready.appendChild(document.createTextNode(' 3回連続を目標にしてください。'));
+    $('mockHistory').textContent='直近: '+mockHistory.slice(-5).reverse().map(x=>{const d=new Date(x.at);return (Number.isNaN(d.getTime())?'日付不明':d.toLocaleDateString('ja-JP'))+' '+x.rate+'%'}).join(' / ')
+  }else{const ready=$('readiness');ready.textContent='';const b=document.createElement('b');b.textContent='まず本番模試を1回';ready.appendChild(b);ready.appendChild(document.createTextNode('：現在地を測り、75%未満の分野を優先して復習します。'));$('mockHistory').textContent='模試履歴はまだありません。'}
 }
 function init(){
   const inventoryErrors=validateInventory();if(inventoryErrors.length){const e=$('error');e.style.display='block';e.textContent='問題件数の整合性エラーがあります: '+inventoryErrors.join(' / ')}

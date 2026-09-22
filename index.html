@@ -527,7 +527,7 @@ function updateSel(){
 }
 function showFeedback(q,ok){
   if(!examMode){$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat}
-  const ans=q.a.slice().sort((a,b)=>a-b),sel=sessionSelections[q.uid]||[];
+  const ans=q.a.slice().sort((a,b)=>a-b),sel=Array.isArray(sessionSelections[q.uid])?sessionSelections[q.uid]:[];
   document.querySelectorAll('.ans').forEach(el=>{const i=Number(el.dataset.orig);el.classList.remove('sel');if(ans.includes(i))el.classList.add('correct');else if(sel.includes(i))el.classList.add('wrong')});
   $('judge').style.display='block';$('judge').className='judge '+(ok?'ok':'ng');$('jhead').textContent=ok?'○ 正解':'× 不正解';$('correctText').textContent=UI_LOGIC.correctAnswerText(q,currentMap);
   const detail=(window.AZ104_EXPLAIN&&window.AZ104_EXPLAIN.build)?window.AZ104_EXPLAIN.build(q):{decision:'設問の要件を整理し、最も直接的に満たす選択肢を選びます。',correctReason:q.e,options:[],tip:'正解サービスの役割と、他サービスとの違いをセットで覚えます。'};

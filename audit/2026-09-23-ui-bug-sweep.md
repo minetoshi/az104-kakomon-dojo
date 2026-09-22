@@ -205,3 +205,16 @@
 そのため、選択肢シャッフルを使用する全366問に同じ修正が適用される。
 
 加えて、再開、タイマー、学習結果、弱点出題、保存データ、動的HTML、問題データ構造、模試候補、ページ参照までデプロイ前検証対象にした。
+
+## 追加ハードニング
+
+- resume session 内の null / 不正要素を除外
+- resume の runResult は boolean のみ、sessionSelections は有効な index 配列のみ復元
+- 回答後表示でも malformed sessionSelections を配列として検証
+- localStorage の setItem/removeItem 失敗を捕捉し、学習フロー継続
+- native radio/checkbox の checked と見た目の選択状態を同期
+- 永続学習履歴にも question signature を付与し、将来同一UIDの問題内容が変わった場合は旧正答履歴を自動無効化
+- セッション下部の進捗表示を元問題セットではなく現在の学習セッション名へ統一
+- explicit resume がないときの履歴推測は「続きから」ではなく「次の未回答20問」として区別
+
+これらも `scripts/validate-data.js` の回帰条件に追加した。

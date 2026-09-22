@@ -131,6 +131,32 @@ if(inv.chapterBySet){
 }
 
 const html=read("index.html");
+
+const htmlFiles=fs.readdirSync(ROOT).filter(x=>x.endsWith(".html")).sort(naturalSort);
+for(const file of htmlFiles){
+  const page=read(file);
+  const pageIds=[...page.matchAll(/id="([^"]+)"/g)].map(m=>m[1]);
+  const pageDup=pageIds.filter((x,i,a)=>a.indexOf(x)!==i);
+  assert(pageDup.length===0,file+" duplicate DOM ids: "+[...new Set(pageDup)].join(", "));
+  const pageIdSet=new Set(pageIds);
+  const dollarRefs=[...page.matchAll(/\$\('([^']+)'\)/g)].map(m=>m[1]);
+  const gebiRefs=[...page.matchAll(/getElementById\(['"]([^'"]+)['"]\)/g)].map(m=>m[1]);
+  const missing=[...new Set([...dollarRefs,...gebiRefs].filter(x=>!pageIdSet.has(x)))];
+  assert(missing.length===0,file+" missing DOM refs: "+missing.join(", "));
+  const scripts=[...page.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m=>m[1]).filter(x=>x.trim());
+  scripts.forEach((code,i)=>{try{new Function(code)}catch(e){errors.push(file+" inline script syntax #"+i+": "+e.message)}});
+  const localRefs=[
+    ...[...page.matchAll(/(?:href|src)="([^"]+)"/g)].map(m=>m[1])
+  ].filter(x=>x&&!/^(?:https?:|mailto:|tel:|#|javascript:|data:)/.test(x));
+  for(const ref of localRefs){
+    const clean=ref.split("#")[0].split("?")[0];
+    if(!clean)continue;
+    assert(fs.existsSync(path.resolve(ROOT,path.dirname(file),clean)),file+" broken local reference: "+ref);
+  }
+  const stale=[...page.matchAll(/(?:250|290|340|345|350|355|360)\s*問/g)].map(m=>m[0]);
+  assert(stale.length===0,file+" stale question-count labels: "+[...new Set(stale)].join(", "));
+}
+
 const idsHtml=[...html.matchAll(/id="([^"]+)"/g)].map(m=>m[1]);
 const dupIds=idsHtml.filter((x,i,a)=>a.indexOf(x)!==i);
 assert(dupIds.length===0,"duplicate DOM ids: "+[...new Set(dupIds)].join(", "));

@@ -181,8 +181,8 @@ let mockHistory=[];try{
 let selectedSet='all',selectedChapter='all',session=[],pos=0,selected=new Set(),judged=false,currentMap=[],runResult={},sessionSelections={};
 let sessionKind='normal',examMode=false,mockFinalized=false,timerId=null,timerDeadline=0,sessionStartedAt=0;
 const $=id=>document.getElementById(id);
-function save(){localStorage.setItem(KEY,JSON.stringify(state))}
-function saveMockHistory(){localStorage.setItem(MOCK_KEY,JSON.stringify(mockHistory.slice(-20)))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function saveMockHistory(){try{localStorage.setItem(MOCK_KEY,JSON.stringify(mockHistory.slice(-20)))}catch(e){}}
 function readResume(){
   try{
     const r=JSON.parse(localStorage.getItem(RESUME_KEY)||'null');
@@ -230,7 +230,7 @@ function updateResumeButton(){
     }
   });
 }
-function clearResume(){localStorage.removeItem(RESUME_KEY);updateResumeButton()}
+function clearResume(){try{localStorage.removeItem(RESUME_KEY)}catch(e){}updateResumeButton()}
 function saveResume(){
   if(!session.length||mockFinalized)return;
   const remaining=examMode&&timerDeadline?Math.max(0,Math.ceil((timerDeadline-Date.now())/1000)):null;

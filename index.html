@@ -521,7 +521,10 @@ function render(){
   if(judged)showFeedback(q,runResult[q.uid]);
   renderIndex();saveResume()
 }
-function updateSel(){document.querySelectorAll('.ans').forEach(el=>el.classList.toggle('sel',selected.has(Number(el.dataset.orig))));$('judgeBtn').disabled=selected.size===0}
+function updateSel(){
+  document.querySelectorAll('.ans').forEach(el=>{const on=selected.has(Number(el.dataset.orig));el.classList.toggle('sel',on);const input=el.querySelector('input');if(input)input.checked=on});
+  $('judgeBtn').disabled=selected.size===0
+}
 function showFeedback(q,ok){
   if(!examMode){$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat}
   const ans=q.a.slice().sort((a,b)=>a-b),sel=sessionSelections[q.uid]||[];

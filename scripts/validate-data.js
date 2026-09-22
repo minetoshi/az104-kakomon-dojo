@@ -33,6 +33,7 @@ questionFiles.forEach(runFile);
 runFile("learn-map.js");
 runFile("explanation-helper.js");
 runFile("question-normalizer.js");
+runFile("audit-map.js");
 runFile("inventory.js");
 
 const qs=window.AZ104_QUESTIONS||[];
@@ -121,6 +122,29 @@ for(let i=1;i<=100;i++)assert(baseIds.has(i),"missing similar baseId "+i);
 assert(inv.sets&&inv.sets.set1===50&&inv.sets.set2===50&&inv.sets.similar===100&&inv.sets.coverage===160&&inv.sets.learnProducts===6,"inventory set counts invalid");
 assert(inv.chapters&&Object.values(inv.chapters).reduce((s,x)=>s+Number(x.count||0),0)===366,"inventory chapter sum != 366");
 assert(inv.studyStages&&Object.values(inv.studyStages).reduce((s,x)=>s+Number(x.count||0),0)===366,"inventory study-stage sum != 366");
+
+function domainOf(q){
+  const cat=q.cat||"";
+  if(cat.startsWith("ID/")||cat==="監視/コスト")return "ID/ガバナンス";
+  if(cat.startsWith("ストレージ"))return "ストレージ";
+  if(cat.startsWith("コンピュート")||cat.startsWith("コンテナー")||cat==="App Service")return "コンピュート";
+  if(cat.startsWith("ネットワーク"))return "ネットワーク";
+  return "監視/バックアップ";
+}
+const mockQuota={"ID/ガバナンス":12,"ストレージ":9,"コンピュート":12,"ネットワーク":10,"監視/バックアップ":7};
+assert(Object.values(mockQuota).reduce((a,b)=>a+b,0)===50,"mock quota must sum to 50");
+const mockPool=qs.filter(q=>q.set!==3&&q.set!==5).filter(q=>{
+  const a=window.AZ104_AUDIT&&window.AZ104_AUDIT.get?window.AZ104_AUDIT.get(q):null;
+  return !a||!["legacy-practice","practice-nuance"].includes(a.status);
+});
+assert(mockPool.length>=50,"mock candidate pool has fewer than 50 questions");
+assert(mockPool.every(q=>q.set!==3&&q.set!==5),"mock pool contains excluded set 3/5");
+assert(mockPool.every(q=>{const a=window.AZ104_AUDIT.get(q);return !["legacy-practice","practice-nuance"].includes(a.status)}),"mock pool contains legacy/practice-nuance item");
+for(const [domain,n] of Object.entries(mockQuota)){
+  const count=mockPool.filter(q=>domainOf(q)===domain).length;
+  assert(count>=n,"mock domain "+domain+" has "+count+" candidates, needs "+n);
+}
+
 if(inv.chapterBySet){
   const rows={1:50,2:50,3:100,4:160,5:6};
   for(const s of [1,2,3,4,5])assert(Object.values(inv.chapterBySet[s]||{}).reduce((a,b)=>a+Number(b||0),0)===rows[s],"inventory chapterBySet row "+s+" invalid");
@@ -186,6 +210,10 @@ assert(!html.includes("Number(r.remainingSec)||100*60"),"zero remaining mock tim
 assert(html.includes("isMock?readinessText(rate,b):studyResultText(rate)"),"study result still uses mock readiness verdict");
 assert(html.includes("rankBySmartScore(QUESTIONS)"),"smart ranking still uses unstable comparator scoring");
 assert(html.includes("normalizeOrder(q,q._order)"),"session/retry order normalization missing");
+assert(html.includes("q.set!==3&&q.set!==5"),"mock pool no longer excludes similar/Learn-product sets");
+assert(html.includes("['legacy-practice','practice-nuance'].includes(a.status)")||html.includes('["legacy-practice","practice-nuance"].includes(a.status)'),"mock pool no longer excludes legacy/practice-nuance questions");
+const setMarkers=[...html.matchAll(/data-az104-set="([^"]+)"/g)].map(m=>m[1]);
+setMarkers.forEach(k=>assert(inv.sets&&Object.prototype.hasOwnProperty.call(inv.sets,k),"unknown data-az104-set key: "+k));
 
 if(warnings.length){
   console.warn("WARNINGS");

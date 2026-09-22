@@ -363,7 +363,7 @@ function validateInventory(){
       const chapterText=BOOK_CHAPTERS.map(ch=>'第'+ch.id+'章 '+chActual[ch.id]+'問').join(' / ');
       const stageSum=Object.values(stActual).reduce((a,b)=>a+b,0);
       box.className='count-audit';
-      box.textContent='件数チェック済み：'+chapterText+'（11章合計 '+QUESTIONS.length+'問）／ おすすめ6分野合計 '+stageSum+'問';
+      box.textContent='件数チェック済み：'+chapterText+'（11章合計 '+QUESTIONS.length+'問）／ おすすめ6分野合計 '+stageSum+'問。※黒本11章とおすすめ6分野は分類軸が異なるため、同名分野の個別件数は一致しない場合があります。';
     }
   }
   return errors;

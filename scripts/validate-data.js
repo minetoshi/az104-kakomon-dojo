@@ -238,6 +238,14 @@ assert(html.includes("const MOCK_KEY='az104_kakomon_mock_history_v1'"),"mock-his
 assert(html.includes("const RESUME_KEY='az104_kakomon_resume_v1'"),"resume localStorage key changed");
 assert(html.includes("Math.min(100*60,saved)"),"resumed mock timer is not clamped to 100 minutes");
 assert(html.includes("const raw=state[q.uid]&&typeof state[q.uid]==='object'"),"learning history values are not normalized defensively");
+assert(html.includes("sig=questionSignature(q)"),"persistent learning history is not versioned by question content");
+assert(html.includes("migrateHistorySignatures()"),"existing history signatures are not migrated");
+assert(html.includes("slice(0,20).map(q=>({uid:q.uid"),"inferred resume is not limited to the next 20 unanswered questions");
+assert(html.includes("sessionName()+' / '+(pos+1)+' / '+session.length+'問'"),"study progress label is not aligned to the active session");
+assert(html.includes("if(input)input.checked=on"),"native answer input checked state is not synchronized");
+assert(html.includes("function save(){try{localStorage.setItem"),"learning history storage failures are not caught");
+assert(html.includes("function saveMockHistory(){try{localStorage.setItem"),"mock history storage failures are not caught");
+assert(html.includes("Array.isArray(sessionSelections[q.uid])?sessionSelections[q.uid]:[]"),"saved selection values are not guarded as arrays");
 assert(html.includes('<script src="ui-logic.js"></script>'),"index does not load ui-logic.js");
 assert(!html.includes("cats.map(c=>'<option>'+c+'</option>')"),"category values are still injected with innerHTML");
 assert(html.includes("q.set!==3&&q.set!==5"),"mock pool no longer excludes similar/Learn-product sets");

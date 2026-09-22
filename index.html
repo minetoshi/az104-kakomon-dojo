@@ -183,7 +183,16 @@ let sessionKind='normal',examMode=false,mockFinalized=false,timerId=null,timerDe
 const $=id=>document.getElementById(id);
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function saveMockHistory(){localStorage.setItem(MOCK_KEY,JSON.stringify(mockHistory.slice(-20)))}
-function readResume(){try{const r=JSON.parse(localStorage.getItem(RESUME_KEY)||'null');if(r&&Array.isArray(r.session)&&r.session.length)return r}catch(e){}return buildLegacyResume()}
+function readResume(){
+  try{
+    const r=JSON.parse(localStorage.getItem(RESUME_KEY)||'null');
+    if(r&&typeof r==='object'&&Array.isArray(r.session)){
+      const valid=r.session.filter(x=>x&&typeof x==='object'&&typeof x.uid==='string'&&x.uid);
+      if(valid.length){r.session=valid;return r}
+    }
+  }catch(e){}
+  return buildLegacyResume()
+}
 function buildLegacyResume(){
   const answered=QUESTIONS.filter(q=>history(q).tries>0),ordered=QUESTIONS.slice().sort((a,b)=>a.set-b.set||a.id-b.id);
   if(!answered.length)return null;
@@ -202,7 +211,7 @@ function resumeTitle(r){
   if(r.kind==='wrong')return '今回の間違い';
   if(r.kind==='route-mix')return '全範囲ミックス';
   if((r.kind||'').startsWith('route-')){const id=Number(r.kind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);return st?'おすすめ '+st.title:'おすすめ学習'}
-  const s=r.selectedSet||'all';
+  const s=safeSelectedSet(r.selectedSet);
   if(s==='all')return '全'+setCountValue('all')+'問';if(s==='past')return '過去問'+setCountValue('past')+'問';if(s==='3')return '類似問題'+setCountValue(3)+'問';if(s==='4')return '公式範囲補強'+setCountValue(4)+'問';if(s==='5')return 'Learn製品補強'+setCountValue(5)+'問';return '第'+s+'セット';
 }
 function updateResumeButton(){
@@ -217,7 +226,7 @@ function updateResumeButton(){
       info.textContent='これまでの回答履歴から、次の未回答問題を自動で選びました';
     }else{
       b.textContent='▶ 続きから（'+(p+1)+' / '+r.session.length+'問）';
-      info.textContent='前回: '+resumeTitle(r)+' ・ '+new Date(r.at||Date.now()).toLocaleString('ja-JP');
+      const d=new Date(r.at||Date.now());info.textContent='前回: '+resumeTitle(r)+' ・ '+(Number.isNaN(d.getTime())?'日時不明':d.toLocaleString('ja-JP'));
     }
   });
 }
@@ -236,10 +245,12 @@ function saveResume(){
 function resumeStudy(){
   const r=readResume();if(!r){alert('続きから再開できる学習履歴がありません。');updateResumeButton();return}
   const byUid=new Map(QUESTIONS.map(q=>[q.uid,q])),restored=[],stale=new Set();
-  r.session.forEach(x=>{const q=byUid.get(x.uid);if(!q)return;const same=typeof x.sig==='string'&&x.sig===questionSignature(q);if(!same)stale.add(q.uid);restored.push({...q,_order:same?normalizeOrder(q,x.order):naturalOrder(q)})});
+  r.session.forEach(x=>{if(!x||typeof x!=='object')return;const q=byUid.get(x.uid);if(!q)return;const same=typeof x.sig==='string'&&x.sig===questionSignature(q);if(!same)stale.add(q.uid);restored.push({...q,_order:same?normalizeOrder(q,x.order):naturalOrder(q)})});
   if(!restored.length){clearResume();alert('前回の問題データを復元できませんでした。');return}
   stopTimer();sessionKind=typeof r.kind==='string'?r.kind:'normal';examMode=sessionKind==='mock';mockFinalized=false;selectedSet=safeSelectedSet(r.selectedSet);selectedChapter=safeSelectedChapter(r.selectedChapter);session=restored;
-  pos=(Number(r.v)||0)>=2?Math.max(0,Math.min(Number.isFinite(Number(r.pos))?Number(r.pos):0,session.length-1)):0;runResult=r.runResult&&typeof r.runResult==='object'&&!Array.isArray(r.runResult)?{...r.runResult}:{};sessionSelections=r.sessionSelections&&typeof r.sessionSelections==='object'&&!Array.isArray(r.sessionSelections)?{...r.sessionSelections}:{};
+  pos=(Number(r.v)||0)>=2?Math.max(0,Math.min(Number.isFinite(Number(r.pos))?Number(r.pos):0,session.length-1)):0;
+  runResult={};if(r.runResult&&typeof r.runResult==='object'&&!Array.isArray(r.runResult))Object.entries(r.runResult).forEach(([uid,v])=>{if((v===true||v===false)&&byUid.has(uid))runResult[uid]=v});
+  sessionSelections={};if(r.sessionSelections&&typeof r.sessionSelections==='object'&&!Array.isArray(r.sessionSelections))Object.entries(r.sessionSelections).forEach(([uid,v])=>{const q=byUid.get(uid);if(!q||!Array.isArray(v))return;sessionSelections[uid]=[...new Set(v.filter(i=>Number.isInteger(i)&&i>=0&&i<q.o.length))]});
   stale.forEach(uid=>{delete runResult[uid];delete sessionSelections[uid]});
   const oldElapsed=Number(r.elapsedSec);sessionStartedAt=Date.now()-(Number.isFinite(oldElapsed)?Math.max(0,Math.min(oldElapsed,24*60*60)):0)*1000;
   document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.set===selectedSet));renderChapterChips();renderCats();
@@ -491,7 +502,7 @@ function currentFlag(){const q=session[pos];return q?history(q).flag:false}
 function updateFlagButton(){if(!$('flagBtn')||!session.length)return;$('flagBtn').classList.toggle('flagged',currentFlag());$('flagBtn').textContent=currentFlag()?'★ 要復習中':'☆ 要復習'}
 function toggleFlag(){const q=session[pos];const h=history(q);h.flag=!h.flag;state[q.uid]=h;save();updateFlagButton();renderIndex();renderDashboard();saveResume()}
 function render(){
-  const q=session[pos];selected=new Set((sessionSelections[q.uid]||[]).filter(i=>Number.isInteger(i)&&i>=0&&i<q.o.length));judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=normalizeOrder(q,q._order);q._order=currentMap.slice();
+  const q=session[pos],savedSelection=Array.isArray(sessionSelections[q.uid])?sessionSelections[q.uid]:[];selected=new Set(savedSelection.filter(i=>Number.isInteger(i)&&i>=0&&i<q.o.length));judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=normalizeOrder(q,q._order);q._order=currentMap.slice();
   if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
   else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+q.id+'/'+questionSetCount(q);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
   $('qtext').textContent=q.q;$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
@@ -553,7 +564,7 @@ function studyResultText(rate){
 }
 function finishMock(){
   if(mockFinalized)return;mockFinalized=true;stopTimer();saveCurrentSelection();runResult={};
-  session.forEach(q=>{const sel=(sessionSelections[q.uid]||[]).slice().sort((a,b)=>a-b),ans=q.a.slice().sort((a,b)=>a-b),ok=equalSet(sel,ans);runResult[q.uid]=ok;updateReview(q,ok)});
+  session.forEach(q=>{const raw=Array.isArray(sessionSelections[q.uid])?sessionSelections[q.uid]:[],sel=raw.slice().sort((a,b)=>a-b),ans=q.a.slice().sort((a,b)=>a-b),ok=equalSet(sel,ans);runResult[q.uid]=ok;updateReview(q,ok)});
   const correct=Object.values(runResult).filter(Boolean).length,rate=Math.round(correct/session.length*100),b=domainBreakdown();
   mockHistory.push({at:new Date().toISOString(),rate,correct,total:session.length,domains:b,elapsedSec:Math.round((Date.now()-sessionStartedAt)/1000)});saveMockHistory();
   clearResume();showResult(correct,rate,b,true);renderDashboard()

@@ -365,3 +365,23 @@ Learn製品補強は周辺知識の学習用で、**本番模試50問からは�
 - 従来の自由選択・弱点復習・間隔反復も併用可能
 
 途中保存は既存の `az104_kakomon_resume_v1` をそのまま使用し、おすすめルートの途中からも再開できます。
+
+## 2026-09-23 UI・データ不具合総点検
+
+選択肢シャッフル時に、問題画面の A/B/C/D と回答後の「選択肢ごとの確認」の A/B/C/D が一致しない不具合を根本修正しました。
+
+- `ui-logic.js` を新設し、original option index と visual order の変換を共通化
+- 正解表示もシャッフル後の文字で表示
+- 全366問の `e` / `ox` に固定 A/B/C/D 表現がないことを検査
+- スクリーンショット相当の `C. Action Group` 回帰テストを追加
+- 問題更新前の resume index を誤復元しないよう question signature を保存
+- 模試残り0秒の再開で100分へ戻る可能性を修正
+- 通常学習で模試用「仕上がり目安」が出る問題を修正
+- おすすめ学習ルートの20問出題と smart ranking を修正
+- localStorage の壊れた履歴値を正規化
+- 動的 category / chapter 表示を `textContent` ベースへ変更
+- 問題画面の分母・set件数を `inventory.js` 参照へ統一
+- `scripts/validate-data.js` を Pages workflow に組み込み、公開前に366問データ・DOM・内部リンク・模試候補・シャッフル回帰を自動検証
+
+詳細:
+- `audit/2026-09-23-ui-bug-sweep.md`

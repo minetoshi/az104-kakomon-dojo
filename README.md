@@ -57,7 +57,7 @@ AZ-104 学習用の問題データと、ブラウザで解ける「過去問道�
 ## 問題データ
 過去問は `questions/set-01/` と `questions/set-02/`、類似問題は `questions/similar/`、公式範囲補強は `questions/coverage/`、Learn製品補強は `questions/learn-products/` に、ページから直接読み込む JavaScript 形式で保存しています。
 
-元データ確認用として JSON も `questions/` 配下に保存しています。
+元データ確認用として JSON も `questions/` 配下に保存しています。**これら直下JSONは現在の `index.html` では読み込まず、366問の集計には含めません。**
 
 ## 品質チェック
 - 読み込み対象: **366問**

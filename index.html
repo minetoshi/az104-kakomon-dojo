@@ -354,6 +354,13 @@ function validateInventory(){
   Object.keys(setActual).forEach(k=>{if(INVENTORY.sets&&Number(INVENTORY.sets[k])!==setActual[k])errors.push(k+' '+setActual[k]+' / 台帳 '+INVENTORY.sets[k])});
   const chActual={};for(let i=1;i<=11;i++)chActual[i]=QUESTIONS.filter(q=>bookChapterOf(q)===i).length;
   for(let i=1;i<=11;i++){const expected=INVENTORY.chapters&&INVENTORY.chapters[i]?Number(INVENTORY.chapters[i].count):null;if(expected!==chActual[i])errors.push('第'+i+'章 '+chActual[i]+' / 台帳 '+expected)}
+  if(INVENTORY.chapterBySet){
+    for(let s=1;s<=5;s++)for(let i=1;i<=11;i++){
+      const actual=QUESTIONS.filter(q=>q.set===s&&bookChapterOf(q)===i).length;
+      const expected=INVENTORY.chapterBySet[s]?Number(INVENTORY.chapterBySet[s][i]):null;
+      if(expected!==actual)errors.push('Set'+s+'×第'+i+'章 '+actual+' / 台帳 '+expected);
+    }
+  }
   const stActual={};for(let i=1;i<=6;i++)stActual[i]=QUESTIONS.filter(q=>studyStageId(q)===i).length;
   for(let i=1;i<=6;i++){const expected=INVENTORY.studyStages&&INVENTORY.studyStages[i]?Number(INVENTORY.studyStages[i].count):null;if(expected!==stActual[i])errors.push('学習'+i+' '+stActual[i]+' / 台帳 '+expected)}
   const box=$('inventoryStatus');
@@ -363,7 +370,7 @@ function validateInventory(){
       const chapterText=BOOK_CHAPTERS.map(ch=>'第'+ch.id+'章 '+chActual[ch.id]+'問').join(' / ');
       const stageSum=Object.values(stActual).reduce((a,b)=>a+b,0);
       box.className='count-audit';
-      box.textContent='件数チェック済み：'+chapterText+'（11章合計 '+QUESTIONS.length+'問）／ おすすめ6分野合計 '+stageSum+'問。※黒本11章とおすすめ6分野は分類軸が異なるため、同名分野の個別件数は一致しない場合があります。';
+      box.textContent='件数チェック済み：'+chapterText+'（11章合計 '+QUESTIONS.length+'問）／ おすすめ6分野合計 '+stageSum+'問／セット別×章別55セル一致。※黒本11章とおすすめ6分野は分類軸が異なるため、同名分野の個別件数は一致しない場合があります。';
     }
   }
   return errors;

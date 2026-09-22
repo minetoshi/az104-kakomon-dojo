@@ -79,8 +79,13 @@ for(const q of qs){
     if(q.multi!==true)assert(q.a.length===1,"multiple answers without multi=true: "+q.uid);
   }
   assert(typeof q.e==="string"&&q.e.trim().length>0,"missing explanation: "+q.uid);
+  const fixedLetterRe=/(?:選択肢|回答|正解|不正解)\s*[A-FＡ-Ｆ](?:\b|[.．:：、はをが])|(?:^|[\s「（(])[A-FＡ-Ｆ][.．:：]\s*/i;
+  assert(!(typeof q.e==="string"&&fixedLetterRe.test(q.e)),"fixed A/B/C label in explanation: "+q.uid);
   assert(Array.isArray(q.ox)&&Array.isArray(q.o)&&q.ox.length===q.o.length,"option explanation count mismatch: "+q.uid);
-  if(Array.isArray(q.ox))assert(q.ox.every(x=>typeof x==="string"&&x.trim()),"empty option explanation: "+q.uid);
+  if(Array.isArray(q.ox)){
+    assert(q.ox.every(x=>typeof x==="string"&&x.trim()),"empty option explanation: "+q.uid);
+    q.ox.forEach((x,i)=>assert(!fixedLetterRe.test(x),"fixed A/B/C label in option explanation "+i+": "+q.uid));
+  }
   assert(Array.isArray(q.learn)&&q.learn.length>0,"missing Learn links: "+q.uid);
   if(Array.isArray(q.learn)){
     q.learn.forEach((x,i)=>{
@@ -210,6 +215,10 @@ assert(!html.includes("Number(r.remainingSec)||100*60"),"zero remaining mock tim
 assert(html.includes("isMock?readinessText(rate,b):studyResultText(rate)"),"study result still uses mock readiness verdict");
 assert(html.includes("rankBySmartScore(QUESTIONS)"),"smart ranking still uses unstable comparator scoring");
 assert(html.includes("normalizeOrder(q,q._order)"),"session/retry order normalization missing");
+assert(html.includes("questionSignature(q)"),"resume question signature missing");
+assert(html.includes("sig:questionSignature(q)"),"resume payload does not persist question signature");
+assert(html.includes("stale.forEach(uid=>{delete runResult[uid];delete sessionSelections[uid]})"),"stale resume answers are not invalidated");
+assert(html.includes("questionSetCount(q)"),"question screen denominator is still hard-coded");
 assert(html.includes("q.set!==3&&q.set!==5"),"mock pool no longer excludes similar/Learn-product sets");
 assert(html.includes("['legacy-practice','practice-nuance'].includes(a.status)")||html.includes('["legacy-practice","practice-nuance"].includes(a.status)'),"mock pool no longer excludes legacy/practice-nuance questions");
 const setMarkers=[...html.matchAll(/data-az104-set="([^"]+)"/g)].map(m=>m[1]);

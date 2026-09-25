@@ -220,6 +220,7 @@ function resumeTitle(r){
   if(r.kind==='flagged')return '要復習フラグ';
   if(r.kind==='unanswered')return '未回答トレーニング';
   if(r.kind==='wrong')return '今回の間違い';
+  if(r.kind==='mastery-core')return '中核マスター';if(r.kind==='mastery-transfer')return '応用・類似';if(r.kind==='mastery-learn')return 'Learn補完';
   if(r.kind==='route-mix')return '全範囲ミックス';
   if((r.kind||'').startsWith('route-')){const id=Number(r.kind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);return st?'おすすめ '+st.title:'おすすめ学習'}
   const s=safeSelectedSet(r.selectedSet);
@@ -330,51 +331,69 @@ function studyStageId(q){
   if(c.startsWith('ネットワーク'))return 5;
   return 6;
 }
-function stageQuestions(id){return QUESTIONS.filter(q=>studyStageId(q)===id)}
+const MASTERY_STREAK=Number(INVENTORY.mastery&&INVENTORY.mastery.requiredStreak)||2;
+function masteryTier(q){if([1,2,4].includes(q.set))return 'core';if(q.set===3)return 'transfer';return 'learn'}
+function isMastered(q){return history(q).streak>=MASTERY_STREAK}
+function masteryQuestions(tier){return QUESTIONS.filter(q=>masteryTier(q)===tier)}
+function masteryStats(tier){
+  const qs=masteryQuestions(tier),mastered=qs.filter(isMastered);
+  return {qs,total:qs.length,mastered:mastered.length,remaining:qs.length-mastered.length,done:mastered.length===qs.length}
+}
+function renderMastery(){
+  const core=masteryStats('core'),transfer=masteryStats('transfer'),learn=masteryStats('learn');
+  const allMastered=core.mastered+transfer.mastered+learn.mastered,total=core.total+transfer.total+learn.total,remaining=total-allMastered;
+  if($('masterCore'))$('masterCore').textContent=core.mastered+' / '+core.total;
+  if($('masterTransfer'))$('masterTransfer').textContent=transfer.mastered+' / '+transfer.total;
+  if($('masterLearn'))$('masterLearn').textContent=learn.mastered+' / '+learn.total;
+  if($('masterAll'))$('masterAll').textContent=allMastered+' / '+total;
+  if($('masterRemaining'))$('masterRemaining').textContent=remaining?'残り'+remaining+'問':'366問すべてマスター済み';
+  const labels={core:'masterCoreBtn',transfer:'masterTransferBtn',learn:'masterLearnBtn'};
+  [['core',core],['transfer',transfer],['learn',learn]].forEach(([tier,s])=>{const b=$(labels[tier]);if(!b)return;b.textContent=s.done?(tier==='learn'?'6問を復習':'20問を復習'):'未マスターから'+Math.min(tier==='learn'?6:20,s.remaining)+'問'});
+}
+function stageQuestions(id){return QUESTIONS.filter(q=>[1,2,4].includes(q.set)&&studyStageId(q)===id)}
 function stageStats(id){
-  const qs=stageQuestions(id),answered=qs.filter(q=>history(q).tries>0);
-  const tries=answered.reduce((s,q)=>s+history(q).tries,0),correct=answered.reduce((s,q)=>s+history(q).correct,0);
-  const rate=tries?Math.round(correct/tries*100):null;
-  return {qs,answered:answered.length,total:qs.length,tries,correct,rate,done:answered.length===qs.length&&rate!==null&&rate>=80};
+  const qs=stageQuestions(id),mastered=qs.filter(isMastered);
+  return {qs,mastered:mastered.length,total:qs.length,remaining:qs.length-mastered.length,done:mastered.length===qs.length};
 }
 function renderStudyRoute(){
+  renderMastery();
   const box=$('studyRoute');if(!box)return;
-  const stats=STUDY_STAGES.map(st=>({st,s:stageStats(st.id)}));
-  const next=stats.find(x=>!x.s.done);
-  box.innerHTML='';
+  const stats=STUDY_STAGES.map(st=>({st,s:stageStats(st.id)})),next=stats.find(x=>!x.s.done);
+  box.textContent='';
   stats.forEach(({st,s})=>{
     const row=document.createElement('div');row.className='route-step'+(s.done?' done':'')+(next&&next.st.id===st.id?' current':'');
     const no=document.createElement('div');no.className='route-no';no.textContent=st.id;
     const main=document.createElement('div');main.className='route-main';
-    const title=document.createElement('b');title.textContent=st.title;
-    if(s.done){const badge=document.createElement('span');badge.className='route-badge done';badge.textContent='完了';title.appendChild(badge)}
+    const title=document.createElement('b');title.textContent=st.title+'（'+s.total+'問）';
+    if(s.done){const badge=document.createElement('span');badge.className='route-badge done';badge.textContent='マスター済み';title.appendChild(badge)}
     else if(next&&next.st.id===st.id){const badge=document.createElement('span');badge.className='route-badge next';badge.textContent='次にやる';title.appendChild(badge)}
     const hint=document.createElement('div');hint.className='route-hint';hint.textContent=st.hint;
-    const stat=document.createElement('div');stat.className='route-stat';stat.textContent='回答済み '+s.answered+'/'+s.total+'問 ・ 通算正答率 '+(s.rate===null?'-':s.rate+'%');
-    const prog=document.createElement('div');prog.className='route-progress';const bar=document.createElement('span');bar.style.width=(s.total?Math.round(s.answered/s.total*100):0)+'%';prog.appendChild(bar);
+    const stat=document.createElement('div');stat.className='route-stat';stat.textContent='マスター '+s.mastered+'/'+s.total+'問 ・ 残り '+s.remaining+'問';
+    const prog=document.createElement('div');prog.className='route-progress';const bar=document.createElement('span');bar.style.width=(s.total?Math.round(s.mastered/s.total*100):0)+'%';prog.appendChild(bar);
     main.appendChild(title);main.appendChild(hint);main.appendChild(stat);main.appendChild(prog);
-    const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent=s.done?'20問復習する':s.answered?'続きを20問':'この分野を20問';btn.onclick=()=>startStudyStage(st.id);
+    const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent=s.done?'20問復習する':'未マスターを'+Math.min(20,s.remaining)+'問';btn.onclick=()=>startStudyStage(st.id);
     row.appendChild(no);row.appendChild(main);row.appendChild(btn);box.appendChild(row);
   });
-  const allDone=stats.every(x=>x.s.done),answered=QUESTIONS.filter(q=>history(q).tries>0),tries=answered.reduce((s,q)=>s+history(q).tries,0),correct=answered.reduce((s,q)=>s+history(q).correct,0),rate=tries?Math.round(correct/tries*100):null;
+  const coreMastered=stats.reduce((n,x)=>n+x.s.mastered,0),coreTotal=stats.reduce((n,x)=>n+x.s.total,0),allDone=coreMastered===coreTotal;
   const row=document.createElement('div');row.className='route-step route-final'+(allDone?' current':'');
-  const no=document.createElement('div');no.className='route-no';no.textContent='7';
-  const main=document.createElement('div');main.className='route-main';const title=document.createElement('b');title.textContent='全範囲ミックス';
-  if(allDone){const badge=document.createElement('span');badge.className='route-badge next';badge.textContent='仕上げ';title.appendChild(badge)}
-  const hint=document.createElement('div');hint.className='route-hint';hint.textContent='全'+setCountValue('all')+'問から分野を混ぜて30問。カテゴリの切り替え判断を鍛えます。';
-  const stat=document.createElement('div');stat.className='route-stat';stat.textContent=allDone?'全6ステップ完了 ・ 全体通算正答率 '+(rate===null?'-':rate+'%'):'前の6ステップを完了するとおすすめの仕上げ段階です';
+  const no=document.createElement('div');no.className='route-no';no.textContent=allDone?'✓':'→';
+  const main=document.createElement('div');main.className='route-main';const title=document.createElement('b');title.textContent='中核260問';
+  if(allDone){const badge=document.createElement('span');badge.className='route-badge done';badge.textContent='完了';title.appendChild(badge)}
+  const hint=document.createElement('div');hint.className='route-hint';hint.textContent=allDone?'次は「応用・類似100問」をマスターします。':'まず6分野の中核260問を2連続正解まで仕上げます。';
+  const stat=document.createElement('div');stat.className='route-stat';stat.textContent='中核マスター '+coreMastered+'/'+coreTotal+'問 ・ 残り '+(coreTotal-coreMastered)+'問';
   main.appendChild(title);main.appendChild(hint);main.appendChild(stat);
-  const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent='全範囲30問';btn.disabled=!allDone;btn.onclick=startStudyMix;
+  const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent=allDone?'応用100問へ':'中核の未マスター20問';btn.onclick=()=>allDone?startMasteryTier('transfer'):startMasteryTier('core');
   row.appendChild(no);row.appendChild(main);row.appendChild(btn);box.appendChild(row);
 }
 function startStudyStage(id){
-  const qs=stageQuestions(id),unanswered=qs.filter(q=>!history(q).tries),chosen=sample(unanswered,Math.min(20,unanswered.length));
-  if(chosen.length<20){
-    const used=new Set(chosen.map(q=>q.uid));
-    rankBySmartScore(qs.filter(q=>!used.has(q.uid))).slice(0,20-chosen.length).forEach(q=>chosen.push(q));
-  }
+  const qs=stageQuestions(id),remaining=qs.filter(q=>!isMastered(q)),chosen=remaining.length?sample(remaining,Math.min(20,remaining.length)):sample(qs,Math.min(20,qs.length));
   if(!chosen.length)return;
   start(chosen.map(q=>({...q,_order:makeOrder(q,true)})),'route-'+id);
+}
+function startMasteryTier(tier){
+  const qs=masteryQuestions(tier),remaining=qs.filter(q=>!isMastered(q)),limit=tier==='learn'?6:20,chosen=remaining.length?sample(remaining,Math.min(limit,remaining.length)):sample(qs,Math.min(limit,qs.length));
+  if(!chosen.length)return;
+  start(chosen.map(q=>({...q,_order:makeOrder(q,true)})),'mastery-'+tier);
 }
 function startStudyMix(){start(sample(QUESTIONS,30).map(q=>({...q,_order:makeOrder(q,true)})),'route-mix')}
 function updateReview(q,ok){
@@ -467,7 +486,7 @@ function renderCats(){
 }
 function makeOrder(q,forceShuffle=false){const order=q.o.map((_,i)=>i);if(forceShuffle||$('shuffleOptions').checked)shuffle(order);return order}
 function buildSession(){let a=filtered().slice(),mode=document.querySelector('input[name=mode]:checked').value;if(mode==='random')shuffle(a);else a.sort((x,y)=>x.set-y.set||x.id-y.id);const n=$('count').value;if(n!=='all')a=a.slice(0,Number(n));return a.map(q=>({...q,_order:makeOrder(q)}))}
-function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(sessionKind==='route-mix')return 'おすすめ ⑦ 全範囲ミックス';if(sessionKind.startsWith('route-')){const id=Number(sessionKind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);if(st)return 'おすすめ '+id+' '+st.title}if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全'+setCountValue('all')+'問';if(selectedSet==='past')return '過去問'+setCountValue('past')+'問';if(selectedSet==='3')return '類似問題'+setCountValue(3)+'問';if(selectedSet==='4')return '公式範囲補強'+setCountValue(4)+'問';if(selectedSet==='5')return 'Learn製品補強'+setCountValue(5)+'問';return '第'+selectedSet+'セット'}
+function sessionName(){if(sessionKind==='mock')return '本番模試 50問';if(sessionKind==='smart')return 'おすすめ弱点';if(sessionKind==='due')return '今日の復習';if(sessionKind==='flagged')return '要復習フラグ';if(sessionKind==='unanswered')return '未回答トレーニング';if(sessionKind==='wrong')return '今回の間違い';if(sessionKind==='mastery-core')return '中核マスター260';if(sessionKind==='mastery-transfer')return '応用・類似100';if(sessionKind==='mastery-learn')return 'Learn補完6';if(sessionKind==='route-mix')return 'おすすめ ⑦ 全範囲ミックス';if(sessionKind.startsWith('route-')){const id=Number(sessionKind.split('-')[1]),st=STUDY_STAGES.find(x=>x.id===id);if(st)return 'おすすめ '+id+' '+st.title}if(selectedChapter!=='all'){const ch=BOOK_CHAPTERS.find(x=>x.id===Number(selectedChapter));return ch?'黒本 第'+ch.id+'章 '+ch.title:''}if(selectedSet==='all')return '全'+setCountValue('all')+'問';if(selectedSet==='past')return '過去問'+setCountValue('past')+'問';if(selectedSet==='3')return '類似問題'+setCountValue(3)+'問';if(selectedSet==='4')return '公式範囲補強'+setCountValue(4)+'問';if(selectedSet==='5')return 'Learn製品補強'+setCountValue(5)+'問';return '第'+selectedSet+'セット'}
 function showModeSelect(){
   stopTimer();examMode=false;$('quiz').style.display='none';$('result').style.display='none';$('setup').style.display='none';$('modeSelect').style.display='block';window.scrollTo(0,0)
 }

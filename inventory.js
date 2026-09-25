@@ -1,5 +1,5 @@
 window.AZ104_INVENTORY={
-  version:"2026-09-22",
+  version:"2026-09-25",
   total:366,
   sets:{
     past:100,
@@ -29,6 +29,28 @@ window.AZ104_INVENTORY={
     4:{title:"App Service・コンテナー",count:56},
     5:{title:"ネットワーク",count:71},
     6:{title:"Monitor・Backup・DR",count:55}
+  },
+  mastery:{
+    requiredStreak:2,
+    total:366,
+    core:{
+      title:"中核マスター",
+      count:260,
+      sets:[1,2,4],
+      stageCounts:{1:39,2:49,3:42,4:40,5:46,6:44}
+    },
+    transfer:{
+      title:"応用・類似",
+      count:100,
+      sets:[3],
+      stageCounts:{1:21,2:19,3:11,4:15,5:23,6:11}
+    },
+    learn:{
+      title:"Learn補完",
+      count:6,
+      sets:[5],
+      stageCounts:{1:1,2:0,3:2,4:1,5:2,6:0}
+    }
   },
   chapterBySet:{
     1:{1:4,2:8,3:2,4:1,5:10,6:4,7:1,8:7,9:8,10:2,11:3},

@@ -286,6 +286,11 @@ assert(html.includes("function masteryStageStats(tier,id)"),"mastery stage stats
 assert(html.includes("function renderMasteryBreakdown(tier,containerId)"),"mastery breakdown rendering missing");
 assert(html.includes("function startMasteryTierStage(tier,id)"),"mastery subcategory start function missing");
 assert(html.includes("masteryQuestions(tier).filter(q=>studyStageId(q)===id)"),"mastery subcategory does not filter by stage");
+assert(html.includes("start(shuffle(qs.slice()).map(q=>({...q,_order:makeOrder(q,true)})),kind)"),"mastery subcategory is not starting every question in the selected category");
+assert(html.includes("function startStudyStage(id){\n  const qs=stageQuestions(id);if(!qs.length)return;\n  start(shuffle(qs.slice()).map(q=>({...q,_order:makeOrder(q,true)}))"),"recommended stage is still limiting questions instead of opening the full category");
+assert(html.includes("function startMasteryTier(tier)"),"mastery tier start function missing");
+assert(!/function startMasteryTier\(tier\)[\s\S]{0,900}Math\.min\((?:20|limit)/.test(html),"mastery tier still limits question count");
+assert(!/function startMasteryTierStage\(tier,id\)[\s\S]{0,900}Math\.min\((?:20|limit)/.test(html),"mastery subcategory still limits question count");
 assert(html.includes("masteryUnlocked(tier)"),"mastery subcategory lock check missing");
 assert(html.includes("完全マスター条件"),"mastery definition is not visible in study mode");
 assert(html.includes('<script src="ui-logic.js"></script>'),"index does not load ui-logic.js");

@@ -128,6 +128,37 @@ for(let i=1;i<=100;i++)assert(baseIds.has(i),"missing similar baseId "+i);
 assert(inv.sets&&inv.sets.set1===50&&inv.sets.set2===50&&inv.sets.similar===100&&inv.sets.coverage===160&&inv.sets.learnProducts===6,"inventory set counts invalid");
 assert(inv.chapters&&Object.values(inv.chapters).reduce((s,x)=>s+Number(x.count||0),0)===366,"inventory chapter sum != 366");
 assert(inv.studyStages&&Object.values(inv.studyStages).reduce((s,x)=>s+Number(x.count||0),0)===366,"inventory study-stage sum != 366");
+assert(inv.mastery&&Number(inv.mastery.requiredStreak)===2,"mastery streak must be 2");
+assert(inv.mastery&&Number(inv.mastery.total)===366,"mastery total must be 366");
+assert(inv.mastery&&Number(inv.mastery.core.count)===260,"core mastery count must be 260");
+assert(inv.mastery&&Number(inv.mastery.transfer.count)===100,"transfer mastery count must be 100");
+assert(inv.mastery&&Number(inv.mastery.learn.count)===6,"Learn mastery count must be 6");
+
+function studyStageId(q){
+  const c=q.cat||"";
+  if(c.startsWith("ID/")||c==="監視/コスト")return 1;
+  if(c.startsWith("ストレージ"))return 2;
+  if(c==="App Service"||c.startsWith("コンテナー"))return 4;
+  if(c.startsWith("コンピュート"))return 3;
+  if(c.startsWith("ネットワーク"))return 5;
+  return 6;
+}
+const masteryGroups={
+  core:qs.filter(q=>[1,2,4].includes(q.set)),
+  transfer:qs.filter(q=>q.set===3),
+  learn:qs.filter(q=>q.set===5)
+};
+for(const tier of ["core","transfer","learn"]){
+  assert(masteryGroups[tier].length===Number(inv.mastery[tier].count),"mastery "+tier+" count mismatch");
+  for(let i=1;i<=6;i++){
+    const actual=masteryGroups[tier].filter(q=>studyStageId(q)===i).length;
+    const expected=Number(inv.mastery[tier].stageCounts[i]);
+    assert(actual===expected,"mastery "+tier+" stage "+i+": "+actual+" expected "+expected);
+  }
+}
+assert(Object.values(inv.mastery.core.stageCounts).reduce((a,b)=>a+Number(b),0)===260,"core mastery stage sum != 260");
+assert(Object.values(inv.mastery.transfer.stageCounts).reduce((a,b)=>a+Number(b),0)===100,"transfer mastery stage sum != 100");
+assert(Object.values(inv.mastery.learn.stageCounts).reduce((a,b)=>a+Number(b),0)===6,"Learn mastery stage sum != 6");
 
 function domainOf(q){
   const cat=q.cat||"";
@@ -246,6 +277,11 @@ assert(html.includes("if(input)input.checked=on"),"native answer input checked s
 assert(html.includes("function save(){try{localStorage.setItem"),"learning history storage failures are not caught");
 assert(html.includes("function saveMockHistory(){try{localStorage.setItem"),"mock history storage failures are not caught");
 assert(html.includes("Array.isArray(sessionSelections[q.uid])?sessionSelections[q.uid]:[]"),"saved selection values are not guarded as arrays");
+assert(html.includes("const MASTERY_STREAK=Number(INVENTORY.mastery&&INVENTORY.mastery.requiredStreak)||2"),"mastery streak is not driven by inventory");
+assert(html.includes("function isMastered(q){return history(q).streak>=MASTERY_STREAK}"),"mastery criterion is not two-consecutive-correct based");
+assert(html.includes("QUESTIONS.filter(q=>[1,2,4].includes(q.set)&&studyStageId(q)===id)"),"recommended route is not limited to the 260 core questions");
+assert(html.includes("masterCoreBtn")&&html.includes("masterTransferBtn")&&html.includes("masterLearnBtn"),"mastery action buttons missing");
+assert(html.includes("完全マスター条件"),"mastery definition is not visible in study mode");
 assert(html.includes('<script src="ui-logic.js"></script>'),"index does not load ui-logic.js");
 assert(!html.includes("cats.map(c=>'<option>'+c+'</option>')"),"category values are still injected with innerHTML");
 assert(html.includes("q.set!==3&&q.set!==5"),"mock pool no longer excludes similar/Learn-product sets");

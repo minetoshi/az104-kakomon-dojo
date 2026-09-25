@@ -350,7 +350,7 @@ function renderMastery(){
   const coreBtn=$('masterCoreBtn'),transferBtn=$('masterTransferBtn'),learnBtn=$('masterLearnBtn');
   if(coreBtn){coreBtn.disabled=false;coreBtn.textContent=core.done?'20問を復習':'未マスターから'+Math.min(20,core.remaining)+'問'}
   if(transferBtn){transferBtn.disabled=!core.done;transferBtn.textContent=!core.done?'中核260問の完了後に解放':transfer.done?'20問を復習':'未マスターから'+Math.min(20,transfer.remaining)+'問'}
-  if(learnBtn){learnBtn.disabled=!transfer.done;learnBtn.textContent=!transfer.done?'応用100問の完了後に解放':learn.done?'6問を復習':'未マスターから'+Math.min(6,learn.remaining)+'問'}
+  if(learnBtn){learnBtn.disabled=!(core.done&&transfer.done);learnBtn.textContent=!(core.done&&transfer.done)?'中核260＋応用100の完了後に解放':learn.done?'6問を復習':'未マスターから'+Math.min(6,learn.remaining)+'問'}
 }
 function stageQuestions(id){return QUESTIONS.filter(q=>[1,2,4].includes(q.set)&&studyStageId(q)===id)}
 function stageStats(id){
@@ -395,7 +395,7 @@ function startStudyStage(id){
 function startMasteryTier(tier){
   const core=masteryStats('core'),transfer=masteryStats('transfer');
   if(tier==='transfer'&&!core.done){alert('まず中核260問をすべてマスターしてください。');return}
-  if(tier==='learn'&&!transfer.done){alert('まず応用・類似100問をすべてマスターしてください。');return}
+  if(tier==='learn'&&!(core.done&&transfer.done)){alert('まず中核260問と応用・類似100問をすべてマスターしてください。');return}
   const qs=masteryQuestions(tier),remaining=qs.filter(q=>!isMastered(q)),limit=tier==='learn'?6:20,chosen=remaining.length?sample(remaining,Math.min(limit,remaining.length)):sample(qs,Math.min(limit,qs.length));
   if(!chosen.length)return;
   start(chosen.map(q=>({...q,_order:makeOrder(q,true)})),'mastery-'+tier);

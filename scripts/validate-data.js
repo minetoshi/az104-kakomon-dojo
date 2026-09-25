@@ -281,6 +281,12 @@ assert(html.includes("const MASTERY_STREAK=Number(INVENTORY.mastery&&INVENTORY.m
 assert(html.includes("function isMastered(q){return history(q).streak>=MASTERY_STREAK}"),"mastery criterion is not two-consecutive-correct based");
 assert(html.includes("QUESTIONS.filter(q=>[1,2,4].includes(q.set)&&studyStageId(q)===id)"),"recommended route is not limited to the 260 core questions");
 assert(html.includes("masterCoreBtn")&&html.includes("masterTransferBtn")&&html.includes("masterLearnBtn"),"mastery action buttons missing");
+assert(html.includes("masterCoreBreakdown")&&html.includes("masterTransferBreakdown")&&html.includes("masterLearnBreakdown"),"mastery breakdown containers missing");
+assert(html.includes("function masteryStageStats(tier,id)"),"mastery stage stats function missing");
+assert(html.includes("function renderMasteryBreakdown(tier,containerId)"),"mastery breakdown rendering missing");
+assert(html.includes("function startMasteryTierStage(tier,id)"),"mastery subcategory start function missing");
+assert(html.includes("masteryQuestions(tier).filter(q=>studyStageId(q)===id)"),"mastery subcategory does not filter by stage");
+assert(html.includes("masteryUnlocked(tier)"),"mastery subcategory lock check missing");
 assert(html.includes("完全マスター条件"),"mastery definition is not visible in study mode");
 assert(html.includes('<script src="ui-logic.js"></script>'),"index does not load ui-logic.js");
 assert(!html.includes("cats.map(c=>'<option>'+c+'</option>')"),"category values are still injected with innerHTML");

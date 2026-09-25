@@ -451,6 +451,18 @@ function validateInventory(){
   }
   const stActual={};for(let i=1;i<=6;i++)stActual[i]=QUESTIONS.filter(q=>studyStageId(q)===i).length;
   for(let i=1;i<=6;i++){const expected=INVENTORY.studyStages&&INVENTORY.studyStages[i]?Number(INVENTORY.studyStages[i].count):null;if(expected!==stActual[i])errors.push('学習'+i+' '+stActual[i]+' / 台帳 '+expected)}
+  if(INVENTORY.mastery){
+    const tiers={core:QUESTIONS.filter(q=>[1,2,4].includes(q.set)),transfer:QUESTIONS.filter(q=>q.set===3),learn:QUESTIONS.filter(q=>q.set===5)};
+    ['core','transfer','learn'].forEach(t=>{
+      const expected=Number(INVENTORY.mastery[t]&&INVENTORY.mastery[t].count),actual=tiers[t].length;
+      if(expected!==actual)errors.push('mastery '+t+' '+actual+' / 台帳 '+expected);
+      for(let i=1;i<=6;i++){
+        const a=tiers[t].filter(q=>studyStageId(q)===i).length,e=Number(INVENTORY.mastery[t]&&INVENTORY.mastery[t].stageCounts&&INVENTORY.mastery[t].stageCounts[i]);
+        if(a!==e)errors.push('mastery '+t+'×学習'+i+' '+a+' / 台帳 '+e);
+      }
+    });
+    const total=tiers.core.length+tiers.transfer.length+tiers.learn.length;if(total!==Number(INVENTORY.mastery.total))errors.push('mastery total '+total+' / 台帳 '+INVENTORY.mastery.total);
+  }
   const box=$('inventoryStatus');
   if(box){
     if(errors.length){box.className='count-audit bad';box.textContent='件数不整合: '+errors.join(' / ')}
@@ -642,6 +654,7 @@ function init(){
   document.querySelectorAll('#setChips .chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedSet=b.dataset.set;renderChapterChips();renderCats()}));
   document.querySelectorAll('input[name=mode],#unanswered').forEach(x=>x.addEventListener('change',refreshCount));$('category').addEventListener('change',refreshCount);
   $('studyEntryBtn').addEventListener('click',enterStudyMode);$('mockEntryBtn').addEventListener('click',enterMockMode);$('modeBackBtn').addEventListener('click',showModeSelect);$('modeResumeBtn').addEventListener('click',resumeStudy);$('resumeBtn').addEventListener('click',resumeStudy);$('startBtn').addEventListener('click',()=>{sessionKind='normal';start()});$('smartBtn').addEventListener('click',startSmart);$('dueBtn').addEventListener('click',startDue);$('flaggedBtn').addEventListener('click',startFlagged);$('unansweredBtn').addEventListener('click',startUnanswered);
+  $('masterCoreBtn').addEventListener('click',()=>startMasteryTier('core'));$('masterTransferBtn').addEventListener('click',()=>startMasteryTier('transfer'));$('masterLearnBtn').addEventListener('click',()=>startMasteryTier('learn'));
   $('judgeBtn').addEventListener('click',judge);$('flagBtn').addEventListener('click',toggleFlag);
   $('prevBtn').addEventListener('click',()=>{saveCurrentSelection();if(pos>0){pos--;render();window.scrollTo(0,0)}});
   $('nextBtn').addEventListener('click',()=>{saveCurrentSelection();if(pos===session.length-1)finish();else{pos++;render();window.scrollTo(0,0)}});

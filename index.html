@@ -98,12 +98,12 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 <p class="intro">過去問は元の問題番号順を維持し、同じ論点を別シナリオで問う類似問題<span data-az104-set="similar">100</span>問に加え、2026年4月17日時点の Microsoft Learn AZ-104 学習ガイドを再監査し、Bicep・TLS・Insights・Site Recovery に加えて、VM作成・VNet/Subnet・Storage冗長性・コンテナー構成・Backup/Restore など問題学習で薄かった論点まで補う<span data-az104-set="coverage">160</span>問を追加しています。さらに、AZ-104 の公式 Microsoft Learn 学習パスに製品として掲載される周辺サービスのうち、既存問題で直接学べていなかった Cloud Shell、Entra Domain Services、AKS、ExpressRoute、Azure Firewall、Azure Virtual Desktop も Learn製品補強として追加しています。回答後は正解・全選択肢の解説と Microsoft Learn 公式ページを表示します。</p>
 <div class="mastery-box">
 <h2>何をマスターすればいい？</h2>
-<div class="mastery-lead">この道場では、<b>同じ問題を2回連続で正解</b>したら「マスター」と数えます。最終ゴールは366 / 366問です。</div>
+<div class="mastery-lead">この道場では、<b>同じ問題を2回連続で正解</b>したら「マスター」と数えます。最終ゴールは366 / 366問です。各分類のボタンを押すと、その分類の<b>全問題</b>を出題します。</div>
 <div class="mastery-total"><div><strong>完全マスター</strong><div>中核260 + 応用100 + Learn補完6</div></div><b id="masterAll">0 / 366</b></div>
 <div class="mastery-grid">
-  <div class="mastery-card"><strong>① 中核マスター</strong><div class="mcount" id="masterCore">0 / 260</div><small>第1セット50 + 第2セット50 + 公式範囲補強160。<b>まずここを最優先。</b></small><button type="button" id="masterCoreBtn">未マスターから20問</button><div class="mastery-breakdown" id="masterCoreBreakdown"></div></div>
-  <div class="mastery-card"><strong>② 応用・類似</strong><div class="mcount" id="masterTransfer">0 / 100</div><small>類似問題100問。中核と同じ論点を別シナリオで判断できるか確認します。</small><button type="button" id="masterTransferBtn">未マスターから20問</button><div class="mastery-breakdown" id="masterTransferBreakdown"></div></div>
-  <div class="mastery-card"><strong>③ Learn補完</strong><div class="mcount" id="masterLearn">0 / 6</div><small>Cloud Shell / AKS / ExpressRoute など、Learning Path 周辺製品の補完です。</small><button type="button" id="masterLearnBtn">未マスターを解く</button><div class="mastery-breakdown" id="masterLearnBreakdown"></div></div>
+  <div class="mastery-card"><strong>① 中核マスター</strong><div class="mcount" id="masterCore">0 / 260</div><small>第1セット50 + 第2セット50 + 公式範囲補強160。<b>まずここを最優先。</b></small><button type="button" id="masterCoreBtn">中核260問をすべて解く</button><div class="mastery-breakdown" id="masterCoreBreakdown"></div></div>
+  <div class="mastery-card"><strong>② 応用・類似</strong><div class="mcount" id="masterTransfer">0 / 100</div><small>類似問題100問。中核と同じ論点を別シナリオで判断できるか確認します。</small><button type="button" id="masterTransferBtn">応用100問をすべて解く</button><div class="mastery-breakdown" id="masterTransferBreakdown"></div></div>
+  <div class="mastery-card"><strong>③ Learn補完</strong><div class="mcount" id="masterLearn">0 / 6</div><small>Cloud Shell / AKS / ExpressRoute など、Learning Path 周辺製品の補完です。</small><button type="button" id="masterLearnBtn">Learn補完6問をすべて解く</button><div class="mastery-breakdown" id="masterLearnBreakdown"></div></div>
 </div>
 <div class="mastery-rule"><b>完全マスター条件：</b> 366問すべてで2回連続正解。<span id="masterRemaining">残り366問</span>。これは道場内の学習完了基準で、Microsoft公式の合格保証ではありません。</div>
 </div>
@@ -368,8 +368,7 @@ function renderMasteryBreakdown(tier,containerId){
     btn.disabled=!unlocked||s.total===0;
     if(s.total===0)btn.textContent='0問';
     else if(!unlocked)btn.textContent='ロック中';
-    else if(s.done)btn.textContent='復習';
-    else btn.textContent='解く';
+    else btn.textContent='全'+s.total+'問';
     btn.onclick=()=>startMasteryTierStage(tier,st.id);
     row.appendChild(main);row.appendChild(btn);box.appendChild(row);
   });
@@ -383,9 +382,9 @@ function renderMastery(){
   if($('masterAll'))$('masterAll').textContent=allMastered+' / '+total;
   if($('masterRemaining'))$('masterRemaining').textContent=remaining?'残り'+remaining+'問':'366問すべてマスター済み';
   const coreBtn=$('masterCoreBtn'),transferBtn=$('masterTransferBtn'),learnBtn=$('masterLearnBtn');
-  if(coreBtn){coreBtn.disabled=false;coreBtn.textContent=core.done?'20問を復習':'未マスターから'+Math.min(20,core.remaining)+'問'}
-  if(transferBtn){transferBtn.disabled=!core.done;transferBtn.textContent=!core.done?'中核260問の完了後に解放':transfer.done?'20問を復習':'未マスターから'+Math.min(20,transfer.remaining)+'問'}
-  if(learnBtn){learnBtn.disabled=!(core.done&&transfer.done);learnBtn.textContent=!(core.done&&transfer.done)?'中核260＋応用100の完了後に解放':learn.done?'6問を復習':'未マスターから'+Math.min(6,learn.remaining)+'問'}
+  if(coreBtn){coreBtn.disabled=false;coreBtn.textContent='中核'+core.total+'問をすべて解く'}
+  if(transferBtn){transferBtn.disabled=!core.done;transferBtn.textContent=!core.done?'中核260問の完了後に解放':'応用'+transfer.total+'問をすべて解く'}
+  if(learnBtn){learnBtn.disabled=!(core.done&&transfer.done);learnBtn.textContent=!(core.done&&transfer.done)?'中核260＋応用100の完了後に解放':'Learn補完'+learn.total+'問をすべて解く'}
   renderMasteryBreakdown('core','masterCoreBreakdown');
   renderMasteryBreakdown('transfer','masterTransferBreakdown');
   renderMasteryBreakdown('learn','masterLearnBreakdown');
@@ -411,7 +410,7 @@ function renderStudyRoute(){
     const stat=document.createElement('div');stat.className='route-stat';stat.textContent='マスター '+s.mastered+'/'+s.total+'問 ・ 残り '+s.remaining+'問';
     const prog=document.createElement('div');prog.className='route-progress';const bar=document.createElement('span');bar.style.width=(s.total?Math.round(s.mastered/s.total*100):0)+'%';prog.appendChild(bar);
     main.appendChild(title);main.appendChild(hint);main.appendChild(stat);main.appendChild(prog);
-    const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent=s.done?'20問復習する':'未マスターを'+Math.min(20,s.remaining)+'問';btn.onclick=()=>startStudyStage(st.id);
+    const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent=s.total+'問すべて解く';btn.onclick=()=>startStudyStage(st.id);
     row.appendChild(no);row.appendChild(main);row.appendChild(btn);box.appendChild(row);
   });
   const coreMastered=stats.reduce((n,x)=>n+x.s.mastered,0),coreTotal=stats.reduce((n,x)=>n+x.s.total,0),allDone=coreMastered===coreTotal;
@@ -422,28 +421,25 @@ function renderStudyRoute(){
   const hint=document.createElement('div');hint.className='route-hint';hint.textContent=allDone?'次は「応用・類似100問」をマスターします。':'まず6分野の中核260問を2連続正解まで仕上げます。';
   const stat=document.createElement('div');stat.className='route-stat';stat.textContent='中核マスター '+coreMastered+'/'+coreTotal+'問 ・ 残り '+(coreTotal-coreMastered)+'問';
   main.appendChild(title);main.appendChild(hint);main.appendChild(stat);
-  const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent=allDone?'応用100問へ':'中核の未マスター20問';btn.onclick=()=>allDone?startMasteryTier('transfer'):startMasteryTier('core');
+  const btn=document.createElement('button');btn.type='button';btn.className='route-action';btn.textContent=allDone?'応用100問をすべて解く':'中核260問をすべて解く';btn.onclick=()=>allDone?startMasteryTier('transfer'):startMasteryTier('core');
   row.appendChild(no);row.appendChild(main);row.appendChild(btn);box.appendChild(row);
 }
 function startStudyStage(id){
-  const qs=stageQuestions(id),remaining=qs.filter(q=>!isMastered(q)),chosen=remaining.length?sample(remaining,Math.min(20,remaining.length)):sample(qs,Math.min(20,qs.length));
-  if(!chosen.length)return;
-  start(chosen.map(q=>({...q,_order:makeOrder(q,true)})),'route-'+id);
+  const qs=stageQuestions(id);if(!qs.length)return;
+  start(shuffle(qs.slice()).map(q=>({...q,_order:makeOrder(q,true)})),'route-'+id);
 }
 function startMasteryTier(tier){
   const core=masteryStats('core'),transfer=masteryStats('transfer');
   if(tier==='transfer'&&!core.done){alert('まず中核260問をすべてマスターしてください。');return}
   if(tier==='learn'&&!(core.done&&transfer.done)){alert('まず中核260問と応用・類似100問をすべてマスターしてください。');return}
-  const qs=masteryQuestions(tier),remaining=qs.filter(q=>!isMastered(q)),limit=tier==='learn'?6:20,chosen=remaining.length?sample(remaining,Math.min(limit,remaining.length)):sample(qs,Math.min(limit,qs.length));
-  if(!chosen.length)return;
-  start(chosen.map(q=>({...q,_order:makeOrder(q,true)})),'mastery-'+tier);
+  const qs=masteryQuestions(tier);if(!qs.length)return;
+  start(shuffle(qs.slice()).map(q=>({...q,_order:makeOrder(q,true)})),'mastery-'+tier);
 }
 function startMasteryTierStage(tier,id){
   if(!masteryUnlocked(tier)){alert(tier==='transfer'?'まず中核260問をすべてマスターしてください。':'まず中核260問と応用・類似100問をすべてマスターしてください。');return}
   const qs=masteryQuestions(tier).filter(q=>studyStageId(q)===id);if(!qs.length)return;
-  const remaining=qs.filter(q=>!isMastered(q)),limit=tier==='learn'?6:20,chosen=remaining.length?sample(remaining,Math.min(limit,remaining.length)):sample(qs,Math.min(limit,qs.length));
-  const st=STUDY_STAGES.find(x=>x.id===id),kind='mastery-'+tier+'-stage-'+id;
-  start(chosen.map(q=>({...q,_order:makeOrder(q,true)})),kind);
+  const kind='mastery-'+tier+'-stage-'+id;
+  start(shuffle(qs.slice()).map(q=>({...q,_order:makeOrder(q,true)})),kind);
 }
 function startStudyMix(){start(sample(QUESTIONS,30).map(q=>({...q,_order:makeOrder(q,true)})),'route-mix')}
 function updateReview(q,ok){

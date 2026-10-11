@@ -140,6 +140,7 @@ for(const t of window.AZ104_GLOSSARY.terms||[]){
   assert(t&&typeof t.ja==="string"&&t.ja.trim(),"glossary term missing Japanese meaning: "+(t&&t.id));
   assert(t&&typeof t.definition==="string"&&t.definition.trim(),"glossary term missing definition: "+(t&&t.id));
   assert(t&&typeof t.exam==="string"&&t.exam.trim(),"glossary term missing exam note: "+(t&&t.id));
+  assert(t&&t.source&&typeof t.source.url==="string"&&/^https:\/\/learn\.microsoft\.com\//.test(t.source.url),"glossary term missing official Learn source: "+(t&&t.id));
 }
 const glossaryMissing=[];
 for(const q of qs){
@@ -337,6 +338,7 @@ assert(html.includes('<script src="learn-summary.js"></script>'),"index does not
 assert(html.includes('id="glossaryBox"'),"terminology explanation container missing");
 assert(html.includes('id="learnSummary"'),"Microsoft Learn summary container missing");
 assert(html.includes("const terms=GLOSSARY.match(q)"),"answer feedback does not render glossary terms");
+assert(html.includes("t.source&&t.source.url"),"glossary source links are not rendered");
 assert(html.includes("const summary=LEARN_SUMMARY.build(q,GLOSSARY)"),"answer feedback does not render Learn summary");
 assert(html.includes("Microsoft Learn 要約"),"Learn summary heading missing");
 assert(!html.includes("cats.map(c=>'<option>'+c+'</option>')"),"category values are still injected with innerHTML");

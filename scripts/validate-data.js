@@ -149,15 +149,19 @@ for(const q of qs){
 assert(glossaryMissing.length===0,"questions without glossary match ("+glossaryMissing.length+"): "+glossaryMissing.join(", "));
 
 assert(window.AZ104_LEARN_SUMMARY&&typeof window.AZ104_LEARN_SUMMARY.build==="function","learn-summary.js failed to load");
-const summaryMissing=[],summaryBad=[];
+const summaryMissing=[],summaryBad=[],summaryFallback=[],summaryAmbiguous=[];
 for(const q of qs){
   const s=window.AZ104_LEARN_SUMMARY.build(q,window.AZ104_GLOSSARY);
   if(!s||!Array.isArray(s.points)||s.points.length===0)summaryMissing.push(q.uid);
   else if(s.points.some(x=>typeof x!=="string"||!x.trim())||typeof s.problemPoint!=="string"||!s.problemPoint.trim()||typeof s.caution!=="string"||!s.caution.trim())summaryBad.push(q.uid);
   if(!s||!Array.isArray(s.sources)||s.sources.length===0)summaryBad.push(q.uid+"(source)");
+  if(s&&s.matchMode==="fallback")summaryFallback.push(q.uid+" => "+((q.learn||[]).map(x=>x.url).join(" | ")));
+  if(s&&Array.isArray(s.matchedRuleIds)&&s.matchedRuleIds.length>1)summaryAmbiguous.push(q.uid+" => "+s.matchedRuleIds.join(",")+" @ "+(((q.learn||[])[s.sourceIndex]||{}).url||""));
 }
 assert(summaryMissing.length===0,"questions without Learn summary ("+summaryMissing.length+"): "+summaryMissing.join(", "));
 assert(summaryBad.length===0,"invalid Learn summaries ("+summaryBad.length+"): "+summaryBad.join(", "));
+assert(summaryFallback.length===0,"Learn summary fallback remains ("+summaryFallback.length+"): "+summaryFallback.join(" || "));
+assert(summaryAmbiguous.length===0,"Learn summary rule ambiguity remains ("+summaryAmbiguous.length+"): "+summaryAmbiguous.join(" || "));
 
 assert(inv.sets&&inv.sets.set1===50&&inv.sets.set2===50&&inv.sets.similar===100&&inv.sets.coverage===160&&inv.sets.learnProducts===6,"inventory set counts invalid");
 assert(inv.chapters&&Object.values(inv.chapters).reduce((s,x)=>s+Number(x.count||0),0)===366,"inventory chapter sum != 366");

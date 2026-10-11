@@ -209,10 +209,20 @@
     return FALLBACK["監視/バックアップ"];
   }
 
+  function resolve(q){
+    const links=(q&&Array.isArray(q.learn)?q.learn:[]).filter(x=>x&&typeof x.url==="string");
+    for(let i=0;i<links.length;i++){
+      const hits=RULES.filter(r=>r.re.test(links[i].url));
+      if(hits.length){
+        return {rule:hits[0],matchedRuleIds:hits.map(x=>x.id),sourceIndex:i,mode:"url"};
+      }
+    }
+    return {rule:domainFallback(q),matchedRuleIds:[],sourceIndex:-1,mode:"fallback"};
+  }
+
   function build(q,glossary){
     const links=(q&&Array.isArray(q.learn)?q.learn:[]).filter(x=>x&&typeof x.url==="string");
-    const urls=links.map(x=>x.url).join(" ");
-    const rule=RULES.find(r=>r.re.test(urls))||domainFallback(q);
+    const resolved=resolve(q),rule=resolved.rule;
     const terms=(glossary&&typeof glossary.match==="function")?glossary.match(q):[];
     const problemPoint=(q&&typeof q.e==="string"&&q.e.trim())?q.e.trim():"この問題では、要件に最も直接対応するAzure機能を選びます。";
     const caution=terms.length?terms[0].exam:"似たサービスを選択肢ごとに『目的・スコープ・動作』で比較します。";
@@ -221,9 +231,13 @@
       points:(rule.points||[]).slice(0,3),
       problemPoint,
       caution,
-      sources:links.slice(0,3)
+      sources:links.slice(0,3),
+      ruleId:rule.id||"fallback",
+      matchedRuleIds:resolved.matchedRuleIds,
+      matchMode:resolved.mode,
+      sourceIndex:resolved.sourceIndex
     };
   }
 
-  window.AZ104_LEARN_SUMMARY={rules:RULES,build};
+  window.AZ104_LEARN_SUMMARY={rules:RULES,resolve,build};
 })();

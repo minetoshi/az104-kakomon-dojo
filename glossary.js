@@ -150,7 +150,7 @@
     return text.includes(a);
   }
   function match(q){
-    const text=String((q&&q.q)||"");
+    const text=[String((q&&q.q)||""),...((q&&Array.isArray(q.o))?q.o:[])].join(" ");
     const found=[];
     TERMS.forEach(t=>{if(t.aliases.some(a=>aliasMatch(text,a)))found.push(t)});
     return found.slice(0,8);

@@ -1,21 +1,21 @@
 (function(){
   const SPECIAL={
     "s1-q08":{
-      status:"practice-nuance",
-      label:"Practice想定・条件注記",
-      note:"Practice の想定解は 5-tuple hash です。現行 Azure Load Balancer でも 5-tuple は既定の分散モードですが、これだけで断続的なタイムアウト原因を特定・解消できるとは限りません。設問では『均等分散』条件が決め手です。実運用では health probe、バックエンドの待受、NSG なども併せて確認してください。",
-      extra:[{title:"Microsoft Learn: Load Balancer の分散モード",url:"https://learn.microsoft.com/ja-jp/azure/load-balancer/distribution-mode-concepts"},{title:"Microsoft Learn: Load Balancer の正常性プローブ",url:"https://learn.microsoft.com/ja-jp/azure/load-balancer/load-balancer-custom-probe-overview"}]
+      status:"updated-current",
+      label:"現行仕様に合わせて改訂",
+      note:"旧Practice依存の5-tuple問題を廃止し、現行Azure Load Balancerの正常性プローブで異常バックエンドを新規接続から除外する設問へ改訂しました。",
+      extra:[{title:"Microsoft Learn: Load Balancer の正常性プローブ",url:"https://learn.microsoft.com/ja-jp/azure/load-balancer/load-balancer-custom-probe-overview"}]
     },
     "s2-q01":{
-      status:"practice-nuance",
-      label:"Practice想定・現行Storage注記",
-      note:"Practice の想定解は Azure Files の『ファイル共有』です。ただし現行 Azure Storage は Blob、File、Queue、Table の各サービスで Microsoft Entra ID による認可をサポートします。この設問は『SMB の Azure Files で ID ベース認証を構成する』という文脈として解釈してください。一般論として『ID ベースのアクセスが使える Storage サービスは Files だけ』と暗記しないでください。",
-      extra:[{title:"Microsoft Learn: Azure Storage のデータ アクセス認可",url:"https://learn.microsoft.com/ja-jp/azure/storage/common/authorize-data-access"},{title:"Microsoft Learn: Microsoft Entra ID で Azure Storage を承認",url:"https://learn.microsoft.com/ja-jp/rest/api/storageservices/authorize-with-azure-active-directory"}]
+      status:"updated-current",
+      label:"現行仕様に合わせて改訂",
+      note:"『IDベースStorage=Azure Filesだけ』という旧Practice依存を廃止し、Azure Files SMBでクラウド専用IDを使うMicrosoft Entra Kerberosの現行認証シナリオへ改訂しました。",
+      extra:[{title:"Microsoft Learn: Azure Files の ID ベース認証",url:"https://learn.microsoft.com/ja-jp/azure/storage/files/storage-files-active-directory-overview"}]
     },
     "s1-q19":{
-      status:"practice-nuance",
-      label:"Practice想定・現行仕様注記",
-      note:"Microsoft Practice Assessment の想定解は「TLS/SSL 証明書を削除・再アップロード」+「App Service リソースを移動」です。一方、現行 Microsoft Learn の App Service 移動ガイダンスは、アップロード/インポート済み証明書を App Service リソースとして列挙し、リソース グループ内の App Service リソースをまとめて移動する説明も含みます。無料 App Service マネージド証明書は移動不可で、削除後に再作成が必要です。試験では設問の想定解を選びつつ、実運用では証明書種別と最新の移動ガイダンスを確認してください。",
+      status:"updated-current",
+      label:"現行仕様に合わせて改訂",
+      note:"App Service移動の現行ガイダンスに合わせ、アップロード済みTLS/SSL証明書の削除・再アップロードと、App Serviceリソースをまとめて移動する要件へ改訂しました。",
       extra:[{title:"Microsoft Learn: App Service リソースの移動制約",url:"https://learn.microsoft.com/ja-jp/azure/azure-resource-manager/management/move-limitations/app-service-move-limitations"}]
     },
     "s1-q34":{
@@ -25,19 +25,16 @@
       extra:[{title:"Microsoft Learn: Tag Contributor",url:"https://learn.microsoft.com/ja-jp/azure/role-based-access-control/built-in-roles/management-and-governance#tag-contributor"}]
     },
     "s1-q46":{
-      status:"legacy-practice",
-      label:"Practice想定・レガシー注意",
-      note:"Microsoft Practice Assessment の想定解は 14 日です。ただし、現行 Microsoft Learn のダッシュボード/Workbook のドキュメントでは、この旧来の「最大14日」という制限を明確な現行制限として確認できません。AZ-104 の Practice 問題としては 14 日を覚えつつ、実運用の仕様値として固定暗記しないでください。",
-      extra:[{title:"Microsoft Learn: Workbook のダッシュボード固定と時間範囲",url:"https://learn.microsoft.com/ja-jp/azure/azure-monitor/visualize/workbooks-manage"}]
+      status:"updated-current",
+      label:"現行仕様に合わせて改訂",
+      note:"旧来の固定『14日』問題を廃止し、Log Analyticsのクエリ結果をログ検索アラートルールで評価しAction Groupで通知する現行Azure Monitor設問へ改訂しました。",
+      extra:[{title:"Microsoft Learn: ログ検索アラート ルールを作成する",url:"https://learn.microsoft.com/ja-jp/azure/azure-monitor/alerts/alerts-create-log-alert-rule"}]
     },
     "s2-q13":{
-      status:"legacy-practice",
-      label:"Practice想定・現行Backup仕様注意",
-      note:"Practice の想定解は「バックアップ停止」「soft delete を無効化してデータ削除」「soft-deleted item を完全削除」です。現在の Azure Backup は Secure by Default の展開により、リージョン/状態によって soft delete を無効化できない構成があります。現行の vault 削除では保護停止・依存関係の除去・soft-deleted item の扱いを最新手順で確認してください。",
-      extra:[
-        {title:"Microsoft Learn: Recovery Services vault の削除",url:"https://learn.microsoft.com/ja-jp/azure/backup/backup-azure-delete-vault"},
-        {title:"Microsoft Learn: Azure Backup Secure by Default",url:"https://learn.microsoft.com/ja-jp/azure/backup/secure-by-default"}
-      ]
+      status:"updated-current",
+      label:"現行仕様に合わせて改訂",
+      note:"Secure by Defaultを踏まえ、Recovery Servicesコンテナー削除前に保護対象、soft-deleted項目、Private Endpoint等の依存関係を除去する現行設問へ改訂しました。",
+      extra:[{title:"Microsoft Learn: Recovery Services コンテナーを削除",url:"https://learn.microsoft.com/ja-jp/azure/backup/backup-azure-delete-vault"},{title:"Microsoft Learn: Azure Backup Secure by Default",url:"https://learn.microsoft.com/ja-jp/azure/backup/secure-by-default"}]
     },
     "s2-q18":{
       status:"verified-nuance",
@@ -58,9 +55,9 @@
       extra:[{title:"Microsoft Learn: Azure CLI でロールを割り当てる",url:"https://learn.microsoft.com/ja-jp/azure/role-based-access-control/role-assignments-cli"}]
     },
     "s2-q27":{
-      status:"legacy-practice",
-      label:"Practice設問と現行仕様にずれ",
-      note:"Practice の選択肢では RG1 に削除ロックを付けるのが想定解です。しかし現行 Azure では、リソース グループに付けた CanNotDelete ロックはリソース グループ自身にも効くため、空になってもロックを解除するまで RG1 は削除できません。「空ならそのまま削除可能」を厳密に満たすには、保護対象リソース側へロックを付ける設計などが必要です。",
+      status:"updated-current",
+      label:"現行仕様に合わせて改訂",
+      note:"リソースグループへCanNotDeleteを付けるとRG自体も削除できない現行仕様に合わせ、保護対象リソースへ個別に削除ロックを適用する設問へ改訂しました。",
       extra:[{title:"Microsoft Learn: Azure リソースのロック",url:"https://learn.microsoft.com/ja-jp/azure/azure-resource-manager/management/lock-resources"}]
     },
     "s2-q48":{
@@ -82,7 +79,7 @@
     }
   };
   window.AZ104_AUDIT={
-    date:"2026-09-20",
+    date:"2026-10-12",
     get(q){
       return SPECIAL[q.uid]||{status:"verified",label:"Microsoft Learn監査済",note:""};
     }

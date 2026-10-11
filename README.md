@@ -412,3 +412,20 @@ Learn製品補強は周辺知識の学習用で、**本番模試50問からは�
 
 詳細:
 - `audit/2026-09-25-mastery-plan.md`
+
+## 2026-10-12 Deep Research 監査対応
+
+独立監査で残っていた高優先度課題を反映しました。
+
+- 旧Practice/旧仕様依存6問を現行Azure仕様へ改訂
+- Microsoft Learn要約のfallback/競合をCIで0件必須化
+- RBAC access assignment解釈とsubscription managementを本番寄りシナリオへ補強
+- 用語辞書136語すべてに公式Microsoft Learn出典を追加
+- 全問題・監査リンク・用語出典のLearn URLを定期死活監視
+- 検出した404をすべて修正
+
+最終確認:
+- GitHub Pages Run #186: success
+- Microsoft Learn links Run #6: success
+
+詳細: `audit/2026-10-12-deep-research-remediation.md`

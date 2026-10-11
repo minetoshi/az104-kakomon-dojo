@@ -36,6 +36,7 @@ runFile("question-normalizer.js");
 runFile("audit-map.js");
 runFile("inventory.js");
 runFile("ui-logic.js");
+runFile("glossary.js");
 
 const qs=window.AZ104_QUESTIONS||[];
 const inv=window.AZ104_INVENTORY||{};
@@ -65,6 +66,9 @@ for(const q of qs){
     }
   }
   assert(typeof q.q==="string"&&q.q.trim().length>0,"empty question text: "+q.uid);
+  const jpChars=(String(q.q||"").match(/[\u3040-\u30ff\u3400-\u9fff]/g)||[]).length;
+  const enChars=(String(q.q||"").match(/[A-Za-z]/g)||[]).length;
+  assert(!(enChars>=25&&jpChars<8),"English-dominant question stem must be localized to Japanese: "+q.uid);
   assert(typeof q.cat==="string"&&q.cat.trim().length>0,"missing category: "+q.uid);
   assert(Array.isArray(q.o)&&q.o.length>=2,"invalid options: "+q.uid);
   if(Array.isArray(q.o)){
@@ -124,6 +128,24 @@ for(const s of [1,2,3,4,5]){
   for(let i=1;i<=expectedSetCounts[s];i++)assert(ids[s].has(i),"missing id set "+s+" #"+i);
 }
 for(let i=1;i<=100;i++)assert(baseIds.has(i),"missing similar baseId "+i);
+
+assert(window.AZ104_GLOSSARY&&Array.isArray(window.AZ104_GLOSSARY.terms),"glossary.js failed to load");
+assert(window.AZ104_GLOSSARY.terms.length>=80,"glossary has too few terms: "+(window.AZ104_GLOSSARY.terms||[]).length);
+const glossaryIds=new Set();
+for(const t of window.AZ104_GLOSSARY.terms||[]){
+  assert(t&&typeof t.id==="string"&&t.id,"glossary term missing id");
+  if(t&&t.id){assert(!glossaryIds.has(t.id),"duplicate glossary id: "+t.id);glossaryIds.add(t.id)}
+  assert(t&&typeof t.term==="string"&&t.term.trim(),"glossary term missing display name: "+(t&&t.id));
+  assert(t&&typeof t.ja==="string"&&t.ja.trim(),"glossary term missing Japanese meaning: "+(t&&t.id));
+  assert(t&&typeof t.definition==="string"&&t.definition.trim(),"glossary term missing definition: "+(t&&t.id));
+  assert(t&&typeof t.exam==="string"&&t.exam.trim(),"glossary term missing exam note: "+(t&&t.id));
+}
+const glossaryMissing=[];
+for(const q of qs){
+  const matched=window.AZ104_GLOSSARY.match(q);
+  if(!Array.isArray(matched)||matched.length===0)glossaryMissing.push(q.uid);
+}
+assert(glossaryMissing.length===0,"questions without glossary match ("+glossaryMissing.length+"): "+glossaryMissing.join(", "));
 
 assert(inv.sets&&inv.sets.set1===50&&inv.sets.set2===50&&inv.sets.similar===100&&inv.sets.coverage===160&&inv.sets.learnProducts===6,"inventory set counts invalid");
 assert(inv.chapters&&Object.values(inv.chapters).reduce((s,x)=>s+Number(x.count||0),0)===366,"inventory chapter sum != 366");
@@ -294,6 +316,9 @@ assert(!/function startMasteryTierStage\(tier,id\)[\s\S]{0,900}Math\.min\((?:20|
 assert(html.includes("masteryUnlocked(tier)"),"mastery subcategory lock check missing");
 assert(html.includes("完全マスター条件"),"mastery definition is not visible in study mode");
 assert(html.includes('<script src="ui-logic.js"></script>'),"index does not load ui-logic.js");
+assert(html.includes('<script src="glossary.js"></script>'),"index does not load glossary.js");
+assert(html.includes('id="glossaryBox"'),"terminology explanation container missing");
+assert(html.includes("const terms=GLOSSARY.match(q)"),"answer feedback does not render glossary terms");
 assert(!html.includes("cats.map(c=>'<option>'+c+'</option>')"),"category values are still injected with innerHTML");
 assert(html.includes("q.set!==3&&q.set!==5"),"mock pool no longer excludes similar/Learn-product sets");
 assert(html.includes("['legacy-practice','practice-nuance'].includes(a.status)")||html.includes('["legacy-practice","practice-nuance"].includes(a.status)'),"mock pool no longer excludes legacy/practice-nuance questions");

@@ -64,8 +64,8 @@
     ["deployment-slot","Deployment slot","デプロイ スロット","App Serviceで本番とは別の環境へデプロイし、スワップできる機能です。","停止時間を抑えたリリースに使います。",["deployment slot","Deployment slot","スロット"]],
     ["vnet-integration","VNet Integration","VNet統合","App ServiceからVNet内リソースへ送信接続するための機能です。","App ServiceからVNet内部へ出ていく通信に使います。",["VNet Integration"]],
     ["acr","Azure Container Registry","Azure Container Registry","コンテナーイメージを保存・配布するプライベートレジストリです。","イメージ保管ならACRです。",["ACR","Azure Container Registry","Container Registry"]],
-    ["aci","Azure Container Instances","Azure Container Instances","VMやKubernetesを管理せず単体コンテナーを実行するサービスです。","短時間・単純コンテナーをすぐ動かす用途です。",["ACI","Azure Container Instances","Container Instances"]],
-    ["container-apps","Azure Container Apps","Azure Container Apps","Kubernetes基盤を意識せずマイクロサービス/コンテナーを実行できるPaaSです。","ingressやminReplicasなどが出ます。",["Container Apps","Azure Container Apps"]],
+    ["aci","Azure Container Instances","Azure Container Instances","VMやKubernetesを管理せず単体コンテナーを実行するサービスです。","短時間・単純コンテナーをすぐ動かす用途です。",["ACI","Azure Container Instances","Container Instances","Azure コンテナー インスタンス","コンテナー インスタンス"]],
+    ["container-apps","Azure Container Apps","Azure Container Apps","Kubernetes基盤を意識せずマイクロサービス/コンテナーを実行できるPaaSです。","ingressやminReplicasなどが出ます。",["Container Apps","Container App","Azure Container Apps","Azure Container App","コンテナー アプリ"]],
     ["aks","Azure Kubernetes Service","Azure Kubernetes Service","Azureがコントロールプレーンを管理するマネージドKubernetesサービスです。","kubectl/Helm/NamespaceなどKubernetes要件ならAKSです。",["AKS","Azure Kubernetes Service"]],
     ["vnet","VNet","仮想ネットワーク","Azureリソースを論理的に接続するプライベートネットワークです。","IPアドレス空間・Subnet・Peeringの基盤です。",["Virtual Network","Virtual network","VNet","仮想ネットワーク"]],
     ["subnet","Subnet","サブネット","VNetのアドレス空間を分割したネットワーク区画です。","NSG、ルート、サービス委任などの適用単位になります。",["Subnet","subnet","サブネット"]],
@@ -97,7 +97,7 @@
     ["metric","Metric","メトリック","一定間隔で収集される数値時系列データです。CPU率などが代表例です。","数値のしきい値監視はMetric alertが向きます。",["metric","Metric","メトリック"]],
     ["alert-rule","Alert rule","アラート ルール","メトリックやログなどの条件を評価し、条件成立時にアラートを発生させる設定です。","通知先はAction Groupで分離して考えます。",["Alert rule","alert rule","アラート ルール"]],
     ["action-group","Action Group","アクション グループ","Azure Monitorアラートの通知先や自動処理（メール、SMS、Webhook、Function、Runbook等）をまとめるリソースです。","『誰に/何を実行するか』をまとめるのがAction Groupです。",["Action Group","action group"]],
-    ["diagnostic-settings","Diagnostic settings","診断設定","Azureリソースのログ/メトリックをLog Analytics、Storage、Event Hubs等へ送る設定です。","リソースログの転送先を設定する問題です。",["Diagnostic settings","diagnostic settings","診断設定"]],
+    ["diagnostic-settings","Diagnostic settings","診断設定","Azureリソースのログ/メトリックをLog Analytics、Storage、Event Hubs等へ送る設定です。","リソースログの転送先を設定する問題です。",["Diagnostic settings","Diagnostic setting","diagnostic settings","diagnostic setting","診断設定"]],
     ["vm-insights","VM insights","VM insights","VMの性能、プロセス、依存関係などを詳細監視するAzure Monitor機能です。","ゲストOS内部や依存関係まで見たい要件です。",["VM insights"]],
     ["recovery-vault","Recovery Services vault","Recovery Servicesコンテナー","Azure BackupやSite Recoveryの構成・復旧情報を管理する保管庫です。","VM BackupやSite Recoveryで頻出です。",["Recovery Services vault","Recovery Services コンテナー"]],
     ["backup-vault","Backup vault","Backupコンテナー","一部の新しいAzure Backupワークロードを管理する保管庫です。","Recovery Services vaultと対象ワークロードの違いを確認します。",["Backup vault","Backup コンテナー"]],
@@ -113,7 +113,29 @@
     ["webhook","Webhook","Webhook","HTTPエンドポイントへイベント内容を送信して外部処理を呼び出す仕組みです。","Action Groupの自動アクション先として頻出です。",["Webhook"]],
     ["runbook","Runbook","Runbook","Azure Automationで実行する自動化スクリプト/ワークフローです。","アラートから自動処理を実行する選択肢で出ます。",["Runbook"]],
     ["remoteapp","RemoteApp","RemoteApp","Azure Virtual Desktopでデスクトップ全体ではなく特定アプリだけを公開する方式です。","アプリだけ配布したいAVD要件です。",["RemoteApp"]],
-    ["avd","Azure Virtual Desktop","Azure Virtual Desktop","Azure上でWindowsデスクトップ/アプリをユーザーへ配信するサービスです。","pooled、multi-session、RemoteAppが目印です。",["Azure Virtual Desktop","AVD","multi-session","pooled"]]
+    ["avd","Azure Virtual Desktop","Azure Virtual Desktop","Azure上でWindowsデスクトップ/アプリをユーザーへ配信するサービスです。","pooled、multi-session、RemoteAppが目印です。",["Azure Virtual Desktop","AVD","multi-session","pooled"]],
+    ["service-bus","Azure Service Bus","Azure Service Bus","キューやトピックを使ってアプリ間を疎結合にするメッセージングサービスです。","メッセージ数に応じたイベント駆動スケールではService Busトリガーを確認します。",["Azure Service Bus","Service Bus"]],
+    ["sidecar","Sidecar container","サイドカー コンテナー","メインコンテナーと同じアプリ環境で常時動作し、ログ転送など補助処理を担うコンテナーです。","常時並走する補助処理はsidecar、起動前の一度きり処理はinitです。",["sidecar","サイドカー"]],
+    ["init-container","Init container","初期化コンテナー","メインコンテナー起動前に一度だけ実行される準備用コンテナーです。","常時動作するsidecarとの違いを押さえます。",["init container","init コンテナー","初期化 (init)"]],
+    ["upn","User Principal Name","ユーザー プリンシパル名（UPN）","Microsoft Entra IDでユーザーのサインイン名として使われる識別子です。","#EXT#を含むUPNは外部ゲストユーザーの典型です。",["UserPrincipalName","UPN","#EXT#"]],
+    ["group-licensing","Group-based licensing","グループ ベース ライセンス","Microsoft Entraグループのメンバーへ製品ライセンスをまとめて割り当てる機能です。","所有者や入れ子グループではなく、直接メンバーの扱いを確認します。",["グループ ベース","group-based","Microsoft 365 ライセンス","Group-Licensed"]],
+    ["custom-role","Custom role","カスタム ロール","Azure RBACで独自に定義するロールです。Actionsで許可し、NotActionsで除外できます。","ActionsとNotActionsの差し引きで実行可否を判断します。",["カスタム ロール","Actions","NotActions","Get-AzRoleDefinition"]],
+    ["access-tier","Blob access tier","Blobアクセス層","Blobのアクセス頻度と取得速度に応じてHot、Cool、Cold、Archiveなどを選ぶ保存階層です。","頻度、最低保存期間、再水和時間、コストの4点で選びます。",["アクセス層","ストレージ層","Archive","Cold","Cool","Hot"]],
+    ["tcp-port","TCP port","TCPポート","TCP通信でアプリケーションの待受先を識別する番号です。8080などが例です。","待受確認ではnetstat等でポート状態を確認します。",["TCP","ポート","netstat"]],
+    ["usage-location","Usage location","利用場所","Microsoft 365等のライセンス割り当てで必要になるユーザー属性です。","ライセンス付与前に利用場所が設定されているか確認します。",["利用場所"]],
+    ["reader-role","Reader role","Readerロール","Azureリソースを閲覧できるが変更できない組み込みRBACロールです。","読み取りだけなら最小権限としてReaderが典型です。",["Reader","閲覧させたいだけ"]],
+    ["adls-gen2","Azure Data Lake Storage Gen2","Data Lake Storage Gen2","Blob Storageに階層型名前空間を追加し、分析ワークロード向けファイルシステム機能を提供します。","hierarchical namespaceが目印です。",["Data Lake Storage Gen2","階層型名前空間","hierarchical namespace"]],
+    ["entra-role","Microsoft Entra role","Microsoft Entra ロール","テナント内のID管理タスクを委任する管理ロールです。","Azureリソース権限のRBACロールとは別物です。",["Microsoft Entra ロール","Guest Inviter"]],
+    ["powershell","Azure PowerShell","Azure PowerShell","PowerShellからAz/Microsoft GraphコマンドレットでAzureを管理する方法です。","Get-/New-/Set-AzやGet-Mgで始まるコマンドが目印です。",["PowerShell","Get-MgUser","Get-AzRoleDefinition","New-AzResourceGroupDeployment"]],
+    ["azure-cli","Azure CLI","Azure CLI","azコマンドでAzureを管理するクロスプラットフォームCLIです。","az deployment group createなどが目印です。",["Azure CLI","az deployment","--parameters"]],
+    ["kubernetes","Kubernetes","Kubernetes","コンテナー化アプリを複数ノードで配置・スケール・管理するオーケストレーション基盤です。","kubectl、Helm、Namespace、DaemonSetが出たらKubernetes要件です。",["Kubernetes","kubectl","Helm","Namespace","DaemonSet"]],
+    ["encryption-rest","Encryption at rest","保存データ暗号化","保存中のデータを暗号化して、媒体やストレージの漏えい時にも内容を保護する考え方です。","キー所有・ローテーション要件があればcustomer-managed keyを確認します。",["保存データ暗号化","暗号化キー","キーを所有","ローテーション時期"]],
+    ["autoscale","Autoscale","自動スケール","メトリックやスケジュールに応じてインスタンス数を自動増減する機能です。","CPUしきい値・最小/最大台数・評価期間が典型論点です。",["autoscale","自動スケール","スケーリング","scale-from-zero"]],
+    ["geo-redundancy","Geo-redundancy","リージョン間冗長化","別リージョンへデータを複製してリージョン障害に備える考え方です。","通常時のセカンダリ読取要件があればRA付き冗長性を選びます。",["別リージョン","セカンダリ リージョン","リージョン障害"]],
+    ["replica","Replica","レプリカ","同じアプリを実行する複製インスタンスです。Container AppsではminReplicas/maxReplicasで数を制御します。","scale-from-zeroを避けたいならminReplicasを1以上にします。",["replica","レプリカ","minReplicas","maxReplicas"]],
+    ["layer7","Layer 7 routing","レイヤー7ルーティング","HTTP/HTTPSのURL、ホスト名、ヘッダーなどアプリ層情報を見て転送先を決める方式です。","URLパスで振り分けるならApplication Gatewayが代表です。",["Layer 7","URL パス","/images/","/api/"]],
+    ["service-plan-license","Service plan","サービス プラン（製品ライセンス内の個別機能）","Microsoft 365等の製品ライセンス内に含まれる個別サービス単位です。","DisabledPlansに入っているサービスは製品ライセンス自体があっても利用できません。",["service plan","DisabledPlans"]],
+    ["web-attacks","Web application attacks","Webアプリ攻撃","SQL injectionやcross-site scripting（XSS）などWebアプリ層を狙う攻撃です。","一般的なWeb攻撃を防ぐ要件ならWAFを確認します。",["SQL injection","cross-site scripting","XSS","Web 攻撃"]]
   ].map(x=>({id:x[0],term:x[1],ja:x[2],definition:x[3],exam:x[4],aliases:[x[1],...(x[5]||[])]}));
 
   function esc(s){return s.replace(/[.*+?^$()|[\]{}\\]/g,"\\$&")}
@@ -121,7 +143,8 @@
     if(!alias)return false;
     const a=String(alias),ascii=/^[A-Za-z0-9 ._+\-/]+$/.test(a);
     if(ascii){
-      const re=new RegExp("(^|[^A-Za-z0-9])"+esc(a).replace(/\\ /g,"\\s+")+"(?=$|[^A-Za-z0-9])","i");
+      const core=esc(a).replace(/\\ /g,"\\s+"),abbr=/^[A-Z][A-Z0-9-]{1,7}$/.test(a);
+      const re=new RegExp("(^|[^A-Za-z0-9])"+core+(abbr?"(?:\\d+)?":"")+"(?=$|[^A-Za-z0-9])","i");
       return re.test(text);
     }
     return text.includes(a);

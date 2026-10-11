@@ -1,11 +1,176 @@
 (function(){
   const RULES=[
+    {id:"netstat",re:/\/windows-server\/administration\/windows-commands\/netstat/,title:"netstat",points:[
+      "netstat はローカル コンピューターのアクティブなTCP接続、待受ポート、ネットワーク統計などを確認するWindowsコマンドです。",
+      "サーバー上のアプリが特定TCPポートで待ち受けているかを確認するときは、ポート状態を直接確認します。",
+      "Azure側のNSGやLoad Balancer設定ではなく、ゲストOS内部の待受確認に使う点を区別します。"
+    ]},
+    {id:"app-service-move",re:/\/azure-resource-manager\/management\/move-limitations\/app-service-move-limitations/,title:"App Service の移動制約",points:[
+      "App Serviceリソースの移動では、同じリソースグループ内の関連App Serviceリソースをまとめて扱う必要があります。",
+      "アップロード/インポート済みTLS/SSL証明書など、移動前後に追加対応が必要なリソースがあります。",
+      "移動元/移動先のサブスクリプションやリージョン、証明書種別などの制約を最新ドキュメントで確認します。"
+    ]},
+    {id:"app-service-limits",re:/\/azure-resource-manager\/management\/azure-subscription-service-limits(?:#app-service-limits)?/,title:"App Service の制限とプラン",points:[
+      "App Serviceのスケール数、ストレージ、機能はApp Service PlanのSKUによって上限が異なります。",
+      "設問では必要インスタンス数、ストレージ量、カスタムドメイン、スケール機能を満たす最小SKUを選びます。",
+      "コスト最小化では、要件を満たす中で最も低いプランを選ぶのが基本です。"
+    ]},
+    {id:"storage-data-rbac",re:/\/storage\/blobs\/assign-azure-role-data-access/,title:"Azure Storage データ アクセスのRBAC",points:[
+      "Blobなどのデータプレーンアクセスは、Storage Blob Data Reader/Contributorなどのデータアクセス用Azureロールで制御します。",
+      "ストレージアカウント自体の管理権限と、Blobデータを読む/書く権限は別です。",
+      "最小権限では、必要なデータ操作だけを許可する組み込みロールを適切なスコープで割り当てます。"
+    ]},
+    {id:"kusto-summarize",re:/\/kusto\/query\/summarize-operator/,title:"KQL summarize",points:[
+      "summarize 演算子はKQLで行をグループ化し、count、sum、avgなどの集計を計算します。",
+      "by 句に列を指定すると、その列の値ごとに集計結果を分けられます。",
+      "行の絞り込みはwhere、列の選択はproject、集計はsummarizeと役割を分けます。"
+    ]},
+    {id:"management-groups",re:/\/governance\/management-groups\/(?:overview|manage)/,title:"Azure Management Groups",points:[
+      "管理グループは複数サブスクリプションを階層化して、PolicyやRBACをまとめて適用するためのスコープです。",
+      "親スコープに割り当てたPolicyやRBACは子の管理グループ/サブスクリプションへ継承されます。",
+      "サブスクリプションを別の管理グループへ移動すると、新しい親の継承設定が適用されます。"
+    ]},
+    {id:"resource-move",re:/\/azure-resource-manager\/management\/move-resource-group-and-subscription/,title:"Azure リソースの移動",points:[
+      "Azureリソースは対応していればリソースグループ間やサブスクリプション間へ移動できます。",
+      "移動中もリソースIDや依存関係、ロック、サポート可否を事前確認する必要があります。",
+      "移動可能性はリソース種類ごとに異なるため、関連リソースを含めて検証します。"
+    ]},
+    {id:"storage-network",re:/\/storage\/common\/storage-network-security/,title:"Storage のネットワーク セキュリティ",points:[
+      "Storageアカウントはパブリックネットワークアクセス、選択したVNet/IP、Private Endpointなどで到達経路を制御できます。",
+      "認証/認可とネットワーク到達性は別条件で、両方を満たす必要があります。",
+      "完全なプライベート接続が必要ならPrivate Endpointを検討します。"
+    ]},
+    {id:"stored-access-policy",re:/\/rest\/api\/storageservices\/define-stored-access-policy/,title:"Stored access policy",points:[
+      "Stored access policy はService SASの開始時刻、有効期限、権限をサーバー側でまとめて管理する仕組みです。",
+      "ポリシーを変更/削除することで、関連付けたService SASの条件を後から変更・失効できます。",
+      "User delegation SASやAccount SASとは対応関係が異なる点に注意します。"
+    ]},
+    {id:"customer-managed-keys",re:/\/storage\/common\/customer-managed-keys-overview/,title:"Storage のカスタマー マネージド キー",points:[
+      "カスタマー マネージド キーでは、Storage暗号化に使う鍵をKey VaultまたはManaged HSMで利用者側が管理します。",
+      "鍵のローテーション、無効化、アクセス権、managed identityとの関係を確認します。",
+      "Microsoft管理キーより鍵管理の自由度は高い一方、運用責任も増えます。"
+    ]},
+    {id:"storage-explorer",re:/\/storage\/storage-explorer\//,title:"Azure Storage Explorer",points:[
+      "Storage ExplorerはBlob、Files、Queues、TablesなどAzure StorageをGUIで操作するデスクトップツールです。",
+      "手動の閲覧・コピー・アップロードなどに向き、反復バッチや大量転送の自動化はAzCopyが向きます。",
+      "ツールの違いは『GUI操作かコマンド自動化か』で整理します。"
+    ]},
+    {id:"blob-soft-delete",re:/\/storage\/blobs\/soft-delete-blob-overview/,title:"Blob soft delete",points:[
+      "Blob soft deleteは削除または上書きされたBlobを保持期間内なら復元できるデータ保護機能です。",
+      "versioningは更新履歴、soft deleteは削除/上書きからの復旧という役割で整理します。",
+      "保持期間を過ぎると復元できないため、保護要件に合わせて設定します。"
+    ]},
+    {id:"blob-versioning",re:/\/storage\/blobs\/versioning-overview/,title:"Blob versioning",points:[
+      "Blob versioningはBlob更新時に以前のバージョンを自動保持します。",
+      "誤上書きから以前の状態へ戻す用途で、削除保護はsoft deleteと組み合わせます。",
+      "バージョン数増加によるストレージコストにも注意します。"
+    ]},
+    {id:"resource-mover",re:/\/resource-mover\/overview/,title:"Azure Resource Mover",points:[
+      "Azure Resource Moverはサポート対象リソースをAzureリージョン間で移動する作業を計画・実行するサービスです。",
+      "依存関係の分析、準備、移動開始、コミットなど段階的に進めます。",
+      "単なるリソースグループ間移動とは目的と手順が異なります。"
+    ]},
+    {id:"availability-zones",re:/\/reliability\/availability-zones-overview/,title:"Availability Zones",points:[
+      "Availability Zoneはリージョン内で電源・冷却・ネットワークが独立した物理ゾーンです。",
+      "ゾーン冗長/ゾーン指定リソースを使うことで単一データセンター障害への耐性を高めます。",
+      "Availability Setは同一データセンター内の論理分散で、ゾーンとは障害境界が異なります。"
+    ]},
+    {id:"vmss-autoscale",re:/\/virtual-machine-scale-sets\/virtual-machine-scale-sets-autoscale-overview/,title:"VM Scale Sets の自動スケール",points:[
+      "VMSSは同一構成のVM群をまとめて管理し、Azure Monitor autoscaleで台数を自動増減できます。",
+      "最小/既定/最大インスタンス数と、CPUなどのメトリック条件を組み合わせます。",
+      "スケール条件とVMのアップグレードポリシーは別設定です。"
+    ]},
+    {id:"vmss-upgrade",re:/\/virtual-machine-scale-sets\/virtual-machine-scale-sets-upgrade-policy/,title:"VMSS upgrade policy",points:[
+      "VMSSのアップグレードポリシーはモデル変更を既存インスタンスへどう反映するかを決めます。",
+      "Automatic、Rolling、Manualなどで更新タイミングと可用性への影響が異なります。",
+      "台数を増減するautoscaleとは別の論点です。"
+    ]},
+    {id:"acr-intro",re:/\/container-registry\/container-registry-intro/,title:"Azure Container Registry",points:[
+      "ACRはコンテナーイメージとOCI成果物を保存・配布するプライベートレジストリです。",
+      "コンテナーの実行基盤ではなく、イメージ保管/配布が主な役割です。",
+      "AKS、Container Apps、ACIなど実行サービスから認証してpullします。"
+    ]},
+    {id:"acr-service-principal",re:/\/container-registry\/container-registry-auth-service-principal/,title:"ACR のサービス プリンシパル認証",points:[
+      "サービス プリンシパルを使うとアプリやCI/CDからACRへ非対話的に認証できます。",
+      "必要なpush/pull権限だけをAzure RBACで付与するのが基本です。",
+      "人間のサインイン用IDではなく、ワークロード認証として使います。"
+    ]},
+    {id:"private-endpoint",re:/\/private-link\/private-endpoint-overview/,title:"Private Endpoint",points:[
+      "Private EndpointはPaaSサービスへVNet内のプライベートIPを割り当てるPrivate Linkのネットワークインターフェースです。",
+      "PaaSのパブリックエンドポイントを使わずプライベート経路で接続できます。",
+      "Private DNSでサービスFQDNをPrivate EndpointのIPへ解決させる構成が重要です。"
+    ]},
+    {id:"acr-rbac",re:/\/container-registry\/container-registry-rbac-(?:built-in-roles-overview|abac-repository-permissions)/,title:"ACR のRBAC/ABAC",points:[
+      "ACRでは組み込みAzureロールや、ABAC対応構成ではリポジトリ単位の権限でpush/pullを制御できます。",
+      "レジストリ全体の管理権限と、イメージデータへのpush/pull権限を区別します。",
+      "必要なリポジトリだけに最小権限を与える構成を選びます。"
+    ]},
+    {id:"storage-insights",re:/\/storage\/common\/storage-insights-overview/,title:"Storage insights",points:[
+      "Storage insightsはAzure Monitorを使ってStorageアカウントの可用性、容量、トランザクション、待機時間などを可視化します。",
+      "複数Storageアカウントの状態を一元的に確認し、問題調査へつなげます。",
+      "ストレージデータそのものを操作する機能ではなく監視機能です。"
+    ]},
+    {id:"kusto-where",re:/\/kusto\/query\/where-operator/,title:"KQL where",points:[
+      "where 演算子はKQLで条件に一致する行だけを絞り込みます。",
+      "時間範囲や列値で対象を減らしてから集計すると効率的です。",
+      "列の選択はproject、グループ集計はsummarizeと使い分けます。"
+    ]},
+    {id:"kusto-project",re:/\/kusto\/query\/project-operator/,title:"KQL project",points:[
+      "project 演算子は出力する列を選択・並べ替え・計算します。",
+      "行を絞るwhere、集計するsummarizeとは役割が異なります。",
+      "ログ結果を必要な列だけへ整形する用途で使います。"
+    ]},
+    {id:"storage-account",re:/\/storage\/common\/storage-account-overview/,title:"Storage account",points:[
+      "Storage accountはBlob、Files、Queue、TableなどAzure Storageサービスの管理単位です。",
+      "アカウント種類や冗長性、ネットワーク、暗号化など多くの設定がアカウント単位です。",
+      "個々のデータサービスとアカウント全体の設定を分けて考えます。"
+    ]},
+    {id:"secure-transfer",re:/\/storage\/common\/storage-require-secure-transfer/,title:"Secure transfer required",points:[
+      "Secure transfer requiredを有効にすると、Storageへの要求でHTTPSなど安全なプロトコルを要求します。",
+      "HTTPなど安全でない接続は拒否されます。",
+      "認証方式とは別に、通信経路の暗号化要件を強制する設定です。"
+    ]},
+    {id:"blob-anonymous",re:/\/storage\/blobs\/anonymous-read-access-configure/,title:"Blob の匿名読み取りアクセス",points:[
+      "Blobの匿名読み取りは、認証なしでコンテナー/Blobを読み取れる公開設定です。",
+      "セキュリティ上は必要な場合だけ有効化し、アカウントレベルとコンテナーレベルの両方を確認します。",
+      "SASやEntra IDによる限定アクセスとは異なります。"
+    ]},
+    {id:"container-soft-delete",re:/\/storage\/blobs\/soft-delete-container-overview/,title:"Container soft delete",points:[
+      "Container soft deleteは削除されたBlobコンテナーとその内容を保持期間内なら復元できる機能です。",
+      "Blob soft deleteは個々のBlob、container soft deleteはコンテナー削除を保護します。",
+      "必要な復旧単位に応じて両方を使い分けます。"
+    ]},
+    {id:"private-endpoint-dns",re:/\/private-link\/private-endpoint-dns/,title:"Private Endpoint のDNS",points:[
+      "Private Endpoint利用時はサービスの公開FQDNをPrivate EndpointのプライベートIPへ解決できるDNS構成が必要です。",
+      "Private DNS ZoneをVNetへリンクし、対象サービスの推奨ゾーン名を使います。",
+      "ネットワーク接続が正しくてもDNSが公開IPを返すと期待どおり動かない点が重要です。"
+    ]},
+    {id:"file-sync",re:/\/storage\/file-sync\/(?:file-sync-introduction|file-sync-server-registration)/,title:"Azure File Sync",points:[
+      "Azure File SyncはWindows Server上のファイルをAzure Filesと同期し、複数拠点で同じ共有を利用できるようにします。",
+      "Storage Sync Service、sync group、cloud endpoint、server endpointで構成します。",
+      "サーバー登録とAzure File Syncエージェントの役割を押さえます。"
+    ]},
+    {id:"waf",re:/\/web-application-firewall\/ag\/ag-overview/,title:"Web Application Firewall",points:[
+      "Application Gateway WAFはHTTP/HTTPSトラフィックを検査し、一般的なWeb攻撃からアプリを保護します。",
+      "SQL injectionやXSSなどアプリ層攻撃への防御が主目的です。",
+      "L3/L4通信制御のNSGやAzure Firewallとは保護レイヤーが異なります。"
+    ]},
+    {id:"cloud-shell",re:/\/azure\/cloud-shell\/overview/,title:"Azure Cloud Shell",points:[
+      "Azure Cloud ShellはブラウザーからAzure CLIまたはPowerShellを利用できる管理シェルです。",
+      "ローカル端末へCLIをインストールせず、Azure認証済み環境から管理できます。",
+      "一時的な管理端末やブラウザーだけの運用シナリオで有効です。"
+    ]},
+    {id:"avd",re:/\/azure\/virtual-desktop\/overview/,title:"Azure Virtual Desktop",points:[
+      "Azure Virtual DesktopはAzure上からWindowsデスクトップやRemoteAppを配信するサービスです。",
+      "pooled/personal host pool、Windows multi-session、RemoteAppなどを要件に応じて選びます。",
+      "通常の単体VM公開ではなく、ユーザー向け仮想デスクトップ/アプリ配信基盤です。"
+    ]},
     {id:"rbac",re:/\/role-based-access-control\//,title:"Azure RBAC",points:[
       "Azure RBAC は『誰が・どのスコープで・何をできるか』をロール割り当てで制御する認可機能です。",
       "ロール割り当ては principal（ユーザー/グループ/マネージドID等）・role・scope の組み合わせで考えます。",
       "最小権限を優先し、閲覧だけなら Reader、変更が必要なら用途に合う組み込みロールを選びます。"
     ]},
-    {id:"entra",re:/\/entra\//,title:"Microsoft Entra ID",points:[
+    {id:"entra",re:/\/entra\/(?!identity\/role-based-access-control\/)/,title:"Microsoft Entra ID",points:[
       "Microsoft Entra ID はユーザー、グループ、アプリ、外部ユーザーなどのID管理基盤です。",
       "Microsoft Entra ロールはIDリソースの管理権限、Azure RBACはAzureリソースの管理権限で、対象が異なります。",
       "ゲスト、SSPR、グループベース ライセンスなどは『誰のIDをどう管理するか』を軸に整理します。"
@@ -120,7 +285,7 @@
       "NSGはSubnetまたはNICへ関連付けでき、両方にある場合は通信が両方の評価を通る必要があります。",
       "ASGはNICの論理グループであり、ASG単体で通信を許可/拒否するわけではありません。"
     ]},
-    {id:"vnet",re:/\/virtual-network\//,title:"Azure Virtual Network",points:[
+    {id:"vnet",re:/\/virtual-network\/(?!network-security-group)/,title:"Azure Virtual Network",points:[
       "VNetはAzureのプライベート ネットワーク基盤で、アドレス空間をSubnetへ分割して利用します。",
       "PeeringはVNet間接続、UDRは次ホップ制御、Private EndpointはPaaSへプライベートIP接続という役割です。",
       "アドレス範囲の重複、サブネット包含、NSG/ルートの適用位置を確認します。"
@@ -165,7 +330,7 @@
       "IP flow verifyはNSG判定、packet captureはパケット取得、Connection Monitorは継続的な接続監視に使います。",
       "『設定する機能』と『診断する機能』を分けて選びます。"
     ]},
-    {id:"monitor",re:/\/azure-monitor\//,title:"Azure Monitor",points:[
+    {id:"monitor",re:/\/azure-monitor\/(?!autoscale\/)/,title:"Azure Monitor",points:[
       "Azure Monitorはメトリック、ログ、トレース、イベントを収集・分析し、アラートや自動処理につなげる統合監視基盤です。",
       "Metricsは数値時系列、LogsはLog Analytics/KQLで分析するログデータとして区別します。",
       "アラート条件はAlert rule、通知・Webhook・Runbook等の実行先はAction Groupで分けて考えます。"

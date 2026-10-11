@@ -37,6 +37,7 @@ runFile("audit-map.js");
 runFile("inventory.js");
 runFile("ui-logic.js");
 runFile("glossary.js");
+runFile("learn-summary.js");
 
 const qs=window.AZ104_QUESTIONS||[];
 const inv=window.AZ104_INVENTORY||{};
@@ -146,6 +147,17 @@ for(const q of qs){
   if(!Array.isArray(matched)||matched.length===0)glossaryMissing.push(q.uid);
 }
 assert(glossaryMissing.length===0,"questions without glossary match ("+glossaryMissing.length+"): "+glossaryMissing.join(", "));
+
+assert(window.AZ104_LEARN_SUMMARY&&typeof window.AZ104_LEARN_SUMMARY.build==="function","learn-summary.js failed to load");
+const summaryMissing=[],summaryBad=[];
+for(const q of qs){
+  const s=window.AZ104_LEARN_SUMMARY.build(q,window.AZ104_GLOSSARY);
+  if(!s||!Array.isArray(s.points)||s.points.length===0)summaryMissing.push(q.uid);
+  else if(s.points.some(x=>typeof x!=="string"||!x.trim())||typeof s.problemPoint!=="string"||!s.problemPoint.trim()||typeof s.caution!=="string"||!s.caution.trim())summaryBad.push(q.uid);
+  if(!s||!Array.isArray(s.sources)||s.sources.length===0)summaryBad.push(q.uid+"(source)");
+}
+assert(summaryMissing.length===0,"questions without Learn summary ("+summaryMissing.length+"): "+summaryMissing.join(", "));
+assert(summaryBad.length===0,"invalid Learn summaries ("+summaryBad.length+"): "+summaryBad.join(", "));
 
 assert(inv.sets&&inv.sets.set1===50&&inv.sets.set2===50&&inv.sets.similar===100&&inv.sets.coverage===160&&inv.sets.learnProducts===6,"inventory set counts invalid");
 assert(inv.chapters&&Object.values(inv.chapters).reduce((s,x)=>s+Number(x.count||0),0)===366,"inventory chapter sum != 366");
@@ -317,8 +329,12 @@ assert(html.includes("masteryUnlocked(tier)"),"mastery subcategory lock check mi
 assert(html.includes("完全マスター条件"),"mastery definition is not visible in study mode");
 assert(html.includes('<script src="ui-logic.js"></script>'),"index does not load ui-logic.js");
 assert(html.includes('<script src="glossary.js"></script>'),"index does not load glossary.js");
+assert(html.includes('<script src="learn-summary.js"></script>'),"index does not load learn-summary.js");
 assert(html.includes('id="glossaryBox"'),"terminology explanation container missing");
+assert(html.includes('id="learnSummary"'),"Microsoft Learn summary container missing");
 assert(html.includes("const terms=GLOSSARY.match(q)"),"answer feedback does not render glossary terms");
+assert(html.includes("const summary=LEARN_SUMMARY.build(q,GLOSSARY)"),"answer feedback does not render Learn summary");
+assert(html.includes("Microsoft Learn 要約"),"Learn summary heading missing");
 assert(!html.includes("cats.map(c=>'<option>'+c+'</option>')"),"category values are still injected with innerHTML");
 assert(html.includes("q.set!==3&&q.set!==5"),"mock pool no longer excludes similar/Learn-product sets");
 assert(html.includes("['legacy-practice','practice-nuance'].includes(a.status)")||html.includes('["legacy-practice","practice-nuance"].includes(a.status)'),"mock pool no longer excludes legacy/practice-nuance questions");

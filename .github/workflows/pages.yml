@@ -30,6 +30,21 @@ jobs:
       - name: Validate question data and UI invariants
         run: node scripts/validate-data.js
 
+      - name: Syntax-check quality triage script
+        run: node --check scripts/generate-quality-queue.js
+
+      - name: Generate risk-prioritized semantic QA backlog
+        run: node scripts/generate-quality-queue.js
+
+      - name: Upload QA backlog report
+        uses: actions/upload-artifact@v4
+        with:
+          name: az104-semantic-qa-backlog
+          path: |
+            reports/semantic-audit-queue.json
+            reports/semantic-audit-queue.md
+          retention-days: 90
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

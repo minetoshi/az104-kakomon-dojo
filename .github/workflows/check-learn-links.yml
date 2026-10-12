@@ -1,19 +1,15 @@
 name: Check Microsoft Learn links
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "questions/**"
-      - "learn-map.js"
-      - "audit-map.js"
-      - "glossary.js"
-      - "learn-summary.js"
-      - "scripts/check-learn-links.mjs"
-      - ".github/workflows/check-learn-links.yml"
   schedule:
     - cron: "0 21 * * 0"
   workflow_dispatch:
+
+# Several back-to-back pushes can trigger Microsoft Learn HTTP 429 responses.
+# Run once a week, or explicitly on demand after changing source URLs.
+concurrency:
+  group: az104-learn-links
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -21,7 +17,7 @@ permissions:
 jobs:
   check-links:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v6

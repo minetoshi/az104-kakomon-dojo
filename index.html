@@ -76,6 +76,7 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 <section id="modeSelect">
 <h1>AZ-104 過去問道場</h1>
 <p class="sub">勉強と本番模試を分けて使う</p>
+<p class="note" id="auditCoverageText">設問の意味的なMicrosoft公式照合状況を確認中...</p>
 <p class="mode-lead">勉強モードは <b>中核260問 → 応用100問 → Learn補完6問</b> の順で進め、最終的に全<span data-az104-total>366</span>問をマスターします。模試モードは本番範囲だけから50問を出題し、解答中は正誤・解説を表示しません。</p>
 <div class="mode-grid">
   <div class="mode-card study">
@@ -605,7 +606,7 @@ function toggleFlag(){const q=session[pos];const h=history(q);h.flag=!h.flag;sta
 function render(){
   const q=session[pos],savedSelection=Array.isArray(sessionSelections[q.uid])?sessionSelections[q.uid]:[];selected=new Set(savedSelection.filter(i=>Number.isInteger(i)&&i>=0&&i<q.o.length));judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=normalizeOrder(q,q._order);q._order=currentMap.slice();
   if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
-  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+q.id+'/'+questionSetCount(q);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
+  else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+q.id+'/'+questionSetCount(q);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{reviewed:false,label:'意味的監査未完了'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.reviewed?'':'warn')}
   $('qtext').textContent=JA_EXAM.stem(q.q);$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
   currentMap.forEach((orig,visual)=>{
     const lab=document.createElement('label');lab.className='ans';lab.dataset.orig=orig;
@@ -710,6 +711,8 @@ function renderDashboard(){
   }else{const ready=$('readiness');ready.textContent='';const b=document.createElement('b');b.textContent='まず本番模試を1回';ready.appendChild(b);ready.appendChild(document.createTextNode('：現在地を測り、75%未満の分野を優先して復習します。'));$('mockHistory').textContent='模試履歴はまだありません。'}
 }
 function init(){
+  const qa=window.AZ104_AUDIT&&window.AZ104_AUDIT.reviewedUids;
+  $('auditCoverageText').textContent='Microsoft公式文書と個別照合済み: '+(qa?qa.size:0)+' / '+QUESTIONS.length+'問。その他は意味的監査未完了です。';
   const inventoryErrors=validateInventory();if(inventoryErrors.length){const e=$('error');e.style.display='block';e.textContent='問題件数の整合性エラーがあります: '+inventoryErrors.join(' / ')}
   migrateHistorySignatures();
   document.querySelectorAll('#setChips .chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#setChips .chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedSet=b.dataset.set;renderChapterChips();renderCats()}));

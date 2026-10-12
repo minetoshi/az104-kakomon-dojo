@@ -24,6 +24,7 @@ main{padding:16px 14px 60px}h1{text-align:center;font-family:"Yu Mincho",serif;f
 <script src="ui-logic.js"></script>
 <script src="glossary.js"></script>
 <script src="learn-summary.js"></script>
+<script src="ja-exam.js"></script>
 <script>window.AZ104_QUESTIONS=[];</script>
 <script src="questions/set-01/q01-10.js"></script>
 <script src="questions/set-01/q11-20.js"></script>
@@ -155,6 +156,7 @@ const INVENTORY=window.AZ104_INVENTORY||{total:366,sets:{set1:50,set2:50,similar
 const LEARN_MAP=window.AZ104_LEARN_MAP||{};
 const GLOSSARY=window.AZ104_GLOSSARY||{terms:[],match:()=>[]};
 const LEARN_SUMMARY=window.AZ104_LEARN_SUMMARY||{build:q=>({title:"Microsoft Learn 要約",points:[],problemPoint:q.e||"",caution:"",sources:q.learn||[]})};
+const JA_EXAM=window.AZ104_JA_EXAM||{option:(q,i)=>q.o[i],stem:q=>q};
 const KEY='az104_kakomon_dojo_v5_250';
 const MOCK_KEY='az104_kakomon_mock_history_v1';
 const RESUME_KEY='az104_kakomon_resume_v1';
@@ -604,11 +606,11 @@ function render(){
   const q=session[pos],savedSelection=Array.isArray(sessionSelections[q.uid])?sessionSelections[q.uid]:[];selected=new Set(savedSelection.filter(i=>Number.isInteger(i)&&i>=0&&i<q.o.length));judged=!examMode&&Object.prototype.hasOwnProperty.call(runResult,q.uid);currentMap=normalizeOrder(q,q._order);q._order=currentMap.slice();
   if(examMode){$('qset').textContent='本番模試';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+(pos+1)+'/'+session.length;$('auditStatus').style.display='none'}
   else{$('qset').textContent=q.set===3?'類似問題（元問題 '+q.baseId+'）':q.set===4?'公式範囲補強':q.set===5?'Learn製品補強':'第'+q.set+'セット';$('qchapter').textContent='';$('qcat').textContent='';$('qno').textContent='問題 '+q.id+'/'+questionSetCount(q);const audit=(window.AZ104_AUDIT&&window.AZ104_AUDIT.get)?window.AZ104_AUDIT.get(q):{status:'verified',label:'監査済'};$('auditStatus').style.display='';$('auditStatus').textContent=audit.label;$('auditStatus').className='audit-status '+(audit.status==='verified'||audit.status==='updated-current'?'':'warn')}
-  $('qtext').textContent=q.q;$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
+  $('qtext').textContent=JA_EXAM.stem(q.q);$('sessionCount').textContent=(pos+1)+' / '+session.length;$('answers').innerHTML='';
   currentMap.forEach((orig,visual)=>{
     const lab=document.createElement('label');lab.className='ans';lab.dataset.orig=orig;
     lab.innerHTML='<input type="'+(q.multi?'checkbox':'radio')+'" name="answer"><span class="letter">'+String.fromCharCode(65+visual)+'</span><span class="atext"></span>';
-    lab.querySelector('.atext').textContent=q.o[orig];
+    lab.querySelector('.atext').textContent=JA_EXAM.option(q,orig);
     lab.addEventListener('click',e=>{e.preventDefault();if(judged&&!examMode)return;if(q.multi){selected.has(orig)?selected.delete(orig):selected.add(orig)}else{selected.clear();selected.add(orig)}sessionSelections[q.uid]=[...selected];updateSel();saveResume()});
     $('answers').appendChild(lab)
   });
@@ -628,10 +630,10 @@ function showFeedback(q,ok){
   if(!examMode){$('qchapter').textContent=chapterLabel(q);$('qcat').textContent=q.cat}
   const ans=q.a.slice().sort((a,b)=>a-b),sel=Array.isArray(sessionSelections[q.uid])?sessionSelections[q.uid]:[];
   document.querySelectorAll('.ans').forEach(el=>{const i=Number(el.dataset.orig);el.classList.remove('sel');if(ans.includes(i))el.classList.add('correct');else if(sel.includes(i))el.classList.add('wrong')});
-  $('judge').style.display='block';$('judge').className='judge '+(ok?'ok':'ng');$('jhead').textContent=ok?'○ 正解':'× 不正解';$('correctText').textContent=UI_LOGIC.correctAnswerText(q,currentMap);
+  $('judge').style.display='block';$('judge').className='judge '+(ok?'ok':'ng');$('jhead').textContent=ok?'○ 正解':'× 不正解';const jaQuestion={...q,o:q.o.map((x,i)=>JA_EXAM.option(q,i))};$('correctText').textContent=UI_LOGIC.correctAnswerText(jaQuestion,currentMap);
   const detail=(window.AZ104_EXPLAIN&&window.AZ104_EXPLAIN.build)?window.AZ104_EXPLAIN.build(q):{decision:'設問の要件を整理し、最も直接的に満たす選択肢を選びます。',correctReason:q.e,options:[],tip:'正解サービスの役割と、他サービスとの違いをセットで覚えます。'};
   $('decisionPoint').textContent=detail.decision;$('explain').textContent=detail.correctReason;$('examTip').textContent=detail.tip;
-  const ob=$('optionReview');ob.innerHTML='';UI_LOGIC.feedbackRows(q,detail,currentMap).forEach(x=>{const row=document.createElement('div');row.className='orow '+(x.ok?'ok':'ng');const top=document.createElement('div');top.className='otop';const tag=document.createElement('span');tag.className='otag '+(x.ok?'ok':'ng');tag.textContent=x.ok?'正解':'不正解';const name=document.createElement('span');name.textContent=x.letter+'. '+x.option;top.appendChild(tag);top.appendChild(name);const p=document.createElement('div');p.textContent=x.text;row.appendChild(top);row.appendChild(p);ob.appendChild(row)});
+  const ob=$('optionReview');ob.innerHTML='';UI_LOGIC.feedbackRows(jaQuestion,detail,currentMap).forEach(x=>{const row=document.createElement('div');row.className='orow '+(x.ok?'ok':'ng');const top=document.createElement('div');top.className='otop';const tag=document.createElement('span');tag.className='otag '+(x.ok?'ok':'ng');tag.textContent=x.ok?'正解':'不正解';const name=document.createElement('span');name.textContent=x.letter+'. '+x.option;top.appendChild(tag);top.appendChild(name);const p=document.createElement('div');p.textContent=x.text;row.appendChild(top);row.appendChild(p);ob.appendChild(row)});
   const gb=$('glossaryBox');gb.textContent='';const terms=GLOSSARY.match(q);
   if(!terms.length){const e=document.createElement('div');e.className='gempty';e.textContent='この問題文で追加説明が必要な専門用語は検出されませんでした。';gb.appendChild(e)}
   else terms.forEach(t=>{const card=document.createElement('div');card.className='gterm';const name=document.createElement('div');name.className='gname';name.textContent=t.term;const ja=document.createElement('div');ja.className='gja';ja.textContent='日本語の意味：'+t.ja;const def=document.createElement('div');def.className='gdef';def.textContent=t.definition;const exam=document.createElement('div');exam.className='gexam';exam.textContent='AZ-104での見分け方：'+t.exam;card.appendChild(name);card.appendChild(ja);card.appendChild(def);card.appendChild(exam);if(t.source&&t.source.url){const src=document.createElement('div');src.className='gsource';const a=document.createElement('a');a.href=t.source.url;a.target='_blank';a.rel='noopener';a.textContent='公式 Microsoft Learn ↗';src.appendChild(a);card.appendChild(src)}gb.appendChild(card)});

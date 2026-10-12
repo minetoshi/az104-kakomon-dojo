@@ -41,6 +41,33 @@ runFile("learn-summary.js");
 runFile("ja-exam.js");
 
 const qs=window.AZ104_QUESTIONS||[];
+
+// Source-reviewed semantic evidence ledger. A changed question cannot silently retain audited status.
+const semanticLedger=JSON.parse(read("audit/quality-evidence-ledger.json"));
+function evidenceFingerprint(q){
+  const data=JSON.stringify({q:q.q,o:q.o,a:q.a,e:q.e,ox:q.ox||[],learn:q.learn||[]});
+  let h=2166136261>>>0;
+  for(let i=0;i<data.length;i++)h=Math.imul(h^data.charCodeAt(i),16777619)>>>0;
+  return h.toString(16).padStart(8,"0");
+}
+assert(semanticLedger.schemaVersion===1,"quality evidence ledger schema changed");
+assert(Array.isArray(semanticLedger.reviewed),"quality evidence ledger reviewed array missing");
+const ledgerSeen=new Set();
+for(const item of (semanticLedger.reviewed||[])){
+  assert(item&&typeof item.uid==="string"&&!ledgerSeen.has(item.uid),"quality evidence duplicate or invalid UID: "+item?.uid);
+  if(!item||!item.uid)continue;
+  ledgerSeen.add(item.uid);
+  const q=qs.find(x=>x.uid===item.uid);
+  assert(Boolean(q),"quality evidence references missing question "+item.uid);
+  if(!q)continue;
+  assert(item.fingerprint===evidenceFingerprint(q),"STALE SEMANTIC REVIEW: "+item.uid+" changed since last official source check");
+  assert(item.status==="reviewed-with-official-source","quality evidence status invalid: "+item.uid);
+  assert(typeof item.source==="string"&&/^https:\/\/learn\.microsoft\.com\//.test(item.source),"quality evidence official source missing: "+item.uid);
+  assert(typeof item.finding==="string"&&item.finding.length>10,"quality evidence finding missing: "+item.uid);
+}
+assert(semanticLedger.remainingCount===qs.length-ledgerSeen.size,"semantic audit remainingCount incorrect");
+assert(semanticLedger.reviewed.length>=17,"verified question count regressed below baseline");
+console.log("semantically reviewed with official source:",ledgerSeen.size,"of",qs.length,"remaining:",qs.length-ledgerSeen.size);
 // Regression guards for reviewed semantic corner cases (not a substitute for official-content audit).
 const semanticGuardCases=[
   {uid:"s1-q28",action:"Microsoft.Compute/snapshots/*",excluded:"Microsoft.Compute/snapshots/delete",answer:"1,3"},

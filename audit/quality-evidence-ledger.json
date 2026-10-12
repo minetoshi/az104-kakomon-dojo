@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "basis": "Independent question/options/explanation review against official Microsoft Learn, not UI E2E or an exam pass guarantee.",
+  "reviewDate": "2026-10-12",
+  "fingerprintAlgorithm": "fnv1a32-utf16-over-json-q-o-a-e-ox-learn",
+  "reviewed": [
+    {
+      "uid": "cov-q003",
+      "file": "questions/coverage/q01-10.js",
+      "fingerprint": "3c33c1e8",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments",
+      "finding": "RBACの継承、Contributor roleAssignments/write不許可、DataAccess別権限",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "cov-q006",
+      "file": "questions/coverage/q01-10.js",
+      "fingerprint": "e18e0992",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/manage",
+      "finding": "直接Ownerと親MG継承Ownerで移動先制限が異なる",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "cov-q010",
+      "file": "questions/coverage/q01-10.js",
+      "fingerprint": "51e45611",
+      "source": "https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy",
+      "finding": "Stored access policyの対象はService SASに限定",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "cov-q034",
+      "file": "questions/coverage/q31-40.js",
+      "fingerprint": "8c32797a",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-rbac-built-in-roles-directory-reference",
+      "finding": "Registry PermissionsモードでAcrPullは読み取り専用、ABACモードとは使うロールが異なる",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "cov-q116",
+      "file": "questions/coverage/q111-120.js",
+      "fingerprint": "0763e880",
+      "source": "https://learn.microsoft.com/en-us/azure/container-apps/revisions",
+      "finding": "revision-scopeは新revision、ingress/secretなどapplication-scopeは新規revisionなし",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "cov-q120",
+      "file": "questions/coverage/q111-120.js",
+      "fingerprint": "c882cccd",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup",
+      "finding": "custom backupのStorage container/SAS要件。Automatic backupとの差",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "cov-q156",
+      "file": "questions/coverage/q156-160.js",
+      "fingerprint": "a56bedf2",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disks-enable-host-based-encryption-portal",
+      "finding": "EncryptionAtHostのfeature registration required, supported VM size",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "cov-q157",
+      "file": "questions/coverage/q156-160.js",
+      "fingerprint": "db4fadfb",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disks-enable-host-based-encryption-portal",
+      "finding": "currently or ever ADE-enabled VM cannot enable encryption at host",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "s1-q01",
+      "file": "questions/set-01/q01-10.js",
+      "fingerprint": "75a93d50",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/windows/connect-rdp",
+      "finding": "Windows VMへの直接RDPには公開IP・NSG・到達性が必要。Bastion等が安全な代替案",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "s1-q08",
+      "file": "questions/set-01/q01-10.js",
+      "fingerprint": "bcb0fb44",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview",
+      "finding": "アプリが停止したVMをHealth probeが検知し新規のフロー対象から外す",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "s1-q09",
+      "file": "questions/set-01/q01-10.js",
+      "fingerprint": "ec5b1cee",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/distribution-mode-concepts",
+      "finding": "Client IP affinityはセッション継続と異常VM排除を区別。プローブを別途確認",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "s1-q28",
+      "file": "questions/set-01/q21-30.js",
+      "fingerprint": "a4c7e61c",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-definitions",
+      "finding": "NotActionsはActionsに含まれる削除権限を差し引く、他ロールの許可まで拒否しない",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "s1-q49",
+      "file": "questions/set-01/q41-50.js",
+      "fingerprint": "bd8d5c93",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-vms-first-look-arm",
+      "finding": "Standard VM Backupの既定vault内の日次保持30日、Instant Restoreと区別",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "s2-q46",
+      "file": "questions/set-02/q41-50.js",
+      "fingerprint": "f8464461",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+      "finding": "NIC/サブネット双方のNSG判定、パブリックIPや待ち受け前提を明記",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "s2-q48",
+      "file": "questions/set-02/q41-50.js",
+      "fingerprint": "4e0790e4",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/distribution-mode-concepts",
+      "finding": "Client IPは2タプル、Client IP and protocolは3タプルの単一設定項目",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "s2-q50",
+      "file": "questions/set-02/q41-50.js",
+      "fingerprint": "890a0ecf",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview",
+      "finding": "ステートレスなアプリの疎通障害ではprobeとNSGを優先確認",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    },
+    {
+      "uid": "sim-q028",
+      "file": "questions/similar/q21-30.js",
+      "fingerprint": "8fb00649",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-definitions",
+      "finding": "disks/*からNotActionsでdisks/deleteを除外、Deny assignmentではない",
+      "reviewedAt": "2026-10-12",
+      "status": "reviewed-with-official-source"
+    }
+  ],
+  "remainingCount": 349
+}

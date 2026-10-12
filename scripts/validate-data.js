@@ -67,6 +67,19 @@ for(const item of (semanticLedger.reviewed||[])){
 }
 assert(semanticLedger.remainingCount===qs.length-ledgerSeen.size,"semantic audit remainingCount incorrect");
 assert(semanticLedger.reviewed.length>=17,"verified question count regressed below baseline");
+const uiReviewed=window.AZ104_AUDIT&&window.AZ104_AUDIT.reviewedUids;
+assert(uiReviewed instanceof Set,"audit-map reviewed UIDs missing");
+if(uiReviewed instanceof Set){
+  assert(uiReviewed.size===ledgerSeen.size,"audit-map reviewed UID count differs from evidence ledger");
+  for(const uid of ledgerSeen)assert(uiReviewed.has(uid),"audit-map is missing reviewed UID: "+uid);
+  for(const uid of uiReviewed)assert(ledgerSeen.has(uid),"audit-map marks unreviewed UID as verified: "+uid);
+  for(const q of qs){
+    const badge=window.AZ104_AUDIT.get(q),verified=ledgerSeen.has(q.uid);
+    assert(badge&&badge.reviewed===verified,"question displays wrong semantic audit status: "+q.uid);
+    if(!verified)assert(/未完了/.test(badge.label),"unreviewed question is not warned: "+q.uid);
+  }
+}
+
 console.log("semantically reviewed with official source:",ledgerSeen.size,"of",qs.length,"remaining:",qs.length-ledgerSeen.size);
 // Regression guards for reviewed semantic corner cases (not a substitute for official-content audit).
 const semanticGuardCases=[

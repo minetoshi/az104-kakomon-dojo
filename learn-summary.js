@@ -100,7 +100,7 @@
       "PaaSのパブリックエンドポイントを使わずプライベート経路で接続できます。",
       "Private DNSでサービスFQDNをPrivate EndpointのIPへ解決させる構成が重要です。"
     ]},
-    {id:"acr-rbac",re:/\/container-registry\/container-registry-rbac-(?:built-in-roles-overview|abac-repository-permissions)/,title:"ACR のRBAC/ABAC",points:[
+    {id:"acr-rbac",re:/\/container-registry\/container-registry-rbac-(?:built-in-roles-overview|built-in-roles-directory-reference|abac-repository-permissions)/,title:"ACR のRBAC/ABAC",points:[
       "ACRでは組み込みAzureロールや、ABAC対応構成ではリポジトリ単位の権限でpush/pullを制御できます。",
       "レジストリ全体の管理権限と、イメージデータへのpush/pull権限を区別します。",
       "必要なリポジトリだけに最小権限を与える構成を選びます。"

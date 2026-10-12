@@ -41,6 +41,24 @@ runFile("learn-summary.js");
 runFile("ja-exam.js");
 
 const qs=window.AZ104_QUESTIONS||[];
+// Regression guards for reviewed semantic corner cases (not a substitute for official-content audit).
+const semanticGuardCases=[
+  {uid:"s1-q28",action:"Microsoft.Compute/snapshots/*",excluded:"Microsoft.Compute/snapshots/delete",answer:"1,3"},
+  {uid:"sim-q028",action:"Microsoft.Compute/disks/*",excluded:"Microsoft.Compute/disks/delete",answer:"0,1"}
+];
+for(const spec of semanticGuardCases){
+  const q=qs.find(x=>x.uid===spec.uid);
+  assert(Boolean(q),"semantic guard UID not found: "+spec.uid);
+  if(!q)continue;
+  assert(q.q.includes(spec.action),"RBAC Actions no longer include deletable operation: "+spec.uid);
+  assert(q.q.includes(spec.excluded),"RBAC NotActions regression: "+spec.uid);
+  assert(q.a.join(",")===spec.answer,"RBAC reviewed answer index changed: "+spec.uid);
+  assert(/NotActions.*Deny assignment|Deny assignment.*NotActions/.test(q.e),"NotActions vs Deny distinction missing: "+spec.uid);
+  assert((q.ox||[]).length===q.o.length,"reviewed RBAC question lost per-choice explanations: "+spec.uid);
+}
+const sasGuard=qs.find(x=>x.uid==="cov-q010");
+assert(Boolean(sasGuard)&&/Service SAS/i.test(sasGuard.q),"cov-q010 must explicitly identify Service SAS");
+assert(Boolean(sasGuard)&&/User delegation SAS.*Account SAS/.test(sasGuard.e),"cov-q010 must distinguish unsupported SAS kinds");
 assert(window.AZ104_JA_EXAM&&typeof window.AZ104_JA_EXAM.option==="function"&&typeof window.AZ104_JA_EXAM.stem==="function","Japanese exam module missing");
 const untranslatedEnglishOptions=[],untranslatedMixedOptions=[];
 for(const q of qs){

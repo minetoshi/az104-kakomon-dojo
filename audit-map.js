@@ -1,4 +1,5 @@
 (function(){
+  const REVIEWED_UIDS=new Set(["cov-q003","cov-q006","cov-q010","cov-q034","cov-q116","cov-q120","cov-q156","cov-q157","s1-q01","s1-q08","s1-q09","s1-q28","s1-q49","s2-q46","s2-q48","s2-q50","sim-q028"]);
   const SPECIAL={
     "s1-q08":{
       status:"updated-current",
@@ -80,8 +81,17 @@
   };
   window.AZ104_AUDIT={
     date:"2026-10-12",
+    reviewedUids:REVIEWED_UIDS,
     get(q){
-      return SPECIAL[q.uid]||{status:"verified",label:"Microsoft Learn監査済",note:""};
+      const reviewed=REVIEWED_UIDS.has(q.uid),special=SPECIAL[q.uid];
+      if(special)return {
+        ...special,
+        reviewed,
+        label:reviewed?"公式Learn個別照合済・注記あり":"意味的監査未完了（旧監査メモあり）"
+      };
+      return reviewed
+        ?{status:"verified",reviewed:true,label:"公式Learn個別照合済",note:""}
+        :{status:"unverified",reviewed:false,label:"意味的監査未完了",note:""};
     }
   };
 })();

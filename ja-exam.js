@@ -36,6 +36,32 @@
   labels.set("Blob soft delete","BLOB の論理削除（削除後の復元）");
   labels.set("Recovery Services vault 名","Recovery Services コンテナーの名前");
   labels.set("Slot swap","スロットの入れ替え（Slot swap）");
+  labels.set("Azure Site Recovery のみ","Azure Site Recovery（災害復旧）のみ");
+  labels.set("Publish を Container にする","公開方法（Publish）を［コンテナー］にする");
+  labels.set("Storage account key のみ","ストレージ アカウント キーのみ");
+  labels.set("Recovery Services vault だけ","Recovery Services コンテナーだけ");
+  labels.set("Azure Files の soft delete","Azure Files の論理削除（soft delete）");
+  labels.set("Lifecycle management rule を作成する","ライフサイクル管理規則を作成する");
+  labels.set("0.0.0.0/0、Next hop type を Internet のみ","宛先0.0.0.0/0、次ホップ種類をインターネットにする");
+  labels.set("Azure Key Vault または Managed HSM","Azure Key Vault またはマネージドHSM（鍵管理）");
+  labels.set("BlockBlobStorage のみ","ブロックBLOBストレージ（BlockBlobStorage）のみ");
+  labels.set("Standard Public IP を必ず作成","StandardのパブリックIPを必ず作成する");
+  labels.set("新しい Recovery Services vault","新しいRecovery Servicesコンテナー");
+  labels.set("revision mode を multiple にする","リビジョンモードを［複数（multiple）］にする");
+  labels.set("Recovery Services vault と MARS agent","Recovery ServicesコンテナーとMARSエージェント");
+  labels.set("Azure Bastion と Public IP","Azure BastionとパブリックIP");
+  labels.set("Log Analytics workspace と Data Collection Rule","Log Analyticsワークスペースとデータ収集ルール");
+  labels.set("Route table の next hop","ルート テーブルの次ホップ（転送先）");
+  labels.set("対応する Azure Private DNS zone と VNet link","対応するAzureプライベートDNSゾーンとVNetリンク");
+  labels.set("NSG の Application Security Group","NSGのアプリケーション セキュリティ グループ（ASG）");
+  labels.set("Accelerated Networking のみ","高速ネットワーク（Accelerated Networking）のみ");
+  labels.set("Diagnostic setting の削除","診断設定（Diagnostic setting）の削除");
+  labels.set("VNet peering の Allow forwarded traffic","VNetピアリングで［転送トラフィックを許可］を有効にする");
+  labels.set("Target resource group / VNet などの target 設定","対象のリソースグループ／VNetなどの復旧先設定");
+  labels.set("Backup policy の Instant Restore","バックアップ ポリシーのインスタント復元（Instant Restore）");
+  labels.set("Microsoft.Storage を unregister する","Microsoft.Storage リソースプロバイダーを登録解除する");
+  labels.set("Recovery Services vault を作成する","Recovery Servicesコンテナーを作成する");
+  labels.set("Azure VPN Gateway の Site-to-Site VPN","Azure VPN Gatewayのサイト間（S2S）VPN");
   const STEM_TERMS={"IOPS":"IOPS（1秒当たりの入出力処理回数）","SMB":"SMB（ファイル共有の通信プロトコル）","RDP":"RDP（リモートデスクトップ接続）","FQDN":"FQDN（完全修飾ドメイン名）","SAS":"SAS（共有アクセス署名）","NSG":"NSG（ネットワーク セキュリティ グループ）","ASG":"ASG（アプリケーション セキュリティ グループ）","KQL":"KQL（ログ検索クエリ言語）","RBAC":"RBAC（ロールベースのアクセス制御）","SSPR":"SSPR（セルフサービス パスワード リセット）","VMSS":"VMSS（仮想マシン スケール セット）","P2S":"P2S（端末からネットワークへのVPN）","S2S":"S2S（拠点間VPN）","WAF":"WAF（Webアプリケーション ファイアウォール）","SKU":"SKU（機能・性能のプラン）","CIDR":"CIDR（IPアドレス範囲の表記法）"};
   const CODE_EXACT={
     "netstat -an":"待受ポートと接続状態を一覧表示するコマンド",
@@ -82,6 +108,7 @@
   }
   function stem(s){
     let out=String(s==null?"":s);
+    out=out.replace(/Premium Azure Files/g,"Azure FilesのPremiumファイル共有");
     for(const [abbr,ja] of Object.entries(STEM_TERMS)){
       const escaped=abbr.replace(/[.*+?^$\\{}()|[\]\\]/g,"\\$&");
       const re=new RegExp("(^|[^A-Za-z0-9])("+escaped+")(?![A-Za-z0-9]|[（(])");

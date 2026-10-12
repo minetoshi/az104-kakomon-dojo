@@ -62,9 +62,9 @@
       extra:[{title:"Microsoft Learn: Azure リソースのロック",url:"https://learn.microsoft.com/ja-jp/azure/azure-resource-manager/management/lock-resources"}]
     },
     "s2-q48":{
-      status:"verified-nuance",
-      label:"監査済・UI表現注記",
-      note:"Practice では [Client IP] と [Protocol] の 2 項目を選択させますが、現行 Azure Load Balancer の概念では「Client IP and protocol」が 3-tuple の 1 つの Session persistence モードです。設問の 2 選択肢は、その組み合わせを分割して表したものとして理解してください。",
+      status:"updated-current",
+      label:"現行仕様へ修正済",
+      note:"旧Practiceの2選択肢を合成して覚えさせる誤った設問を廃止しました。現行Session persistenceの『なし(5タプル)』『Client IP(2タプル)』『Client IP and protocol(3タプル)』を独立した設定値として比較する問題に改訂済みです。TCPとUDPを同じバックエンドへ振り分けたい場合は2タプルを選択します。バックエンド変更時の再割当には注意してください。",
       extra:[{title:"Microsoft Learn: Load Balancer の分散モード",url:"https://learn.microsoft.com/ja-jp/azure/load-balancer/distribution-mode-concepts"}]
     },
     "sim-q063":{

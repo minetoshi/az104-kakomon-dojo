@@ -137,7 +137,7 @@ const report={
 };
 const reportPath=path.join(ROOT,"reports","learn-links.json");
 fs.mkdirSync(path.dirname(reportPath),{recursive:true});
-fs.writeFileSync(reportPath,JSON.stringify(report,null,2)+"\\n","utf8");
+fs.writeFileSync(reportPath,JSON.stringify(report,null,2),"utf8");
 console.log("Report written to reports/learn-links.json at",checkedAt,"(redirects:",redirects,")");
 
 if(dead.length){

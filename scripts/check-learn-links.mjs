@@ -52,7 +52,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
 async function probe(url){
   let last={kind:"warning",status:0,message:"unknown"};
-  for(let attempt=1;attempt<=3;attempt++){
+  for(let attempt=1;attempt<=4;attempt++){
     const ac=new AbortController();
     const timer=setTimeout(()=>ac.abort(),15000);
     try{
@@ -69,14 +69,18 @@ async function probe(url){
       try{await res.body?.cancel()}catch{}
       if(res.status>=200&&res.status<400)return {kind:"ok",status:res.status,finalUrl:res.url};
       if(DEAD.has(res.status))return {kind:"dead",status:res.status,finalUrl:res.url};
-      if(SOFT.has(res.status)){last={kind:"warning",status:res.status,finalUrl:res.url,message:"rate/auth response"}}
+      if(SOFT.has(res.status)){
+        const retryAfter=Number(res.headers.get("retry-after"));
+        last={kind:"warning",status:res.status,finalUrl:res.url,message:"rate/auth response",
+          retryAfterMs:res.status===429&&Number.isFinite(retryAfter)&&retryAfter>0?Math.min(30000,retryAfter*1000):0};
+      }
       else if(res.status>=500){last={kind:"warning",status:res.status,finalUrl:res.url,message:"server error"}}
       else return {kind:"dead",status:res.status,finalUrl:res.url};
     }catch(e){
       clearTimeout(timer);
       last={kind:"warning",status:0,message:e&&e.name==="AbortError"?"timeout":String(e&&e.message||e)};
     }
-    if(attempt<3)await sleep(700*attempt);
+    if(attempt<4)await sleep(last.retryAfterMs||Math.min(8000,1000*Math.pow(2,attempt-1)));
   }
   return last;
 }
@@ -93,7 +97,7 @@ async function worker(){
     console.log(prefix,result.status||"-",url,result.finalUrl&&result.finalUrl!==url?"-> "+result.finalUrl:"");
   }
 }
-await Promise.all(Array.from({length:8},()=>worker()));
+await Promise.all(Array.from({length:3},()=>worker()));
 
 const dead=results.filter(x=>x.kind==="dead");
 const warnings=results.filter(x=>x.kind==="warning");
@@ -120,6 +124,7 @@ const report={
     ok:results.length-dead.length-warnings.length,
     dead:dead.length,
     warnings:warnings.length,
+    indeterminate:warnings.length,
     redirects,
     referencedQuestionUids:Object.keys(questionUidToUrls).length
   },
@@ -139,6 +144,24 @@ const reportPath=path.join(ROOT,"reports","learn-links.json");
 fs.mkdirSync(path.dirname(reportPath),{recursive:true});
 fs.writeFileSync(reportPath,JSON.stringify(report,null,2),"utf8");
 console.log("Report written to reports/learn-links.json at",checkedAt,"(redirects:",redirects,")");
+if(process.env.GITHUB_STEP_SUMMARY){
+  const table=[
+    "## Microsoft Learn URL health",
+    "",
+    "Checked: "+checkedAt,
+    "",
+    "| Unique | OK | Broken | Indeterminate (429/5xx/etc.) | Redirected |",
+    "| ---: | ---: | ---: | ---: | ---: |",
+    "| "+results.length+" | "+(results.length-dead.length-warnings.length)+" | "+dead.length+" | "+warnings.length+" | "+redirects+" |",
+    "",
+    warnings.length?"**Warning:** Temporary responses were not checked successfully; this run does NOT verify all URLs.":"All URL endpoints responded successfully. This does not prove the content matches each question.",
+    "",
+    "Download the az104-learn-links-health artifact for status, final URL, timestamp, and referenced question UIDs."
+  ].join("\n");
+  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,table+"\n","utf8");
+}
+if(warnings.length)console.warn("::warning title=Learn URLs indeterminate::"+warnings.length+" URLs returned transient responses (for example HTTP 429); review the attached report.");
+
 
 if(dead.length){
   console.error("\nDefinitively broken links:");

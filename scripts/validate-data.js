@@ -38,8 +38,26 @@ runFile("inventory.js");
 runFile("ui-logic.js");
 runFile("glossary.js");
 runFile("learn-summary.js");
+runFile("ja-exam.js");
 
 const qs=window.AZ104_QUESTIONS||[];
+assert(window.AZ104_JA_EXAM&&typeof window.AZ104_JA_EXAM.option==="function"&&typeof window.AZ104_JA_EXAM.stem==="function","Japanese exam module missing");
+const untranslatedEnglishOptions=[];
+for(const q of qs){
+  for(let i=0;i<(q.o||[]).length;i++){
+    const raw=String(q.o[i]),display=String(window.AZ104_JA_EXAM.option(q,i));
+    const japaneseOriginal=/[\u3040-\u30ff\u3400-\u9fff]/.test(raw);
+    const englishChars=(raw.match(/[A-Za-z]/g)||[]).length;
+    if(!japaneseOriginal&&englishChars>=5&&!/[\u3040-\u30ff\u3400-\u9fff]/.test(display))untranslatedEnglishOptions.push(q.uid+" choice "+i+": "+raw);
+  }
+}
+assert(untranslatedEnglishOptions.length===0,"English-only exam options without Japanese labels ("+untranslatedEnglishOptions.length+"): "+untranslatedEnglishOptions.join(" | "));
+const jaFixture={uid:"cov-q020",o:["FileStorage","Standard general-purpose v2 のみ","Premium BlockBlobStorage","Premium PageBlobStorage"]};
+assert(window.AZ104_JA_EXAM.option(jaFixture,0).includes("ファイル共有"),"Japanese exam: FileStorage must explain file shares");
+assert(window.AZ104_JA_EXAM.option(jaFixture,1).includes("汎用"),"Japanese exam: Standard GPv2 must be localized");
+assert(window.AZ104_JA_EXAM.option(jaFixture,2).includes("ブロック"),"Japanese exam: BlockBlob must be localized");
+assert(window.AZ104_JA_EXAM.option(jaFixture,3).includes("ページ"),"Japanese exam: PageBlob must be localized");
+assert(window.AZ104_JA_EXAM.stem("IOPS と SMB を使用").includes("1秒当たり")&&window.AZ104_JA_EXAM.stem("IOPS と SMB を使用").includes("ファイル共有"),"Japanese exam: stem acronyms must be explained");
 const inv=window.AZ104_INVENTORY||{};
 assert(qs.length===366,"total questions must be 366, got "+qs.length);
 assert(qs.length===inv.total,"question total differs from inventory total");
@@ -279,8 +297,8 @@ const inline=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map
 inline.forEach((code,i)=>{try{new Function(code)}catch(e){errors.push("inline script syntax #"+i+": "+e.message)}});
 
 assert(!html.includes("String.fromCharCode(65+x.index)"),"feedback still labels original option index instead of visual order");
-assert(html.includes("UI_LOGIC.correctAnswerText(q,currentMap)"),"feedback correct-answer text does not use shuffle-safe UI logic");
-assert(html.includes("UI_LOGIC.feedbackRows(q,detail,currentMap)"),"feedback option rows do not use shuffle-safe UI logic");
+assert(html.includes("UI_LOGIC.correctAnswerText(jaQuestion,currentMap)"),"feedback correct-answer text does not use shuffle-safe localized UI logic");
+assert(html.includes("UI_LOGIC.feedbackRows(jaQuestion,detail,currentMap)"),"feedback option rows do not use shuffle-safe localized UI logic");
 assert(typeof window.AZ104_UI_LOGIC==="object","ui-logic.js failed to load");
 const fixtureQ={o:["Action Group","Application Security Group","Availability Set","Management Group"],a:[0],ox:["action","asg","availability","management"]};
 const fixtureDetail={options:[
@@ -335,6 +353,10 @@ assert(html.includes("完全マスター条件"),"mastery definition is not visi
 assert(html.includes('<script src="ui-logic.js"></script>'),"index does not load ui-logic.js");
 assert(html.includes('<script src="glossary.js"></script>'),"index does not load glossary.js");
 assert(html.includes('<script src="learn-summary.js"></script>'),"index does not load learn-summary.js");
+assert(html.includes('<script src="ja-exam.js"></script>'),"index does not load Japanese exam localization");
+assert(html.includes("JA_EXAM.option(q,orig)"),"question options are not displayed in Japanese");
+assert(html.includes("JA_EXAM.stem(q.q)"),"question stems are not displayed in Japanese");
+assert(html.includes("q.o.map((x,i)=>JA_EXAM.option(q,i))"),"feedback options do not reuse localized labels");
 assert(html.includes('id="glossaryBox"'),"terminology explanation container missing");
 assert(html.includes('id="learnSummary"'),"Microsoft Learn summary container missing");
 assert(html.includes("const terms=GLOSSARY.match(q)"),"answer feedback does not render glossary terms");

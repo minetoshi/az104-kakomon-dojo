@@ -385,17 +385,117 @@
     return {rule:domainFallback(q),matchedRuleIds:[],sourceIndex:-1,mode:"fallback"};
   }
 
+  const UID_REVIEWED_NOTES={
+  "s1-q01": [
+    "Windows VMへ直接RDPで接続する条件",
+    "公開RDPにはVMのパブリックIPとNSGによる送信元IP/ポートの許可が必要です。",
+    "最小構成の直接RDPと、Bastion/P2S VPNを用いた非公開管理はセキュリティと管理負荷が異なります。",
+    "インターネットへ3389を無制限公開しない。直接RDP指定がなければBastion等を検討します。"
+  ],
+  "s1-q09": [
+    "LBセッション永続化と正常性",
+    "Client IP (2タプル) は同じ送信元IPのフローを同じバックエンドへ割り当てるための分散モードです。",
+    "HTTP/HTTPS正常性プローブはアプリの応答を検査し、異常VMへの新規受信を除外します。",
+    "プール台数の変更時には割当が再計算されるため、メモリ内セッションを永続的に保証しません。"
+  ],
+  "s2-q46": [
+    "NSG実効アクセスの前提",
+    "NICとサブネット両方にNSGがあれば、受信許可は両方で必要です。",
+    "NSGが許可してもパブリックIP/待ち受けアプリ/ファイアウォール等の前提が欠ければ外部到達できません。",
+    "この問題は全VMへの公開到達性とTCP 80の待ち受けを別条件として明記しています。"
+  ],
+  "s2-q48": [
+    "LBの2/3/5タプル",
+    "Client IP は送信元IPと宛先IPの2タプルを使用し、TCPとUDPでも同じバックエンドを選びます。",
+    "Client IP and protocol は3タプルで、プロトコルが違うと割当が異なる場合があります。",
+    "『Client IP and protocol』は2項目ではなく、現行Load Balancerの1つの設定値です。"
+  ],
+  "s2-q50": [
+    "LB疎通障害の調査",
+    "HTTP/HTTPSプローブでは期待した正常性パスがHTTP 200を返すかを確認します。",
+    "NSGでアプリ受信やプローブの通過が拒否されていないかを確認します。",
+    "ステートレスなアプリにClient IPアフィニティを適用しても、不正なNSGや失敗プローブは直りません。"
+  ],
+  "s1-q49": [
+    "VM Backup保持期間の区別",
+    "既定のStandard Azure VM Backupポリシーは毎日バックアップし、vaultに30日保持します。",
+    "Instant Restoreのスナップショット保持とは別で、既定2日です。",
+    "Enhanced/カスタムポリシーやOn-demand backupには別設定があるため、『Standardの既定』を前提にします。"
+  ],
+  "cov-q003": [
+    "RBACの実効権限",
+    "親の管理グループ/サブスクリプション/RGで付与されたロールは子リソースへ継承されます。",
+    "Contributorは通常VMを更新できますが、roleAssignments/writeを持たずOwnerを割り当てられません。",
+    "ReaderやContributorなどの管理プレーン権限と、BlobデータへのStorage Blob Data Readerを混同しません。"
+  ],
+  "cov-q006": [
+    "管理グループ間でのサブスクリプション移動",
+    "管理グループ配下のサブスクリプションは親からPolicy/RBAC設定を継承します。",
+    "移動元の管理グループからOwnerを継承している場合は、移動先に追加の条件があります。",
+    "Sub1の直接Ownerと、移動先MG-BのContributor以上という条件を区別します。"
+  ],
+  "cov-q010": [
+    "Stored access policyの対象",
+    "Stored access policyはコンテナーに作成し、関連付けたService SASの期限・権限を管理します。",
+    "Stored access policyを変更・削除すると、参照するService SASの制約を変更・失効できます。",
+    "Account SASやUser delegation SASには関連付けられません。"
+  ],
+  "sim-q028": [
+    "RBAC ActionsとNotActions",
+    "Actionsのワイルドカードは多数の操作を許可しますが、NotActionsはこのロールから対象権限を差し引きます。",
+    "NotActionsはDeny assignmentではなく、別ロールによる許可を遮断しません。",
+    "実効権限を判断する前に、ロールのスコープと他のロール割り当ての有無を確認します。"
+  ],
+  "s1-q28": [
+    "RBACとSnapshot権限",
+    "Microsoft.Compute/snapshots/*はスナップショット操作全体を含みます。",
+    "NotActionsのsnapshots/deleteはそのロールの削除許可だけを差し引きます。",
+    "Compute/*/readは読み取りであり、VMの作成権限まで含みません。"
+  ],
+  "cov-q034": [
+    "ACRの権限モード",
+    "RBAC Registry PermissionsモードならAcrPullはレジストリからのpullに使う読み取り専用のデータプレーンロールです。",
+    "AcrPushはpushの権限も与えるため、pullのみの最小権限要件では過剰です。",
+    "RBAC Registry + ABAC Repository Permissionsモードでは、Repository Readerなどの役割を検討します。"
+  ],
+  "cov-q116": [
+    "Container AppsのRevision変更",
+    "Container image、環境変数、Scale rulesはrevision-scopeとして新revisionを生成します。",
+    "Ingress、secret values、revision modeなどのapplication-scope変更は新revisionを作りません。",
+    "『Container App設定を変えるとすべて新revision』という覚え方は誤りです。"
+  ],
+  "cov-q120": [
+    "App Serviceカスタムバックアップ",
+    "カスタムバックアップはStorageのBlob containerとSASベースの認可を必要とします。",
+    "対応するApp Serviceプランの利用、Storageへの書き込み権限、カスタムバックアップの設定を確認します。",
+    "自動バックアップはカスタムバックアップと違い、保存先Storage accountの事前指定が不要です。"
+  ],
+  "cov-q156": [
+    "Encryption at hostの有効化前提",
+    "サブスクリプションのMicrosoft.Compute EncryptionAtHost featureを登録しRegisteredになったことを確認します。",
+    "VMサイズが対応していることと、ADEを過去に利用していないことも確認します。",
+    "通常のManaged DiskのSSEと、VMホストでのキャッシュ/一時ディスクの暗号化は別です。"
+  ],
+  "cov-q157": [
+    "ADEとEncryption at hostは併用不可",
+    "現在または過去にAzure Disk Encryptionを利用したVMではEncryption at hostを有効化できません。",
+    "Encryption at hostではVMホストの一時ディスクやOS/data diskキャッシュも暗号化します。",
+    "ADEを一度無効化すれば必ず同じVMで有効化できるという理解は誤りです。"
+  ]
+};
+
   function build(q,glossary){
     const links=(q&&Array.isArray(q.learn)?q.learn:[]).filter(x=>x&&typeof x.url==="string");
     const resolved=resolve(q),rule=resolved.rule;
     const terms=(glossary&&typeof glossary.match==="function")?glossary.match(q):[];
     const problemPoint=(q&&typeof q.e==="string"&&q.e.trim())?q.e.trim():"この問題では、要件に最も直接対応するAzure機能を選びます。";
     const caution=terms.length?terms[0].exam:"似たサービスを選択肢ごとに『目的・スコープ・動作』で比較します。";
+    const reviewed=(q&&UID_REVIEWED_NOTES[q.uid])||null;
     return {
-      title:rule.title||"Microsoft Learn 要約",
-      points:(rule.points||[]).slice(0,3),
+      title:reviewed?reviewed[0]:(rule.title||"Microsoft Learn 要約"),
+      points:reviewed?reviewed.slice(1,3):(rule.points||[]).slice(0,3),
       problemPoint,
-      caution,
+      caution:reviewed?reviewed[3]:caution,
       sources:links.slice(0,3),
       ruleId:rule.id||"fallback",
       matchedRuleIds:resolved.matchedRuleIds,
@@ -404,5 +504,5 @@
     };
   }
 
-  window.AZ104_LEARN_SUMMARY={rules:RULES,resolve,build};
+  window.AZ104_LEARN_SUMMARY={rules:RULES,resolve,build,reviewedNotes:UID_REVIEWED_NOTES};
 })();

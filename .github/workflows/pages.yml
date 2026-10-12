@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Check Learn URL monitor syntax
+        run: node --check scripts/check-learn-links.mjs
+
       - name: Validate question data and UI invariants
         run: node scripts/validate-data.js
 

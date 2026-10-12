@@ -102,6 +102,44 @@ if(warnings.length){
   console.warn("\nTransient/warning responses:");
   for(const x of warnings)console.warn("-",x.status||"-",x.url,"used by",x.refs.join(", "));
 }
+const checkedAt=new Date().toISOString();
+const redirects=results.filter(x=>x.kind==="ok"&&x.finalUrl&&x.finalUrl!==x.url).length;
+const questionUidToUrls={};
+for(const x of results){
+  for(const r of x.refs){
+    if(!r.startsWith("question:"))continue;
+    const uid=r.slice("question:".length);
+    (questionUidToUrls[uid]??=[]).push(x.url);
+  }
+}
+const report={
+  schemaVersion:1,
+  checkedAt,
+  summary:{
+    totalUniqueUrls:results.length,
+    ok:results.length-dead.length-warnings.length,
+    dead:dead.length,
+    warnings:warnings.length,
+    redirects,
+    referencedQuestionUids:Object.keys(questionUidToUrls).length
+  },
+  results:results.map(x=>({
+    url:x.url,
+    kind:x.kind,
+    httpStatus:x.status,
+    finalUrl:x.finalUrl??null,
+    message:x.message??null,
+    checkedAt,
+    refs:x.refs,
+    questionUids:x.refs.filter(r=>r.startsWith("question:")).map(r=>r.slice("question:".length))
+  })),
+  questionUidToUrls
+};
+const reportPath=path.join(ROOT,"reports","learn-links.json");
+fs.mkdirSync(path.dirname(reportPath),{recursive:true});
+fs.writeFileSync(reportPath,JSON.stringify(report,null,2)+"\\n","utf8");
+console.log("Report written to reports/learn-links.json at",checkedAt,"(redirects:",redirects,")");
+
 if(dead.length){
   console.error("\nDefinitively broken links:");
   for(const x of dead)console.error("-",x.status,x.url,"used by",x.refs.join(", "));

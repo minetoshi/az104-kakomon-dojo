@@ -42,16 +42,18 @@ runFile("ja-exam.js");
 
 const qs=window.AZ104_QUESTIONS||[];
 assert(window.AZ104_JA_EXAM&&typeof window.AZ104_JA_EXAM.option==="function"&&typeof window.AZ104_JA_EXAM.stem==="function","Japanese exam module missing");
-const untranslatedEnglishOptions=[];
+const untranslatedEnglishOptions=[],untranslatedMixedOptions=[];
 for(const q of qs){
   for(let i=0;i<(q.o||[]).length;i++){
     const raw=String(q.o[i]),display=String(window.AZ104_JA_EXAM.option(q,i));
-    const japaneseOriginal=/[\u3040-\u30ff\u3400-\u9fff]/.test(raw);
+    const japaneseChars=(raw.match(/[\u3040-\u30ff\u3400-\u9fff]/g)||[]).length;
     const englishChars=(raw.match(/[A-Za-z]/g)||[]).length;
-    if(!japaneseOriginal&&englishChars>=5&&!/[\u3040-\u30ff\u3400-\u9fff]/.test(display))untranslatedEnglishOptions.push(q.uid+" choice "+i+": "+raw);
+    if(japaneseChars===0&&englishChars>=5&&!/[\u3040-\u30ff\u3400-\u9fff]/.test(display))untranslatedEnglishOptions.push(q.uid+" choice "+i+": "+raw);
+    if(japaneseChars>0&&japaneseChars<6&&englishChars>15&&display===raw)untranslatedMixedOptions.push(q.uid+" choice "+i+": "+raw);
   }
 }
 assert(untranslatedEnglishOptions.length===0,"English-only exam options without Japanese labels ("+untranslatedEnglishOptions.length+"): "+untranslatedEnglishOptions.join(" | "));
+assert(untranslatedMixedOptions.length===0,"English-heavy mixed-language exam options without Japanese labels ("+untranslatedMixedOptions.length+"): "+untranslatedMixedOptions.join(" | "));
 const jaFixture={uid:"cov-q020",o:["FileStorage","Standard general-purpose v2 のみ","Premium BlockBlobStorage","Premium PageBlobStorage"]};
 assert(window.AZ104_JA_EXAM.option(jaFixture,0).includes("ファイル共有"),"Japanese exam: FileStorage must explain file shares");
 assert(window.AZ104_JA_EXAM.option(jaFixture,1).includes("汎用"),"Japanese exam: Standard GPv2 must be localized");

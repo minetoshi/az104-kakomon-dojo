@@ -88,9 +88,9 @@
     {
       "uid": "s1-q08",
       "file": "questions/set-01/q01-10.js",
-      "fingerprint": "bcb0fb44",
+      "fingerprint": "65398ca5",
       "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview",
-      "finding": "アプリが停止したVMをHealth probeが検知し新規のフロー対象から外す",
+      "finding": "アプリが停止したVMをHealth probeが検知し新規のフロー対象から外す。すべての選択肢に明示的な根拠を追加",
       "reviewedAt": "2026-10-12",
       "status": "reviewed-with-official-source"
     },

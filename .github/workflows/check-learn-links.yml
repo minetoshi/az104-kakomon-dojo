@@ -27,3 +27,11 @@ jobs:
         uses: actions/checkout@v6
       - name: Check official Learn links
         run: node scripts/check-learn-links.mjs
+      - name: Upload Learn link health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: az104-learn-links-health
+          path: reports/learn-links.json
+          if-no-files-found: warn
+          retention-days: 90
